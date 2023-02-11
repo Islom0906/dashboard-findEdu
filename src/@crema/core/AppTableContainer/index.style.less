@@ -1,0 +1,41 @@
+@import '../../../shared/styles/variable';
+@import '../../../shared/styles/mixin';
+.table-responsive .ant-table {
+  min-height: .01%;
+  overflow-x: auto;
+}
+
+.table-responsive thead > tr > th,
+.table-responsive tbody > tr > th,
+.table-responsive tfoot > tr > th,
+.table-responsive thead > tr > td,
+.table-responsive tbody > tr > td,
+.table-responsive tfoot > tr > td {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: @screen-sm-max) {
+  .table-responsive .ant-table {
+    width: 100%;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: @border-style-base @border-width-base @border-color-base;
+  }
+}
+
+.hoverColor {
+  & tbody > tr {
+    .transition(all .2s ease);
+    .scale(1);
+
+    &:hover {
+      .translateY(-2px);
+      box-shadow: 0 3px 10px 0 fade(@black, 20);
+      background-color: fade(@primary-color, 10);
+    }
+  }
+
+  & .ant-table-tbody > tr.ant-table-row:hover > td {
+    background-color: transparent;
+  }
+}

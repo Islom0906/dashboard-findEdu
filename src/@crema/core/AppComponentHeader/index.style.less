@@ -1,0 +1,54 @@
+@import '../../../shared/styles/variable';
+.container-header {
+
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+  @media screen and (min-width: @screen-sm) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  @media screen and (min-width: @screen-xxl) {
+    padding-top: 16px;
+  }
+}
+
+.link-icon {
+  padding-right: 4px;
+  font-size: 20px;
+
+  [dir=rtl] & {
+    padding-right: 0;
+    padding-left: 4px;
+  }
+}
+
+.header-title {
+  margin-bottom: 12px;
+  @media screen and (min-width: @screen-sm) {
+    padding-right: 12px;
+    flex: 1;
+
+    [dir=rtl] & {
+      padding-right: 0;
+      padding-left: 12px;
+    }
+  }
+
+  & .title-h3 {
+    color: @text-color;
+    font-weight: @font-weight-medium;
+    font-size: 18px;
+    margin-bottom: 0;
+    @media screen and (min-width: @screen-sm) {
+      font-size: 20px;
+    }
+  }
+
+  & .text-base {
+    font-size: 15px;
+    font-weight: @font-weight-regular;
+    color: @text-color-secondary;
+    margin: 0 !important;
+  }
+}

@@ -1,0 +1,372 @@
+@import '../../../../shared/styles/variable';
+@import '../../../../shared/styles/mixin';
+
+.app-layout {
+  min-height: 100vh;
+  position: relative;
+  background: @body-background;
+  overflow-x: hidden;
+
+  &.appMainFixedFooter {
+    padding-bottom: 46px;
+
+    & .app-main-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9;
+      width: 100%;
+    }
+  }
+
+  & .ant-layout {
+    background: none;
+  }
+}
+
+.ant-layout-sider-zero-width-trigger {
+  display: none;
+}
+
+.app-main-sidebar {
+  &.ant-layout-sider {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    width: 17.5rem !important;
+    .transition(all 0.1s linear);
+    border-right: @border-style-base @border-width-base @border-color-base;
+    background-color: inherit;
+
+    @media screen and (min-width: 1200px) and (max-width: 1300px) {
+      width: 15rem !important;
+    }
+  }
+
+  &.ant-layout-sider-dark {
+    //background-color: @sidebar-dark-bg-color;
+    background-color: inherit;
+  }
+
+  & .ant-layout-sider-trigger {
+    display: none;
+  }
+
+  &.ant-layout-sider-has-trigger {
+    padding-bottom: 0;
+  }
+
+  // Sidebar Collapsed
+  &.ant-layout-sider-collapsed {
+    width: 0 !important;
+    .transition(all 200ms linear);
+
+    @media screen and (min-width: @screen-lg) {
+      width: 4rem !important;
+    }
+
+    & + .app-layout-main {
+      width: 100% !important;
+      .transition(all 200ms linear);
+
+      @media screen and (min-width: @screen-lg) {
+        width: calc(100% - 4rem) !important;
+      }
+    }
+
+    & .cr-user-info {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    & .cr-user-info-content {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+
+      [dir='rtl'] & {
+        margin-right: 0;
+      }
+    }
+
+    & .ant-menu-item-group-title {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+      height: 0;
+      padding: 0;
+    }
+  }
+
+  & .cr-user-info {
+    border-bottom: @border-width-base @border-style-base @border-color-base;
+  }
+}
+
+.app-header {
+  padding-left: 20px;
+  padding-right: 20px;
+  color: @text-color;
+  background-color: @component-background;
+  height: 56px;
+  line-height: 1;
+  border-bottom: @border-style-base @border-width-base @border-color-base;
+  .transition(all 0.1s linear);
+  position: sticky;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media screen and (min-width: @screen-md) {
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 71px;
+  }
+
+  & .trigger {
+    font-size: 20px;
+    margin-right: 10px;
+    padding: 5.5px;
+    color: @text-color;
+
+    [dir='rtl'] & {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+
+    @media screen and (min-width: @screen-lg) {
+      margin-right: 20px;
+
+      [dir='rtl'] & {
+        margin-right: 0;
+        margin-left: 20px;
+      }
+    }
+
+    @media screen and (min-width: @screen-xl) {
+      display: none;
+    }
+
+    & svg {
+      display: block;
+    }
+  }
+}
+
+.header-search {
+  position: relative;
+  max-width: 140px;
+  min-height: 36px;
+  margin-left: auto;
+  margin-right: 10px;
+
+  [dir='rtl'] & {
+    margin-left: 10px;
+    margin-right: auto;
+  }
+
+  @media screen and (min-width: @screen-sm) {
+    margin-right: 20px;
+    max-width: 165px;
+
+    [dir='rtl'] & {
+      margin-right: auto;
+      margin-left: 20px;
+    }
+  }
+
+  & .ant-input-wrapper {
+    top: 50%;
+    right: 0;
+    z-index: 1;
+    position: absolute;
+    .translateY(-50%);
+
+    [dir='rtl'] & {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  & .ant-input {
+    padding: 8px 14px;
+    height: 36px;
+    .transition(all 0.2s ease);
+    width: 104px;
+
+    &:focus {
+      width: 135px;
+    }
+
+    @media screen and (min-width: @screen-sm) {
+      width: 129px;
+
+      &:focus {
+        width: 165px;
+      }
+    }
+  }
+
+  & .ant-input-search-button {
+    height: 36px;
+    width: 36px;
+    box-shadow: none;
+
+    & .anticon svg {
+      display: block;
+    }
+  }
+
+  &.ant-input-search-rtl
+    > .ant-input-group
+    > .ant-input-group-addon:last-child
+    .ant-input-search-button {
+    border-radius: @border-radius-base 0 0 @border-radius-base;
+  }
+}
+
+.app-header-sectionDesktop {
+  display: none;
+
+  @media screen and (min-width: @screen-md) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.app-header-section-mobile {
+  display: block;
+
+  @media screen and (min-width: @screen-md) {
+    display: none;
+  }
+
+  & .ant-dropdown-link {
+    font-weight: @font-weight-medium;
+    text-transform: uppercase;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-color: @body-background;
+    color: @text-color;
+    padding: 9px;
+    border-radius: @border-radius-circle;
+    border: @border-style-base @border-width-base transparent;
+
+    &:hover,
+    &:focus {
+      color: @text-color;
+      background-color: lighten(@body-background, 0.5);
+      border-color: @body-background;
+    }
+
+    & svg {
+      display: block;
+    }
+  }
+}
+
+.app-layout-main {
+  .transition(all 0.1s linear);
+  width: 100% !important;
+  position: relative;
+  flex-shrink: 0;
+
+  @media screen and (min-width: @screen-xl) {
+    flex-shrink: inherit;
+    width: calc(100% - 17.5rem) !important;
+  }
+
+  @media screen and (min-width: 1200px) and (max-width: 1300px) {
+    width: calc(100% - 15rem) !important;
+  }
+}
+
+.main-scrollbar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  max-height: calc(100vh - 56px);
+
+  .appMainFixedFooter & {
+    max-height: calc(100vh - 104px);
+  }
+
+  @media screen and (min-width: @screen-md) {
+    max-height: calc(100vh - 71px);
+
+    .appMainFixedFooter & {
+      max-height: calc(100vh - 118px);
+    }
+  }
+}
+
+.app-sidebar-scrollbar {
+  height: calc(100vh - 56px);
+
+  .appMainFixedFooter & {
+    height: calc(100vh - 102px);
+  }
+
+  @media screen and (min-width: @screen-md) {
+    height: calc(100vh - 71px);
+
+    .appMainFixedFooter & {
+      height: calc(100vh - 116px);
+    }
+  }
+}
+
+// Sidebar Background Image
+.sidebar-img-background {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  & > div {
+    position: relative;
+    z-index: 3;
+  }
+
+  & .ant-menu.ant-menu-dark,
+  .ant-menu-dark .ant-menu-sub,
+  .ant-menu.ant-menu-dark .ant-menu-sub {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  & .app-main-sidebar-menu.ant-menu-dark .ant-menu-item-group-title,
+  & .app-main-sidebar-menu .ant-menu-item a {
+    color: inherit;
+  }
+
+  & .ant-menu {
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,41 @@
+@import '../../../shared/styles/variable';
+.list-footer {
+  padding: 10px;
+  color: @text-color-secondary;
+  display: flex;
+  justify-content: center;
+}
+
+.loader-progress {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: @text-color-secondary;
+  padding: 8px;
+
+  & span {
+    margin-left: 8px;
+
+    [dir=rtl] & {
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+}
+
+.grid {
+  &-container {
+    width: 100%;
+  }
+
+  &-column-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &-column-count {
+    flex-grow: 0;
+    box-sizing: border-box;
+  }
+}

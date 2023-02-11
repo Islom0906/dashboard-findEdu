@@ -1,0 +1,32 @@
+@import '../../../../shared/styles/variable';
+@import '../../../../shared/styles/mixin';
+
+.app-main-footer {
+  display: flex;
+  align-items: center;
+  padding: 5.5px 20px;
+  color: @text-color;
+  background-color: @white;
+
+  @media screen and (min-width: @screen-md) {
+    padding: 5.5px 32px;
+  }
+
+  & p {
+    margin-bottom: 0;
+  }
+}
+
+.footer-btn-view {
+  margin-left: auto;
+
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+.footer-btn {
+  .box-shadow(none);
+  height: auto;
+}

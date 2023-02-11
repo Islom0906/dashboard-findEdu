@@ -1,0 +1,65 @@
+@import '../../../shared/styles/variable';
+@import '../../../shared/styles/mixin';
+
+.comp-card {
+  position: relative;
+  box-shadow: @card-shadow;
+
+  & > .ant-card-head {
+    min-height: 10px;
+    font-weight: @font-weight-bold;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 0 none;
+    margin-bottom: 0;
+
+    & .ant-card-head-title {
+      line-height: 1.4993rem;
+      padding-bottom: 4px;
+      margin-right: 8px;
+
+      & span {
+        display: block;
+      }
+    }
+
+    & .ant-card-extra {
+      padding-bottom: 4px;
+    }
+  }
+
+  & > .ant-card-body {
+    padding: 16px 20px;
+  }
+}
+
+.comp-card-title-description {
+  font-size: @font-size-base;
+  font-weight: @font-weight-regular;
+  color: @text-color-secondary;
+}
+
+.pre-tag {
+  border-radius: 8px;
+  padding: 12px;
+  max-height: none !important;
+}
+
+.comp-scrollbar {
+  position: relative;
+}
+
+.component-root {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: @body-background;
+}
+
+.code-icon {
+  font-size: 20px;
+  color: @text-color-secondary;
+}

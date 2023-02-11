@@ -1,0 +1,20 @@
+@import '../../../../shared/styles/variable';
+@import '../../../../shared/styles/mixin';
+
+.sidebar-setting {
+
+  &:not(:last-child) {
+    border-bottom: @border-width-base @border-style-base @border-color-base;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+
+    @media screen and (min-width: @screen-xxl) {
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.sidebar-setting-title {
+  margin-bottom: 16px;
+}

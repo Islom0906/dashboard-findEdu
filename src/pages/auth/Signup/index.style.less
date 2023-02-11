@@ -1,0 +1,200 @@
+@import '../../../shared/styles/variable';
+
+.signup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  & .signup-checkbox {
+    display: flex;
+    font-size: @font-size-base;;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 6px;
+    margin-bottom: 20px;
+
+    & .ant-form-item-control-input {
+      min-height: 10px;
+    }
+
+    & .ant-form-item-control-input-content {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    & .ant-checkbox-wrapper {
+      color: @text-color-secondary;
+    }
+
+    & .ant-checkbox + span {
+      padding-left: 12px;
+
+      [dir=rtl] & {
+        padding-left: 8px;
+        padding-right: 12px;
+      }
+    }
+  }
+}
+
+.signup-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-footer {
+  background-color: @body-background;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  margin: 12px -24px -24px;
+
+  @media screen and (min-width: @screen-sm) {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: -20px;
+  }
+
+  @media screen and (min-width: @screen-lg) {
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-left: -40px;
+    margin-right: -40px;
+    margin-bottom: -40px;
+  }
+
+  & .signup-btn {
+    text-transform: capitalize;
+  }
+}
+
+.signup-text {
+  font-size: @font-size-base;
+  margin-right: 10px;
+
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 10px;
+  }
+
+  @media screen and (min-width: @screen-md) {
+    margin-right: 16px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+  }
+}
+
+.signup-text-grey {
+  color: @text-color-disabled;
+}
+
+.signup-socialLink {
+  display: flex;
+  align-items: center;
+}
+
+.signup-link {
+  color: @primary-color;
+  font-size: @font-size-base;
+  cursor: pointer;
+}
+
+.signup-btn {
+  border-radius: @border-radius-base;
+  width: 10rem;
+  font-weight: @font-weight-regular;
+  font-size: @font-size-base;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.signup-btn-full {
+  width: 100%;
+}
+
+.signup-icon-btn {
+  color: @text-color-secondary;
+  padding: 6px 4px 4px;
+  border: 0 none;
+  box-shadow: none;
+  background-color: transparent;
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+
+  @media screen and (min-width: @screen-md) {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    padding: 8px 6px 6px;
+  }
+
+  &:hover, &:focus {
+    color: @primary-color;
+    background-color: transparent;
+  }
+
+  & .anticon {
+    font-size: @font-size-base;
+
+    @media screen and (min-width: @screen-md) {
+      font-size: @font-size-lg;
+    }
+
+    & svg {
+      display: block;
+    }
+  }
+
+  &.ant-btn-icon-only > * {
+    font-size: @font-size-base;
+
+    @media screen and (min-width: @screen-md) {
+      font-size: @font-size-lg;
+    }
+  }
+}
+
+.signup-form {
+  position: relative;
+
+  & .form-field {
+    margin-bottom: 20px;
+  }
+
+  & .form-btn-field {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  & .form-field-action {
+    font-size: @font-size-base;
+    color: @text-color-secondary;
+
+    & span {
+      margin-right: 8px;
+      display: inline-block;
+
+      [dir=rtl] & {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.underlineNone {
+  text-decoration: none;
+}
+
+.colorTextPrimary {
+  color: @primary-color;
+}

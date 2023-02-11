@@ -1,0 +1,197 @@
+@import '../../shared/styles/variable';
+
+.auth-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  max-width: 900px;
+  min-height: 350px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 0 none;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: @screen-sm) {
+    min-height: 450px;
+  }
+
+  & .ant-card-body {
+    padding: 0;
+    display: flex;
+    flex: 1;
+  }
+}
+
+.auth-card-header {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: @screen-md) {
+    margin-bottom: 36px;
+  }
+
+  & img {
+    cursor: pointer;
+    height: 36px;
+    margin-right: 10px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+}
+
+.auth-logo-name {
+  font-weight: @font-weight-medium;
+  font-size: 24px;
+}
+
+.auth-main-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media screen and (min-width: @screen-sm) {
+    padding: 20px;
+    width: 50%;
+  }
+
+  @media screen and (min-width: @screen-lg) {
+    width: 40%;
+    padding: 40px;
+  }
+}
+
+.auth-wel-action {
+  position: relative;
+  padding: 24px;
+  display: none;
+  background-color: @grey-900;
+  color: @white;
+  font-size: @font-size-base;
+  width: 100%;
+
+  @media screen and (min-width: @screen-sm) {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+  }
+
+  @media screen and (min-width: @screen-lg) {
+    width: 60%;
+    padding: 40px;
+  }
+
+  & h2 {
+    color: @white;
+    font-size: 30px;
+    font-weight: @font-weight-bold;
+  }
+
+  & p {
+    line-height: 1.6;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.auth-wel-content {
+  max-width: 320px;
+}
+
+.auth-recon-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  & .ant-card-body {
+    padding-top: 10px;
+    @media screen and (min-width: @screen-sm) {
+      padding-top: 28px;
+    }
+    @media screen and (min-width: @screen-xxl) {
+      padding-top: 40px;
+    }
+  }
+}
+
+.confirm-content {
+  margin-bottom: 20px;
+  font-size: @font-size-base;
+
+  @media screen and (min-width: @screen-xxl) {
+    font-size: @font-size-lg;
+    margin-bottom: 40px;
+  }
+}
+
+.confirm-code-input {
+  margin-bottom: 24px;
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 40px;
+  }
+
+  & .react-code-input input {
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.confirm-btn {
+  border-radius: @border-radius-base;
+  width: 100%;
+  font-weight: @font-weight-regular;
+  font-size: @font-size-base;
+}
+
+.reset-btn {
+  .confirm-btn;
+}
+
+.reset-form {
+  position: relative;
+
+  & .form-field {
+    margin-bottom: 20px;
+
+    & p {
+      margin-bottom: 24px;
+      font-size: @font-size-base;
+      @media screen and (min-width: @screen-xxl) {
+        font-size: @font-size-lg;
+      }
+    }
+  }
+
+  & .ant-form-item-explain-error {
+    text-align: left;
+
+    [dir=rtl] & {
+      text-align: right;
+    }
+  }
+
+  & .react-code-input input {
+    &:focus {
+      outline: none;
+    }
+  }
+}

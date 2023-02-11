@@ -1,0 +1,267 @@
+@import '../../../shared/styles/variable';
+@import '../../../shared/styles/mixin';
+
+.apps-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.apps-wrap-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 20px;
+  }
+
+  & h2 {
+    color: @text-color;
+    font-weight: @font-weight-bold;
+    font-size: @font-size-lg;
+    margin-bottom: 0;
+  }
+}
+
+.menu-btn {
+  display: block;
+  margin-right: 8px;
+  padding: 0;
+  background-color: transparent;
+  .box-shadow(none);
+  border: 0 none;
+  width: 35px;
+  height: 35px;
+
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+
+  &:hover, &:focus {
+    background-color: transparent;
+    color: @text-color;
+  }
+
+  @media screen and (min-width: @screen-lg) {
+    display: none;
+  }
+
+  & .anticon {
+    font-size: 20px;
+  }
+}
+
+.apps-container {
+  display: flex;
+  height: calc(100vh - 138px);
+
+  .appMainFixedFooter & {
+    height: calc(100vh - 184px) !important;
+  }
+
+  @media screen and (min-width: @screen-md) {
+    height: calc(100vh - 161px);
+
+    .appMainFixedFooter & {
+      height: calc(100vh - 207px);
+    }
+  }
+
+  @media screen and (min-width: @screen-lg) {
+    height: calc(100vh - 165px);
+
+    .appMainFixedFooter & {
+      height: calc(100vh - 211px);
+    }
+  }
+
+  @media screen and (min-width: @screen-xl) {
+    height: calc(100vh - 153px);
+
+    .appMainFixedFooter &,
+    .appMainFooter & {
+      height: calc(100vh - 199px);
+    }
+  }
+}
+
+.apps-main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: @screen-lg) {
+    width: calc(100% - 17.5rem);
+    padding-left: 32px;
+
+    [dir=rtl] & {
+      padding-left: 0;
+      padding-right: 32px;
+    }
+  }
+
+  &.appsMainContentFull {
+    @media screen and (min-width: @screen-lg) {
+      width: 100%;
+      padding-left: 0;
+
+      [dir=rtl] & {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.apps-content-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 56px) !important;
+
+  @media screen and (min-width: @screen-md) {
+    height: calc(100% - 64px) !important;
+  }
+
+  &.fullView {
+    height: 100% !important;
+  }
+
+  & .scrum-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    [dir=rtl] & {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  & .react-trello-board {
+    height: 100%;
+    background-color: @background-color-base !important;
+
+    & > div {
+      height: 100%;
+    }
+  }
+
+  & .scrum-row,
+  & .react-trello-board > div > .smooth-dnd-container.horizontal {
+    display: inline-flex;
+    min-width: 100%;
+    height: 100%;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  & .scrum-col,
+  & .react-trello-board .smooth-dnd-container .react-trello-lane {
+    min-width: 280px;
+    max-width: 280px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: @card-radius;
+    background-color: fade(@white, 45);
+    height: 100% !important;
+    min-height: 100%;
+
+    @media screen and (min-width: @screen-md) {
+      min-width: 354px;
+      max-width: 354px;
+    }
+  }
+
+  & .react-trello-board .smooth-dnd-container .react-trello-lane > div:not(.scrum-board-list-header-card) {
+    align-self: normal;
+    overflow: hidden;
+    max-height: none;
+  }
+
+  & .scroll-scrum-item {
+    height: auto !important;
+  }
+
+  & .react-trello-board .smooth-dnd-container.vertical {
+    overflow-y: auto;
+    height: calc(100% - 72px);
+  }
+}
+
+.apps-main-content-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  & > .ant-card-body {
+    padding: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.apps-footer {
+  padding: 8px 24px;
+  border-top: @border-width-base @border-style-base @border-color-base;
+}
+
+.apps-header {
+  padding: 4px 24px;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  border-bottom: @border-style-base @border-width-base @border-color-base;
+
+  @media screen and (min-width: @screen-md) {
+    min-height: 64px;
+  }
+}
+
+.apps-sidebar {
+  height: 100%;
+  display: none;
+  flex-direction: column;
+
+  @media screen and (min-width: @screen-lg) {
+    width: 17.5rem;
+    display: flex;
+  }
+  @media screen and (min-width: @screen-xxl) {
+    width: 17.5rem;
+  }
+}
+
+.apps-sidebar-drawer {
+
+  & .ant-drawer-content-wrapper {
+    width: 17.5rem !important;
+  }
+
+  & .ant-drawer-body {
+    padding: 0;
+  }
+}
+
+.apps-sidebar-card {
+  display: none;
+  height: 100%;
+  @media screen and (min-width: @screen-md) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .ant-card-body {
+    padding: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}

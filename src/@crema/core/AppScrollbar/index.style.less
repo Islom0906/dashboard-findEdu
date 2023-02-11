@@ -1,0 +1,17 @@
+@import '../../../shared/styles/variable';
+@import '../../../shared/styles/mixin';
+
+[data-simplebar] {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  & .simplebar-offset,
+  & .simplebar-content-wrapper,
+  & .simplebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}

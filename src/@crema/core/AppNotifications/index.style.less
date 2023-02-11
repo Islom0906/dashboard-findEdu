@@ -1,0 +1,113 @@
+@import '../../../shared/styles/variable';
+
+.notify-btn-all {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  width: 100%;
+  text-transform: capitalize;
+}
+
+.notify-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: @font-size-lg;
+  border-radius: 0;
+  padding: 18px 12px;
+  margin-top: -10px;
+  color: @text-color;
+
+  &:hover, &:focus {
+    color: @text-color;
+    background-color: transparent;
+  }
+
+  @media screen and (min-width: @screen-md) {
+    font-weight: @font-weight-medium;
+    text-transform: uppercase;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-color: @body-background;
+    color: @text-color-secondary;
+    padding: 9px;
+    border-radius: @border-radius-circle;
+    border: @border-style-base @border-width-base transparent;
+    margin-left: 7.4px;
+    margin-right: 7.4px;
+    line-height: 1;
+
+    &:hover, &:focus {
+      color: @text-color;
+      background-color: lighten(@body-background, 0.5);
+      border-color: darken(@body-background, 10);
+    }
+  }
+}
+
+.notify-icon {
+  position: relative;
+  display: none;
+
+  @media screen and (min-width: @screen-md) {
+    display: block;
+  }
+}
+
+.notify-text {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-regular;
+
+  @media screen and (min-width: @screen-md) {
+    display: none;
+  }
+}
+
+.notify-list {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.notify-scroll-submenu {
+ height: 200px;
+
+  @media screen and (min-width: @screen-xxl) {
+    height: 380px;
+  }
+}
+
+.notify-header-message {
+  width: 260px;
+  padding: 0;
+
+  @media screen and (min-width: @screen-sm) {
+    width: 300px;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    width: 380px;
+  }
+
+  & .ant-dropdown-menu-item {
+    padding: 0;
+    white-space: normal;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &.header {
+      padding: 12px 20px;
+      font-weight: @font-weight-medium;
+      cursor: inherit;
+
+      &:hover, &:focus {
+        background-color: transparent;
+      }
+    }
+  }
+}

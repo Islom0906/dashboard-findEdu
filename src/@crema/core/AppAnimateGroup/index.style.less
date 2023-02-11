@@ -1,0 +1,29 @@
+.list-item-appear {
+  opacity: 0.01;
+}
+
+.list-item-appear.list-item-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.list-item-enter {
+  opacity: 0.01;
+  transform: translate(0, 1em);
+}
+
+.list-item-enter.list-item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-out, transform 500ms ease-out;
+  transform:translate(0,0);
+}
+
+.list-item-leave {
+  opacity: 1;
+}
+
+.list-item-leave.list-item-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
+  transform:translate(-5em, 0) scale(0,0);
+}

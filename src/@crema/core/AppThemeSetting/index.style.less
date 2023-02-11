@@ -1,0 +1,337 @@
+@import '../../../shared/styles/variable';
+@import '../../../shared/styles/mixin';
+
+.customizer-option {
+  position: absolute;
+  right: 0;
+  top: 85px;
+  z-index: 9;
+
+  [dir=rtl] & {
+    right: auto;
+    left: 0;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    top: 125px;
+  }
+}
+
+.customizer-btn {
+  border-radius: 30px 0 0 30px;
+  background-color: @orange-5;
+  color: @white;
+  .box-shadow(none);
+  border: 0 none;
+  height: 48px;
+  width: 48px;
+  padding: 12px;
+
+  [dir=rtl] & {
+    border-radius: 0 30px 30px 0;
+  }
+
+  &:hover, &:focus {
+    background-color: @orange-6;
+    color: @white;
+    border-radius: 30px 0 0 30px;
+
+    [dir=rtl] & {
+      border-radius: 0 30px 30px 0;
+    }
+  }
+
+  & i {
+    font-size: 24px;
+  }
+}
+
+.customize-drawer {
+
+  & .ant-drawer-content-wrapper {
+    width: 300px !important;
+
+    @media screen and (min-width: @screen-xxl) {
+      width: 400px !important;
+    }
+  }
+
+  & .ant-drawer-body {
+    padding: 0;
+  }
+}
+
+.customize-header {
+  padding: 20px;
+  border-bottom: @border-style-base @border-width-base @border-color-base;
+
+  @media screen and (min-width: @screen-xxl) {
+    padding: 28px 22px;
+  }
+
+  & h3 {
+    margin-bottom: 2px;
+    font-size: 18px;
+  }
+
+  & p {
+    margin-bottom: 0;
+    color: @text-color-secondary;
+  }
+}
+
+.customize-main {
+  padding: 20px;
+
+  @media screen and (min-width: @screen-xxl) {
+    padding: 28px 22px;
+  }
+}
+
+.customize-item {
+  position: relative;
+
+  &:not(:last-child) {
+    border-bottom: @border-style-base @border-width-base @border-color-base;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+
+    @media screen and (min-width: @screen-xxl) {
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+  }
+
+  & h4 {
+    margin-bottom: 8px;
+
+    @media screen and (min-width: @screen-xxl) {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.onToggleSidebar-btn {
+  border-color: @primary-color;
+  color: @primary-color;
+
+  &:first-child {
+    border-left-color: @primary-color;
+  }
+
+  &.active,
+  &:hover {
+    background-color: @primary-color !important;
+    color: @text-color-white !important;
+  }
+}
+
+.toggle-btn {
+  height: 36px;
+  line-height: 34px;
+  background-color: @component-background;
+  color: @primary-color;
+  border-color: @primary-color !important;
+  text-transform: uppercase;
+
+  @media screen and (min-width: @screen-xxl) {
+    height: 48px;
+    min-width: 96px;
+    line-height: 46px;
+  }
+
+  &:hover, &:focus {
+    background-color: @component-background;
+    color: @primary-color;
+  }
+
+  &.active {
+    background-color: @primary-color;
+    color: @white;
+
+    &:hover, &:focus {
+      background-color: @primary-color;
+      color: @white;
+    }
+  }
+}
+
+.customize-color {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  margin-top: 16px;
+}
+
+.color-option-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 16px -5px 0;
+}
+
+.color-option-list-item {
+  padding: 0 5px;
+  margin-bottom: 10px;
+}
+
+.customize-switch-view {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & h4 {
+    margin-bottom: 0;
+  }
+}
+
+.customize-switch {
+  position: relative;
+}
+
+.customize-nav-option {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.customize-nav-option-item {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.customize-nav-option-content {
+  position: relative;
+  cursor: pointer;
+
+  & .layout-img {
+    width: 72px;
+  }
+}
+
+.customize-nav-option-right-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: @primary-color;
+  color: @white;
+}
+
+.custom-color-option {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border:  @border-width-base @border-style-base @border-color-base;
+  height: 40px;
+  width: 50px;
+}
+
+.custom-color-option-triangle {
+  transform: rotate(45deg);
+  margin-top: 10px;
+  margin-left: 22px;
+  height: 60px;
+  width: 60px;
+
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: 20px;
+  }
+}
+
+.custom-color-option-border {
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+
+  [dir=rtl] & {
+    left: auto;
+    right: 0;
+  }
+}
+
+.custom-color-option-right-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: @component-background;
+  color: @primary-color;
+}
+
+.custom-color-switch {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 10px;
+  margin-right: 10px;
+
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 10px;
+  }
+}
+
+.custom-color-switch-color {
+  width: 30px;
+  height: 16px;
+  background-color: @primary-color;
+  border: @border-width-base @border-style-base @grey-100;
+  margin-right: 10px;
+
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 10px;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    width: 40px;
+    height: 26px;
+  }
+}
+
+.secondary-color-switch-color {
+  background-color: @secondary-color;
+}
+
+.sidebar-color-switch-color {
+  background-color: @menu-dark-bg;
+}
+
+.primary-color-popover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+
+  [dir=rtl] & {
+    left: auto;
+    right: 0;
+  }
+}
+
+.customize-select-box {
+  width: 100%;
+}

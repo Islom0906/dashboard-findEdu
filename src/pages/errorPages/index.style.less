@@ -1,0 +1,125 @@
+@import '../../shared/styles/variable';
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+
+  @media screen and (min-width: @screen-xxl) {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+.error-img {
+  width: 100%;
+  margin-bottom: 16px;
+  max-width: 200px;
+
+  @media screen and (min-width: @screen-sm) {
+    max-width: 300px;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 32px;
+    max-width: 706px;
+  }
+
+  & svg {
+    width: 100%;
+    height: 400px;
+    fill: @primary-color;
+  }
+}
+
+.error-img-lg {
+  width: 100%;
+  margin-bottom: 16px;
+  max-width: 300px;
+
+  @media screen and (min-width: @screen-sm) {
+    max-width: 400px;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 32px;
+    max-width: 500px;
+  }
+
+  & svg {
+    width: 100%;
+    height: 400px;
+    fill: @primary-color;
+  }
+}
+
+.error-content {
+  margin-bottom: 16px;
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 20px;
+  }
+
+  & h3 {
+    margin-bottom: 12px;
+    font-size: 20px;
+
+    @media screen and (min-width: @screen-lg) {
+      font-size: 22px;
+    }
+
+    @media screen and (min-width: @screen-xxl) {
+      margin-bottom: 40px;
+      font-size: 24px;
+    }
+  }
+
+  &-lg {
+    margin-bottom: 32px;
+
+    @media screen and (min-width: @screen-xxl) {
+      margin-bottom: 64px;
+    }
+  }
+}
+
+.error-para {
+  margin-bottom: 16px;
+  font-size: @font-size-base;
+  font-weight: @font-weight-medium;
+  color: @grey-600;
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-bottom: 40px;
+  }
+}
+
+.error-btn {
+  font-weight: @font-weight-medium;
+  font-size: @font-size-lg;
+  text-transform: capitalize;
+}
+
+.error-form-coming {
+  max-width: 384px;
+  margin: 0 auto 20px;
+}
+
+.error-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+  text-align: left;
+
+  [dir=rtl] & {
+    text-align: right;
+  }
+
+  & .form-field {
+    margin-bottom: 20px;
+  }
+}

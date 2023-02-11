@@ -1,0 +1,351 @@
+@import '../../../../shared/styles/variable';
+@import '../../../../shared/styles/mixin';
+
+.app-layout-mini {
+  min-height: 100vh;
+  position: relative;
+  padding-top: 56px;
+  background-color: transparent;
+
+  @media screen and (min-width: @screen-md) {
+    padding-top: 71px;
+  }
+
+  &.appMainFixedFooter {
+    padding-bottom: 46px;
+
+    & .app-main-footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 9;
+      width: 100%;
+    }
+  }
+}
+
+.mini-sidebar {
+
+  & .ant-menu.ant-menu-dark,
+  & .ant-menu-dark .ant-menu-sub,
+  & .ant-menu.ant-menu-dark .ant-menu-sub {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  & .app-main-sidebar-menu.ant-menu-dark .ant-menu-item-group-title,
+  & .app-main-sidebar-menu.ant-menu-dark .ant-menu-item a {
+    color: inherit;
+  }
+
+  &.ant-layout-sider {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    width: 17.5rem !important;
+    .transition(all 0.1s linear);
+    background-color: transparent;
+    border-right: @border-style-base @border-width-base @border-color-base;
+    color: inherit;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    [dir=rtl] & {
+      left: auto;
+      right: 0;
+    }
+
+    @media screen and (min-width: @screen-lg) {
+      width: 17.5rem !important;
+    }
+  }
+
+  &.ant-layout-sider-collapsed {
+    width: 4rem !important;
+    .transition(all 200ms linear);
+
+    & + .app-layout-mini-main {
+      width: calc(100% - 4rem) !important;
+      margin-left: 4rem;
+      .transition(all 200ms linear);
+
+      [dir=rtl] & {
+        margin-left: 0;
+        margin-right: 4rem;
+      }
+
+      & .app-header-mini {
+        width: calc(100% - 4rem) !important;
+        .transition(all 200ms linear);
+      }
+    }
+  }
+
+  & .cr-user-info {
+    border-bottom: @border-width-base @border-style-base @border-color-base;
+  }
+}
+
+.app-header-mini {
+  padding-left: 20px;
+  padding-right: 20px;
+  color: @text-color;
+  background-color: @component-background;
+  border-bottom: @border-style-base @border-width-base @border-color-base;
+  height: 56px;
+  width: 100% !important;
+  .transition(all 0.1s linear);
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+
+  [dir=rtl] & {
+    right: auto;
+    left: 0;
+  }
+
+  @media screen and (min-width: @screen-md) {
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 71px;
+  }
+
+  @media screen and (min-width: @screen-xl) {
+    width: calc(100% - 17.5rem) !important;
+  }
+
+  & .trigger {
+    font-size: 24px;
+    margin-right: 20px;
+    padding: 5.5px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 20px;
+    }
+  }
+}
+
+.header-search-mini {
+  position: relative;
+  max-width: 140px;
+  min-height: 36px;
+  margin-left: auto;
+  margin-right: 10px;
+
+  [dir=rtl] & {
+    margin-left: 10px;
+    margin-right: auto;
+  }
+
+  @media screen and (min-width: @screen-sm) {
+    margin-right: 20px;
+    max-width: 165px;
+
+    [dir=rtl] & {
+      margin-right: auto;
+      margin-left: 20px;
+    }
+  }
+
+  & .ant-input-wrapper {
+    top: 50%;
+    right: 0;
+    z-index: 1;
+    position: absolute;
+    .translateY(-50%);
+
+    [dir=rtl] & {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  & .ant-input {
+    padding: 8px 14px;
+    height: 36px;
+    .transition(all .2s ease);
+    width: 104px;
+
+    &:focus {
+      width: 135px;
+    }
+
+    @media screen and (min-width: @screen-sm) {
+      width: 129px;
+
+      &:focus {
+        width: 165px;
+      }
+    }
+  }
+
+  & .ant-input-search-button {
+    height: 36px;
+    width: 36px;
+    box-shadow: none;
+
+    & .anticon svg {
+      display: block;
+    }
+  }
+
+  &.ant-input-search-rtl > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button {
+    border-radius: @border-radius-base 0 0 @border-radius-base;
+  }
+}
+
+.app-header-mini-sectionDesktop {
+  display: none;
+
+  @media screen and (min-width: @screen-md) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.app-header-mini-section-mobile {
+  display: block;
+
+  @media screen and (min-width: @screen-md) {
+    display: none;
+  }
+
+  & .ant-dropdown-link {
+    font-size: 24px;
+    color: @text-color;
+
+    & svg {
+      display: block;
+    }
+  }
+}
+
+.app-layout-mini-main {
+  .transition(all 0.1s linear);
+  width: 100% !important;
+  margin-left: 0;
+  position: relative;
+
+  [dir=rtl] & {
+    margin-right: 0;
+  }
+
+  @media screen and (min-width: @screen-xl) {
+    width: calc(100% - 17.5rem) !important;
+    margin-left: 17.5rem;
+
+    [dir=rtl] & {
+      margin-left: 0;
+      margin-right: 17.5rem;
+    }
+  }
+}
+
+.main-mini-scrollbar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-height: calc(100vh - 56px);
+
+  .appMainFixedFooter & {
+    max-height: calc(100vh - 104px);
+  }
+
+  @media screen and (min-width: @screen-sm) {
+    max-height: calc(100vh - 71px);
+
+    .appMainFixedFooter & {
+      max-height: calc(100vh - 118px);
+    }
+  }
+}
+
+.app-sidebar-mini-scrollbar {
+  height: calc(100vh - 56px);
+
+  .appMainFixedFooter & {
+    height: calc(100vh - 102px);
+  }
+
+  @media screen and (min-width: @screen-md) {
+    height: calc(100vh - 71px);
+
+    .appMainFixedFooter & {
+      height: calc(100vh - 116px);
+    }
+  }
+}
+
+// Sidebar Collapsed
+.mini-sidebar.ant-layout-sider-collapsed {
+
+  & .cr-user-info {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  & .cr-user-info-content {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+
+    [dir=rtl] & {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  & .ant-menu-item-group-title {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    padding: 0;
+  }
+}
+
+// Sidebar Background Image
+.mini-sidebar-img-background {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  & > div {
+    position: relative;
+    z-index: 3;
+  }
+
+  & .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  & .app-main-sidebar-menu.ant-menu-dark .ant-menu-item-group-title,
+  & .app-main-sidebar-menu .ant-menu-item a {
+    color: inherit;
+  }
+}
+
+

@@ -1,0 +1,26 @@
+@import '../../../shared/styles/variable';
+
+.app-selected-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: @border-radius-circle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1;
+
+  &.isCenter {
+    right: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  & svg {
+    font-size: @font-size-sm;
+  }
+}

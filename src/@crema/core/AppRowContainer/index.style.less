@@ -1,0 +1,18 @@
+@import '../../../shared/styles/variable';
+.ant-row {
+  & > .ant-col {
+    margin-bottom: @col-margin-res;
+
+    @media screen and (min-width: @screen-md) {
+      margin-bottom: @col-margin-base;
+    }
+
+    .ant-form & {
+      margin-bottom: 0;
+    }
+  }
+
+  &.ant-form-item > .ant-col {
+    margin-bottom: 0;
+  }
+}

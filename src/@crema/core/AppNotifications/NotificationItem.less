@@ -1,0 +1,37 @@
+@import '../../../shared/styles/variable';
+
+.notify-listItem {
+  padding: 8px 20px;
+  border-bottom: 0 none !important;
+
+  & .ant-list-item-meta {
+    align-items: center;
+  }
+
+  & .ant-list-item-meta-avatar {
+    margin-right: 12px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 12px;
+    }
+
+    @media screen and (min-width: @screen-md) {
+      margin-right: 16px;
+
+      [dir=rtl] & {
+        margin-right: 0;
+        margin-left: 16px;
+      }
+    }
+  }
+
+  & .ant-list-item-meta-title {
+    margin-bottom: 2px;
+  }
+}
+
+.notify-message-avatar {
+  width: 48px;
+  height: 48px;
+}

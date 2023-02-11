@@ -1,0 +1,36 @@
+@import '../../../shared/styles/variable';
+
+.icon-btn {
+  border: 0 none;
+  color: @text-color-secondary;
+  background-color: transparent;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+  &:hover,
+  &:focus {
+    background-color: fade(@black, 5);
+    color: @text-color;
+  }
+
+  &.active {
+    color: @primary-color;
+
+    &:hover, &:focus {
+      background-color: fade(@black, 5);
+      color: @primary-color;
+    }
+  }
+  & svg {
+    display: block;
+    font-size: 18px;
+
+    @media screen and (min-width: @screen-xxl) {
+      font-size: 20px;
+    }
+  }
+}

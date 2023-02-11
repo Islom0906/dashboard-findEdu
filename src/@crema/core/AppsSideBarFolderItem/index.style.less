@@ -1,0 +1,57 @@
+@import '../../../shared/styles/variable';
+.list-item {
+  border: 0 none !important;
+  cursor: pointer;
+  margin-bottom: 1px;
+
+  & a {
+    color: @text-color;
+    display: flex;
+    align-items: center;
+    padding: 8.5px 16px;
+    margin-right: 20px;
+    border-radius: 0 @border-radius-30 @border-radius-30 0;
+
+    @media screen and (min-width: @screen-md) {
+      padding: 8.5px 20px;
+    }
+
+    &:hover, &:focus, &.active {
+      color: @primary-color;
+      background-color: fade(@primary-color, 10);
+    }
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 20px;
+      border-radius: @border-radius-30 0 0 @border-radius-30;
+    }
+  }
+}
+
+.list-item-icon {
+  font-size: 18px;
+  margin-right: 16px;
+
+  [dir=rtl] & {
+    margin-right: 0;
+    margin-left: 16px;
+  }
+
+  @media screen and (min-width: @screen-xxl) {
+    margin-right: 20px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 20px;
+    }
+  }
+
+  & > svg {
+    display: block;
+  }
+}
+
+.list-item-text {
+  font-size: 15px;
+}

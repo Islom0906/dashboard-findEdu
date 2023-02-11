@@ -1,0 +1,58 @@
+@import '../../../shared/styles/variable';
+@import "../AuthWrapper.style";
+
+.forget-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.forget-para {
+  line-height: 1.5;
+  margin-bottom: 24px;
+  font-size: @font-size-base;
+
+  @media screen and (min-width: @screen-xxl) {
+    font-size: @font-size-lg;
+    margin-bottom: 48px;
+  }
+
+  & span {
+    margin-left: 4px;
+  }
+}
+
+.forget-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  & .form-field {
+    margin-bottom: 20px;
+  }
+}
+
+.forget-btn {
+  width: 100%;
+  font-weight: @font-weight-regular;
+  text-transform: capitalize;
+  font-size: @font-size-base;
+}
+
+.forget-footer {
+  margin-top: auto;
+  font-size: 15px;
+  color: @grey-500;
+  margin-bottom: 0;
+
+  & a {
+    text-decoration: none;
+    margin-left: 10px;
+    display: inline-block;
+
+    [dir=rtl] & {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+  }
+}
