@@ -1,6 +1,11 @@
 import axios from './axios'
 
 const apiService={
+  // user log qilishi uchun url va user malumotlari jonatiladi
+  async userLogin(url,user){
+    const {data}=axios.post(url,user)
+    return data
+  },
   // malutmotlarni get qilish uchun url beriladi  
   // url / boshlansin yani /edu shunga oxshagan
   async getData(url){
