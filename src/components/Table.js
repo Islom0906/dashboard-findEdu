@@ -1,10 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types'
-import { Table, Space, Button, Modal } from 'antd';
-import { DeleteOutlined, EditTwoTone, ExclamationCircleTwoTone } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+import {Table, Space, Button, Modal} from 'antd';
+import {
+  DeleteOutlined,
+  EditTwoTone,
+  ExclamationCircleTwoTone,
+} from '@ant-design/icons';
 
-const MainTable = ({ cols, datas, onEdit, onDelete }) => {
-  const { confirm } = Modal
+const MainTable = ({cols, datas, onEdit, onDelete}) => {
+  const {confirm} = Modal;
 
   const showDeleteConfirm = (record) => {
     confirm({
@@ -14,10 +18,9 @@ const MainTable = ({ cols, datas, onEdit, onDelete }) => {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        onDelete(record)
+        onDelete(record);
       },
-      onCancel() {
-      },
+      onCancel() {},
     });
   };
 
@@ -27,7 +30,7 @@ const MainTable = ({ cols, datas, onEdit, onDelete }) => {
       key: cols.length + 1,
       title: 'ACTIONS',
       width: 82,
-      fixed: "right",
+      fixed: 'right',
       ellipsis: true,
       render: (record) => {
         return (
@@ -35,32 +38,30 @@ const MainTable = ({ cols, datas, onEdit, onDelete }) => {
             <Space>
               <Button
                 icon={<EditTwoTone />}
-                onClick={() => onEdit(record)}>
-              </Button>
+                onClick={() => onEdit(record)}></Button>
               <Button
                 danger
                 icon={<DeleteOutlined />}
-                onClick={() => showDeleteConfirm(record)}>
-                </Button>
+                onClick={() => showDeleteConfirm(record)}></Button>
             </Space>
           </>
         );
       },
     },
-  ]
+  ];
 
   return (
     <>
-      <Table columns={columns} dataSource={datas} scroll={{ x: true }} />
+      <Table columns={columns} dataSource={datas} scroll={{x: true}} />
     </>
-  )
-}
+  );
+};
 
 MainTable.propTypes = {
   cols: PropTypes.array,
   datas: PropTypes.array,
   onEdit: PropTypes.func,
-  onDelete: PropTypes.func
-}
+  onDelete: PropTypes.func,
+};
 
-export default MainTable
+export default MainTable;

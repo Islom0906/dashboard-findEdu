@@ -1,26 +1,17 @@
-import {SyncOutlined, WarningFilled} from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  Input,
-  message,
-  Modal,
-  Row,
-  Space,
-  Spin,
-  Table,
-} from 'antd';
+import {SyncOutlined} from '@ant-design/icons';
+import {Button, Col, Input, message, Row, Space, Spin} from 'antd';
 import axios from 'axios';
+import MainTable from 'components/Table';
 import React, {useEffect, useMemo, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import PostEdit from './PostEdit';
 
 const Page2 = () => {
-  const {confirm} = Modal;
   const {state} = useLocation();
   const {page} = useParams();
   const [items, setItems] = useState(() => []);
   const [visible, setVisible] = useState(false);
+  const [editItem, setEditItem] = useState({});
   const [input, setInput] = useState(() => []);
   const [loading, setLoading] = useState(() => {
     return {table: false, modal: false};
@@ -30,9 +21,9 @@ const Page2 = () => {
     () =>
       items.filter(
         (item) =>
-          item.name_En.toLowerCase().includes(input) ||
-          item.name_Ru.toLowerCase().includes(input) ||
-          item.name_Uz.toLowerCase().includes(input),
+          item.name_En?.toLowerCase().includes(input) ||
+          item.name_Ru?.toLowerCase().includes(input) ||
+          item.name_Uz?.toLowerCase().includes(input),
       ),
     [input, items],
   );
@@ -49,9 +40,9 @@ const Page2 = () => {
       setItems(res.data.data);
     });
   };
-  const deleteItem = (id) => {
+  const deleteItem = ({_id: id}) => {
     setLoading((prev) => {
-      return {...prev, modal: true};
+      return {...prev, table: true};
     });
     axios
       .delete(`http://18.216.178.179/api/v1/${page}/${id}`, {
@@ -60,13 +51,9 @@ const Page2 = () => {
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGUxYmU1MjNiNWZhYmM1YjUxYjc5ZCIsImlhdCI6MTY3NTYwNTUyMywiZXhwIjoxNjgzMzgxNTIzfQ.pEUX_SAIUZ2qjmPLpKz4TvXCOuyln_O84hXyNWQpn_c',
         },
       })
-      .finally(() => {
-        setLoading((prev) => {
-          return {...prev, modal: false};
-        });
-      })
       .then(() => {
         getItems();
+        message.success('Deleted succesfully');
       })
       .catch((err) => {
         console.dir(err);
@@ -77,22 +64,9 @@ const Page2 = () => {
       });
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
-    confirm({
-      title: 'Confirm',
-      icon: <WarningFilled style={{color: 'red', fontSize: 25}} />,
-      content: 'Are you sure you wanna delete this',
-      okText: 'Yes',
-      cancelText: 'No',
-      okType: 'danger',
-      onOk() {
-        deleteItem(id);
-      },
-    });
-  };
-  const editBtn = () => {
-    // console.log(id);
+  const editBtn = (item) => {
+    setEditItem(item);
+    setVisible(true);
   };
 
   useEffect(() => {
@@ -104,25 +78,38 @@ const Page2 = () => {
     {key: 3, dataIndex: 'name_Ru', title: 'Name ru'},
     {
       key: 4,
-      title: 'Actions',
-      render() {
-        console.log(arguments[1]._id);
-        return (
-          <Space>
-            <Button
-              ghost
-              type='primary'
-              onClick={() => editBtn(arguments[1]._id)}>
-              Edit
-            </Button>
-            <Button danger onClick={() => handleDelete(arguments[1]._id)}>
-              Delete
-            </Button>
-          </Space>
+      title: 'Image',
+      dataIndex: 'photo',
+      render: (text) => {
+        return !text ? (
+          ''
+        ) : (
+          <img
+            src={`http://18.216.178.179/api/v1/img/${text}`}
+            style={{height: 40, width: 40, objectFit: 'cover'}}
+          />
         );
       },
+      // width: 80,
     },
+    // {
+    //   key: 4,
+    //   title: 'Actions',
+    //   render(item) {
+    //     return (
+    //       <Space>
+    //         <Button ghost type='primary' onClick={() => editBtn(item)}>
+    //           Edit
+    //         </Button>
+    //         <Button danger onClick={() => handleDelete(item._id)}>
+    //           Delete
+    //         </Button>
+    //       </Space>
+    //     );
+    //   },
+    // },
   ];
+  console.log(editItem);
 
   return (
     <>
@@ -150,14 +137,23 @@ const Page2 = () => {
         </Col>
       </Row>
       <Spin spinning={loading.table}>
-        <Table dataSource={filteredItems} columns={columns} />
+        <MainTable
+          datas={filteredItems}
+          cols={columns}
+          onEdit={editBtn}
+          onDelete={deleteItem}
+        />
       </Spin>
       <PostEdit
         title={state.title}
         loading={loading}
+        page={page}
         setLoading={setLoading}
         setVisible={setVisible}
-        visible={visible}></PostEdit>
+        visible={visible}
+        getItems={getItems}
+        editItem={editItem}
+        setEditItem={setEditItem}></PostEdit>
     </>
   );
 };
