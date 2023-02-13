@@ -5,5 +5,11 @@ const languageData = [
     name: 'English',
     icon: 'us',
   },
+  {
+    languageId: 'russian',
+    locale: 'ru',
+    name: 'Russian',
+    icon: 'ru',
+  },
 ];
 export default languageData;
