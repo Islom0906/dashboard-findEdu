@@ -12,7 +12,10 @@ import {
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
+  LOGIN,
+  LOGOUT,
 } from '../../../../shared/constants/ActionTypes';
+import axios from 'axios';
 
 const FirebaseContext = createContext();
 const FirebaseActionsContext = createContext();
@@ -98,20 +101,43 @@ const FirebaseAuthProvider = ({children}) => {
       dispatch({type: FETCH_ERROR, payload: error.message});
     }
   };
-
   const signInWithEmailAndPassword = async ({email, password}) => {
-    dispatch({type: FETCH_START});
-    try {
-      const {user} = await auth.signInWithEmailAndPassword(email, password);
-      setFirebaseData({user, isAuthenticated: true, isLoading: false});
-      dispatch({type: FETCH_SUCCESS});
-    } catch (error) {
-      setFirebaseData({
-        ...firebaseData,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-      dispatch({type: FETCH_ERROR, payload: error.message});
+    if (localStorage.getItem('token')) {
+      setFirebaseData({user: 'user1', isAuthenticated: true, isLoading: false});
+    } else {
+      try {
+        const response = await axios.post(
+          'http://18.216.178.179/api/v1/user/login',
+          {
+            email,
+            password,
+          },
+        );
+        localStorage.setItem('token', response?.data?.token);
+        console.log(response.data);
+        if (response?.data?.token) {
+          dispatch({type: LOGIN});
+          dispatch({type: FETCH_START});
+          try {
+            // let {user} = await auth.signInWithEmailAndPassword(email, password);
+            setFirebaseData({
+              user: 'user1',
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            dispatch({type: FETCH_SUCCESS});
+          } catch (error) {
+            setFirebaseData({
+              ...firebaseData,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+            dispatch({type: FETCH_ERROR, payload: error.message});
+          }
+        } else alert('wrong');
+      } catch (e) {
+        console.log(e?.response?.data?.message);
+      }
     }
   };
   const createUserWithEmailAndPassword = async ({name, email, password}) => {
@@ -142,7 +168,9 @@ const FirebaseAuthProvider = ({children}) => {
   };
 
   const logout = async () => {
+    localStorage.removeItem('token');
     setFirebaseData({...firebaseData, isLoading: true});
+    dispatch({type: LOGOUT});
     try {
       await auth.signOut();
       setFirebaseData({
