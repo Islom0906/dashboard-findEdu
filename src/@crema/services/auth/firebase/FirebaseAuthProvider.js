@@ -137,6 +137,7 @@ const FirebaseAuthProvider = ({children}) => {
         } else alert('wrong');
       } catch (e) {
         console.log(e?.response?.data?.message);
+        alert(e?.response?.data?.message)
       }
     }
   };
