@@ -32,12 +32,12 @@ function getStyles(item, sidebarColorSet, isSidebarBgImage, index, isGroup) {
 }
 
 const renderMenuItemChildren = (item) => {
-  const {icon, messageId, path} = item;
+  const {icon, messageId, title, path} = item;
   const {messages} = useIntl();
 
   if (path && path.includes('/'))
     return (
-      <Link to={path}>
+      <Link to={{pathname: path, state: {title}}} state={{title}}>
         {icon &&
           (React.isValidElement(icon) ? (
             <span className='ant-menu-item-icon'>{icon}</span>

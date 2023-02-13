@@ -6,7 +6,7 @@ export const samplePagesConfigs = [
     component: React.lazy(() => import('./Page1')),
   },
   {
-    path: '/sample/page-2',
-    component: React.lazy(() => import('./Page2')),
+    path: '/sample/:page',
+    component: React.lazy(() => import('./Template')),
   },
 ];
