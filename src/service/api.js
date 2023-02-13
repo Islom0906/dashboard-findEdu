@@ -35,3 +35,4 @@ const apiService={
    await axios.delete(`${url}/${id}`)
   }
 }
+export default apiService
