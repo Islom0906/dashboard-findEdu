@@ -20,6 +20,7 @@ const Page2 = () => {
   const {state} = useLocation();
   const {page} = useParams();
   const [items, setItems] = useState(() => []);
+  const [visible, setVisible] = useState(false);
   const [input, setInput] = useState(() => []);
   const [loading, setLoading] = useState(() => {
     return {table: false, modal: false};
@@ -143,7 +144,7 @@ const Page2 = () => {
           </Button>
         </Col>
         <Col span={4}>
-          <Button block type='primary'>
+          <Button block type='primary' onClick={() => setVisible(true)}>
             Add
           </Button>
         </Col>
@@ -151,7 +152,12 @@ const Page2 = () => {
       <Spin spinning={loading.table}>
         <Table dataSource={filteredItems} columns={columns} />
       </Spin>
-      <PostEdit title={state.title} loading={loading} setLoading={setLoading}></PostEdit>
+      <PostEdit
+        title={state.title}
+        loading={loading}
+        setLoading={setLoading}
+        setVisible={setVisible}
+        visible={visible}></PostEdit>
     </>
   );
 };

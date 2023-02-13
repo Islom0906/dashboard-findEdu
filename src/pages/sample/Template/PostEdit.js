@@ -3,16 +3,16 @@ import {Button, Form, Input, Modal, Spin, Upload} from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function PostEdit({title, loading}) {
+function PostEdit({title, loading, visible, setVisible}) {
   const [form] = Form.useForm();
   const handleSubmit = () => {
     console.log(form.getFieldsValue());
   };
   return (
     <Modal
-      onCancel={() => {}}
+      onCancel={() => setVisible(false)}
       onOk={handleSubmit}
-      visible={true}
+      visible={visible}
       title={title}
       width={2000}>
       <Spin spinning={loading.modal}>
@@ -47,4 +47,6 @@ export default PostEdit;
 PostEdit.propTypes = {
   title: PropTypes.string,
   loading: PropTypes.object,
+  visible: PropTypes.bool,
+  setVisible: PropTypes.func,
 };
