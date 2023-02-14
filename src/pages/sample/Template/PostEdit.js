@@ -14,8 +14,9 @@ function PostEdit({
   page,
   getItems,
   id,
-  setId,
+  // setId,
 }) {
+  console.log(id);
   // STATES
   const [editItem, setEditItem] = useState({});
   const [photo, setPhoto] = useState();
@@ -23,6 +24,7 @@ function PostEdit({
   const [form] = Form.useForm();
   console.log(photo);
   //USEEFFECTS
+
   useEffect(async () => {
     if (!photo || !photo.fileList.length) return setSrc();
 
@@ -43,7 +45,11 @@ function PostEdit({
 
   //FETCH requests
   useEffect(() => {
-    if (!id) return;
+    form.resetFields();
+    if (!id) {
+      setEditItem({});
+      return setSrc('');
+    }
     setLoading((prev) => {
       return {...prev, modal: true};
     });
@@ -57,6 +63,7 @@ function PostEdit({
   }, [id]);
 
   const postItem = (data) => {
+    console.log(data);
     const formData = new FormData();
     data.name_Uz && formData.append('name_Uz', data.name_Uz);
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
@@ -81,10 +88,11 @@ function PostEdit({
       .then(() => {
         message.success('Succesfuly posted', 2);
         editItem._id && setVisible(false);
-        setEditItem({});
-        setSrc('');
-        setId('');
-        form.resetFields();
+        // setEditItem({});
+        setPhoto();
+        // setSrc('');
+        // setId('');
+        // form.resetFields();
         getItems();
       })
       .catch((err) => {
@@ -125,8 +133,11 @@ function PostEdit({
     <Modal
       onCancel={() => {
         setVisible(false);
-        setId('');
-        id && form.resetFields();
+        form.setFields([{photo: {}}]);
+        setPhoto();
+        // id && setId('');
+        // id && setSrc('');
+        // id && form.resetFields();
       }}
       onOk={form.submit}
       okText='Submit'
@@ -168,7 +179,19 @@ function PostEdit({
             hasFeedback>
             <Input />
           </Form.Item>
-          <Form.Item name='photo'>
+          <Form.Item
+            name='photo'
+            rules={[
+              {
+                validator: () => {
+                  console.log(photo);
+
+                  if (id || photo?.fileList.length) return Promise.resolve();
+
+                  return Promise.reject('Pleae upload a image');
+                },
+              },
+            ]}>
             <ImgCrop rotate>
               <Upload.Dragger
                 listType='picture'

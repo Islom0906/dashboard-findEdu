@@ -74,6 +74,7 @@ const Page2 = () => {
       key: 4,
       title: 'Image',
       dataIndex: 'photo',
+      width: 80,
       render: (text) => {
         return text ? (
           <img
@@ -107,7 +108,13 @@ const Page2 = () => {
           </Button>
         </Col>
         <Col span={4}>
-          <Button block type='primary' onClick={() => setVisible(true)}>
+          <Button
+            block
+            type='primary'
+            onClick={() => {
+              setEditItemId('');
+              setVisible(true);
+            }}>
             Add
           </Button>
         </Col>
