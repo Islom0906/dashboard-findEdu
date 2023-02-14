@@ -21,9 +21,10 @@ function PostEdit({
   const [photo, setPhoto] = useState();
   const [src, setSrc] = useState();
   const [form] = Form.useForm();
+  console.log(photo);
   //USEEFFECTS
   useEffect(async () => {
-    if (!photo) return;
+    if (!photo || !photo.fileList.length) return setSrc();
 
     let src = photo.file.url;
     if (!src) {
@@ -60,17 +61,17 @@ function PostEdit({
     data.name_Uz && formData.append('name_Uz', data.name_Uz);
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
     data.name_En && formData.append('name_En', data.name_En);
-    console.log(photo);
-    photo.fileList.length &&
+    photo?.fileList?.length &&
       formData.append('photo', photo['file'].originFileObj);
 
+    console.log([...formData], photo);
     setLoading((prev) => {
       return {...prev, modal: true};
     });
-    apiService[editItem._id ? 'EditData' : 'postData'](
+    apiService[editItem._id ? 'editData' : 'postData'](
       `/${page}`,
-      editItem._id,
       formData,
+      editItem._id,
     )
       .finally(() => {
         setLoading((prev) => {
@@ -113,6 +114,8 @@ function PostEdit({
   };
 
   const onChange = (photo) => {
+    photo.fileList.forEach((el) => (el.status = 'done'));
+
     setPhoto(photo);
   };
 
@@ -123,7 +126,6 @@ function PostEdit({
       onCancel={() => {
         setVisible(false);
         setId('');
-        setSrc('');
         id && form.resetFields();
       }}
       onOk={form.submit}
