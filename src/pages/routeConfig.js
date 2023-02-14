@@ -32,7 +32,7 @@ const routesConfig = [
         title: 'IT',
         messageId: 'sidebar.sample.it',
         type: 'item',
-        icon: <SiBookstack />,
+        icon: <HiOutlineCode />,
         path: '/sample/it',
       },
       {
@@ -40,7 +40,7 @@ const routesConfig = [
         title: 'Subjects',
         messageId: 'sidebar.sample.subjects',
         type: 'item',
-        icon: <HiOutlineCode />,
+        icon: <SiBookstack />,
         path: '/sample/subjects',
       },
       {
