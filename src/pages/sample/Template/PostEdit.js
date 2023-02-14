@@ -1,11 +1,9 @@
 import {UploadOutlined} from '@ant-design/icons';
 import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
-import axios from 'axios';
+import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
-import React, {useEffect} from 'react';
-
-axios.defaults.headers.common['Authorization'] =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGUxYmU1MjNiNWZhYmM1YjUxYjc5ZCIsImlhdCI6MTY3NTYwNTUyMywiZXhwIjoxNjgzMzgxNTIzfQ.pEUX_SAIUZ2qjmPLpKz4TvXCOuyln_O84hXyNWQpn_c';
+import React, {useEffect, useState} from 'react';
+import apiService from 'service/api';
 
 function PostEdit({
   title,
@@ -15,34 +13,63 @@ function PostEdit({
   setVisible,
   page,
   getItems,
-  editItem,
-  setEditItem,
+  id,
+  setId,
 }) {
-  const style = {
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    background: `url(http://18.216.178.179/api/v1/img/${editItem.photo})`,
-  };
+  // STATES
+  const [editItem, setEditItem] = useState({});
+  const [photo, setPhoto] = useState();
+  const [src, setSrc] = useState();
   const [form] = Form.useForm();
-  // console.log(editItem);
-  // const [photo,setPhoto] = useState()
+  //USEEFFECTS
+  useEffect(async () => {
+    if (!photo) return;
+
+    let src = photo.file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(photo.file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    setSrc(src);
+  }, [photo]);
+
   useEffect(() => {
     form.setFieldsValue(editItem);
   }, [editItem]);
+
+  //FETCH requests
+  useEffect(() => {
+    if (!id) return;
+    setLoading((prev) => {
+      return {...prev, modal: true};
+    });
+    apiService.getDataByID(`/${page}`, id).then((res) => {
+      setLoading((prev) => {
+        return {...prev, modal: false};
+      });
+      setEditItem(res.data);
+      setSrc(`http://18.216.178.179/api/v1/img/${res.data.photo}`);
+    });
+  }, [id]);
 
   const postItem = (data) => {
     const formData = new FormData();
     data.name_Uz && formData.append('name_Uz', data.name_Uz);
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
     data.name_En && formData.append('name_En', data.name_En);
-    data.photo?.['file'] && formData.append('photo', data.photo['file']);
+    console.log(photo);
+    photo.fileList.length &&
+      formData.append('photo', photo['file'].originFileObj);
 
     setLoading((prev) => {
       return {...prev, modal: true};
     });
-    axios[editItem._id ? 'patch' : 'post'](
-      `http://18.216.178.179/api/v1/${page}/${editItem._id || ''}`,
+    apiService[editItem._id ? 'EditData' : 'postData'](
+      `/${page}`,
+      editItem._id,
       formData,
     )
       .finally(() => {
@@ -54,6 +81,8 @@ function PostEdit({
         message.success('Succesfuly posted', 2);
         editItem._id && setVisible(false);
         setEditItem({});
+        setSrc('');
+        setId('');
         form.resetFields();
         getItems();
       })
@@ -61,15 +90,41 @@ function PostEdit({
         message.error(err.message, 3);
       });
   };
+
+  // Handlers
   const handleSubmit = () => {
     postItem(form.getFieldsValue());
   };
+
+  //UPLOAD DRAGGER FUNCTIONS
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(photo.file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+  const onChange = (photo) => {
+    setPhoto(photo);
+  };
+
+  const onRemove = () => {};
+
   return (
     <Modal
       onCancel={() => {
         setVisible(false);
-        setEditItem({});
-        editItem._id && form.resetFields();
+        setId('');
+        setSrc('');
+        id && form.resetFields();
       }}
       onOk={form.submit}
       okText='Submit'
@@ -112,20 +167,29 @@ function PostEdit({
             <Input />
           </Form.Item>
           <Form.Item name='photo'>
-            <Upload.Dragger
-              style={style}
-              listType='picture'
-              maxCount={1}
-              accept='image/png, image/jpeg, image/jfif, image/svg'
-              height={200}
-              percent={1}
-              beforeUpload={() => false}>
-              {editItem.photo ? (
-                ''
-              ) : (
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              )}
-            </Upload.Dragger>
+            <ImgCrop rotate>
+              <Upload.Dragger
+                listType='picture'
+                maxCount={1}
+                accept='image/png, image/jpeg, image/jfif, image/svg'
+                height={200}
+                // beforeUpload={() => false}
+                onRemove={onRemove}
+                onPreview={onPreview}
+                onChange={onChange}>
+                {src ? (
+                  <img
+                    src={src}
+                    alt=''
+                    style={{
+                      height: '150px',
+                    }}
+                  />
+                ) : (
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                )}
+              </Upload.Dragger>
+            </ImgCrop>
           </Form.Item>
         </Form>
       </Spin>
@@ -138,11 +202,11 @@ export default PostEdit;
 PostEdit.propTypes = {
   title: PropTypes.string,
   page: PropTypes.string,
+  id: PropTypes.string,
   loading: PropTypes.object,
-  editItem: PropTypes.object,
   visible: PropTypes.bool,
   setVisible: PropTypes.func,
   setLoading: PropTypes.func,
-  setEditItem: PropTypes.func,
+  setId: PropTypes.func,
   getItems: PropTypes.func,
 };
