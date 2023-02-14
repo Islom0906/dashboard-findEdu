@@ -1,6 +1,8 @@
 import React from 'react';
-import {BiAlignLeft} from 'react-icons/bi';
-import {MdOutlineManageAccounts} from 'react-icons/md';
+import {MdOutlineManageAccounts,MdSubject} from 'react-icons/md';
+import {FaGlobeAmericas, FaGraduationCap} from 'react-icons/fa'
+import {SiBookstack} from 'react-icons/si';
+import {HiOutlineCode} from 'react-icons/hi';
 
 const routesConfig = [
   {
@@ -14,7 +16,7 @@ const routesConfig = [
         title: 'Page 1',
         messageId: 'sidebar.sample.page1',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <FaGraduationCap />,
         path: '/sample/page-1',
       },
       {
@@ -22,7 +24,7 @@ const routesConfig = [
         title: 'Languages',
         messageId: 'sidebar.sample.langs',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <FaGlobeAmericas />,
         path: '/sample/langs',
       },
       {
@@ -30,7 +32,7 @@ const routesConfig = [
         title: 'IT',
         messageId: 'sidebar.sample.it',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <HiOutlineCode />,
         path: '/sample/it',
       },
       {
@@ -38,7 +40,7 @@ const routesConfig = [
         title: 'Subjects',
         messageId: 'sidebar.sample.subjects',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <SiBookstack />,
         path: '/sample/subjects',
       },
       {
@@ -46,7 +48,7 @@ const routesConfig = [
         title: 'Others',
         messageId: 'sidebar.sample.other',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <MdSubject />,
         path: '/sample/other',
       },
     ],
