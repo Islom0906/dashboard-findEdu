@@ -25,7 +25,7 @@ const apiService = {
   },
   // malutmotni edit qilish uchun url,id va yaratilgan malumot beriladi
   // url / boshlansin yani /edu shunga oxshagan
-  async EditData(url, id, formData) {
+  async editData(url, id, formData) {
     await axios.patch(`${url}/${id}`, formData);
   },
   // malutmotni delete qilish uchun url va id  beriladi
