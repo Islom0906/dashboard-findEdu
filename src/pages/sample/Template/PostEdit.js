@@ -21,10 +21,8 @@ function PostEdit({
   const [photo, setPhoto] = useState();
   const [src, setSrc] = useState();
   const [form] = Form.useForm();
-  console.log(src);
   //USEEFFECTS
   useEffect(async () => {
-    console.log(photo);
     if (!photo) return;
 
     let src = photo.file.url;

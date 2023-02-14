@@ -34,7 +34,6 @@ const Page2 = () => {
       return {...prev, table: true};
     });
     apiService.getData(`/${page}`).then((res) => {
-      console.log(res);
       setLoading((prev) => {
         return {...prev, table: false};
       });
@@ -52,7 +51,6 @@ const Page2 = () => {
         message.success('Deleted succesfully');
       })
       .catch((err) => {
-        console.dir(err);
         message.error(err.message, 3);
         setLoading((prev) => {
           return {...prev, modal: false};
