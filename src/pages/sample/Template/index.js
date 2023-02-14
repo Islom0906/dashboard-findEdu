@@ -1,17 +1,17 @@
 import {SyncOutlined} from '@ant-design/icons';
 import {Button, Col, Input, message, Row, Space, Spin} from 'antd';
-import axios from 'axios';
 import MainTable from 'components/Table';
 import React, {useEffect, useMemo, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import PostEdit from './PostEdit';
+import apiService from 'service/api';
 
 const Page2 = () => {
   const {state} = useLocation();
   const {page} = useParams();
   const [items, setItems] = useState(() => []);
   const [visible, setVisible] = useState(false);
-  const [editItem, setEditItem] = useState({});
+  const [editItemId, setEditItemId] = useState('');
   const [input, setInput] = useState(() => []);
   const [loading, setLoading] = useState(() => {
     return {table: false, modal: false};
@@ -33,24 +33,20 @@ const Page2 = () => {
     setLoading((prev) => {
       return {...prev, table: true};
     });
-    axios.get(`http://18.216.178.179/api/v1/${page}`).then((res) => {
+    apiService.getData(`/${page}`).then((res) => {
+      console.log(res);
       setLoading((prev) => {
         return {...prev, table: false};
       });
-      setItems(res.data.data);
+      setItems(res.data);
     });
   };
   const deleteItem = ({_id: id}) => {
     setLoading((prev) => {
       return {...prev, table: true};
     });
-    axios
-      .delete(`http://18.216.178.179/api/v1/${page}/${id}`, {
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGUxYmU1MjNiNWZhYmM1YjUxYjc5ZCIsImlhdCI6MTY3NTYwNTUyMywiZXhwIjoxNjgzMzgxNTIzfQ.pEUX_SAIUZ2qjmPLpKz4TvXCOuyln_O84hXyNWQpn_c',
-        },
-      })
+    apiService
+      .deleteData(`/${page}`, id)
       .then(() => {
         getItems();
         message.success('Deleted succesfully');
@@ -65,7 +61,7 @@ const Page2 = () => {
   };
 
   const editBtn = (item) => {
-    setEditItem(item);
+    setEditItemId(item._id);
     setVisible(true);
   };
 
@@ -81,35 +77,17 @@ const Page2 = () => {
       title: 'Image',
       dataIndex: 'photo',
       render: (text) => {
-        return !text ? (
-          ''
-        ) : (
+        return text ? (
           <img
             src={`http://18.216.178.179/api/v1/img/${text}`}
             style={{height: 40, width: 40, objectFit: 'cover'}}
           />
+        ) : (
+          ''
         );
       },
-      // width: 80,
     },
-    // {
-    //   key: 4,
-    //   title: 'Actions',
-    //   render(item) {
-    //     return (
-    //       <Space>
-    //         <Button ghost type='primary' onClick={() => editBtn(item)}>
-    //           Edit
-    //         </Button>
-    //         <Button danger onClick={() => handleDelete(item._id)}>
-    //           Delete
-    //         </Button>
-    //       </Space>
-    //     );
-    //   },
-    // },
   ];
-  console.log(editItem);
 
   return (
     <>
@@ -152,8 +130,8 @@ const Page2 = () => {
         setVisible={setVisible}
         visible={visible}
         getItems={getItems}
-        editItem={editItem}
-        setEditItem={setEditItem}></PostEdit>
+        id={editItemId}
+        setId={setEditItemId}></PostEdit>
     </>
   );
 };
