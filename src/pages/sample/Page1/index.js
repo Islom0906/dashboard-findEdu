@@ -3,7 +3,6 @@ import {
   Image,
   Tooltip,
   Typography,
-  Tag,
   Spin,
   message,
   Row,
@@ -16,7 +15,12 @@ import React, {useEffect, useMemo, useState} from 'react';
 import MainTable from 'components/Table';
 
 import apiService from '../../../service/api';
-import {FileImageOutlined, SyncOutlined} from '@ant-design/icons';
+import {
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  FileImageOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
 
 const formatFetchedItems = (items) =>
   items.map((item) => ({
@@ -25,7 +29,7 @@ const formatFetchedItems = (items) =>
     name_Uz: item.name_Uz,
     phone: item.phone,
     photo: item.photo,
-    isOnline: item.isOnlineExists,
+    online_exist: item.isOnlineExists,
   }));
 const cellRenderer = (text, isTelnumber) =>
   text && text?.length && text?.[0] ? (
@@ -61,15 +65,13 @@ const columns = [
     // width: 150,
   },
   {
-    dataIndex: 'isOnline',
-    title: 'Status',
+    dataIndex: 'online_exist',
+    title: 'Online exist',
     render: (text) => {
-      const state = text ? 'online' : 'offline';
-      const color = text ? 'green' : 'volcano';
-      return (
-        <Tag color={color} key={state}>
-          {state}
-        </Tag>
+      return text ? (
+        <CheckCircleTwoTone style={{fontSize: '32px'}} />
+      ) : (
+        <CloseCircleTwoTone style={{fontSize: '32px'}} twoToneColor='#dc3545' />
       );
     },
   },
@@ -155,10 +157,7 @@ const Page1 = () => {
           </Button>
         </Col>
         <Col span={4}>
-          <Button
-            block
-            type='primary'
-          >
+          <Button block type='primary'>
             Add
           </Button>
         </Col>
