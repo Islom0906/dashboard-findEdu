@@ -1,49 +1,67 @@
 import {SyncOutlined} from '@ant-design/icons';
 import {Button, Col, Input, message, Row, Space, Spin} from 'antd';
 import MainTable from 'components/Table';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useReducer} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import PostEdit from './PostEdit';
 import apiService from 'service/api';
+import {
+  setEditItemId,
+  setInput,
+  setItems,
+  setLoading,
+  setVisible,
+} from './ReducerActions';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_ITEMS':
+      return {...state, items: action.payload};
+    case 'SET_VISIBLE':
+      return {...state, visible: action.payload};
+    case 'SET_EDIT_ITEM_ID':
+      return {...state, editItemId: action.payload};
+    case 'SET_LOADING':
+      return {...state, loading: action.payload};
+    case 'SET_INPUT':
+      return {...state, input: action.payload};
+    default:
+      return state;
+  }
+}
 
 const Page2 = () => {
-  const {state} = useLocation();
-  const {page} = useParams();
-  const [items, setItems] = useState(() => []);
-  const [visible, setVisible] = useState(false);
-  const [editItemId, setEditItemId] = useState('');
-  const [input, setInput] = useState(() => []);
-  const [loading, setLoading] = useState(() => {
-    return {table: false, modal: false};
+  const [state, dispatch] = useReducer(reducer, {
+    visible: false,
+    editItemId: '',
+    input: '',
+    loading: {table: false, modal: false},
+    items: [],
   });
+  const {state: linkState} = useLocation();
+  const {page} = useParams();
 
   const filteredItems = useMemo(
     () =>
-      items.filter(
+      state.items.filter(
         (item) =>
-          item.name_En?.toLowerCase().includes(input) ||
-          item.name_Ru?.toLowerCase().includes(input) ||
-          item.name_Uz?.toLowerCase().includes(input),
+          item.name_En?.toLowerCase().includes(state.input) ||
+          item.name_Ru?.toLowerCase().includes(state.input) ||
+          item.name_Uz?.toLowerCase().includes(state.input),
       ),
-    [input, items],
+    [state.input, state.items],
   );
 
   const getItems = () => {
-    setItems([]);
-    setLoading((prev) => {
-      return {...prev, table: true};
-    });
+    dispatch(setItems([]));
+    dispatch(setLoading({...state.loading, table: true}));
+
     apiService.getData(`/${page}`).then((res) => {
-      setLoading((prev) => {
-        return {...prev, table: false};
-      });
-      setItems(res.data);
+      dispatch(setLoading({...state.loading, table: false}));
+      dispatch(setItems(res.data));
     });
   };
   const deleteItem = ({_id: id}) => {
-    setLoading((prev) => {
-      return {...prev, table: true};
-    });
     apiService
       .deleteData(`/${page}`, id)
       .then(() => {
@@ -52,20 +70,19 @@ const Page2 = () => {
       })
       .catch((err) => {
         message.error(err.message, 3);
-        setLoading((prev) => {
-          return {...prev, modal: false};
-        });
+        dispatch(setLoading({...state.loading, modal: false}));
       });
   };
 
   const editBtn = (item) => {
-    setEditItemId(item._id);
-    setVisible(true);
+    dispatch(setEditItemId(item._id));
+    dispatch(setVisible(true));
   };
 
   useEffect(() => {
     getItems();
   }, [page]);
+
   const columns = [
     {key: 1, dataIndex: 'name_Uz', title: 'Name uz'},
     {key: 2, dataIndex: 'name_En', title: 'Name en'},
@@ -90,19 +107,21 @@ const Page2 = () => {
 
   return (
     <>
-      <h2>{state.title} list</h2>
+      <h2>{linkState.title} list</h2>
 
       <Row gutter={12}>
         <Col span={17}>
           <Input
             size='large'
             placeholder='Search...'
-            onChange={(e) => setInput(e.target.value.toLowerCase())}></Input>
+            onChange={(e) =>
+              dispatch(setInput(e.target.value.toLowerCase()))
+            }></Input>
         </Col>
         <Col span={3}>
-          <Button block onClick={getItems} disabled={loading.table}>
+          <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
-              {loading.table ? <SyncOutlined spin /> : ''}
+              {state.loading.table ? <SyncOutlined spin /> : ''}
               Refresh
             </Space>
           </Button>
@@ -112,14 +131,14 @@ const Page2 = () => {
             block
             type='primary'
             onClick={() => {
-              setEditItemId('');
-              setVisible(true);
+              dispatch(setEditItemId(''));
+              dispatch(setVisible(true));
             }}>
             Add
           </Button>
         </Col>
       </Row>
-      <Spin spinning={loading.table}>
+      <Spin spinning={state.loading.table}>
         <MainTable
           datas={filteredItems}
           cols={columns}
@@ -128,15 +147,11 @@ const Page2 = () => {
         />
       </Spin>
       <PostEdit
-        title={state.title}
-        loading={loading}
+        title={linkState.title}
         page={page}
-        setLoading={setLoading}
-        setVisible={setVisible}
-        visible={visible}
         getItems={getItems}
-        id={editItemId}
-        setId={setEditItemId}></PostEdit>
+        state={state}
+        dispatch={dispatch}></PostEdit>
     </>
   );
 };

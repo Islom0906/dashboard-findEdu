@@ -4,25 +4,14 @@ import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import apiService from 'service/api';
+import {setLoading, setVisible} from './ReducerActions';
 
-function PostEdit({
-  title,
-  loading,
-  setLoading,
-  visible,
-  setVisible,
-  page,
-  getItems,
-  id,
-  // setId,
-}) {
-  console.log(id);
+function PostEdit({title, page, state, getItems, dispatch}) {
   // STATES
   const [editItem, setEditItem] = useState({});
   const [photo, setPhoto] = useState();
   const [src, setSrc] = useState();
   const [form] = Form.useForm();
-  console.log(photo);
   //USEEFFECTS
 
   useEffect(async () => {
@@ -46,53 +35,41 @@ function PostEdit({
   //FETCH requests
   useEffect(() => {
     form.resetFields();
-    if (!id) {
+    if (!state.editItemId) {
       setEditItem({});
       return setSrc('');
     }
-    setLoading((prev) => {
-      return {...prev, modal: true};
-    });
-    apiService.getDataByID(`/${page}`, id).then((res) => {
-      setLoading((prev) => {
-        return {...prev, modal: false};
-      });
+    dispatch(setLoading({...state.loading, modal: true}));
+
+    apiService.getDataByID(`/${page}`, state.editItemId).then((res) => {
+      dispatch(setLoading({...state.loading, modal: false}));
+
       setEditItem(res.data);
       setSrc(`http://18.216.178.179/api/v1/img/${res.data.photo}`);
     });
-  }, [id]);
+  }, [state.editItemId]);
 
   const postItem = (data) => {
-    console.log(data);
     const formData = new FormData();
     data.name_Uz && formData.append('name_Uz', data.name_Uz);
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
     data.name_En && formData.append('name_En', data.name_En);
     photo?.fileList?.length &&
       formData.append('photo', photo['file'].originFileObj);
+    dispatch(setLoading({...state.loading, modal: true}));
 
-    console.log([...formData], photo);
-    setLoading((prev) => {
-      return {...prev, modal: true};
-    });
     apiService[editItem._id ? 'editData' : 'postData'](
       `/${page}`,
       formData,
       editItem._id,
     )
       .finally(() => {
-        setLoading((prev) => {
-          return {...prev, modal: false};
-        });
+        dispatch(setLoading({...state.loading, modal: false}));
       })
       .then(() => {
         message.success('Succesfuly posted', 2);
-        editItem._id && setVisible(false);
-        // setEditItem({});
+        editItem._id && dispatch(setVisible(false));
         setPhoto();
-        // setSrc('');
-        // setId('');
-        // form.resetFields();
         getItems();
       })
       .catch((err) => {
@@ -132,20 +109,15 @@ function PostEdit({
   return (
     <Modal
       onCancel={() => {
-        setVisible(false);
-        form.setFields([{photo: {}}]);
-        setPhoto();
-        // id && setId('');
-        // id && setSrc('');
-        // id && form.resetFields();
+        dispatch(setVisible(false));
       }}
       onOk={form.submit}
       okText='Submit'
-      visible={visible}
+      visible={state.visible}
       style={{top: 50}}
       title={title}
       width={500}>
-      <Spin spinning={loading.modal}>
+      <Spin spinning={state.loading.modal}>
         <Form
           form={form}
           onFinish={handleSubmit}
@@ -184,9 +156,8 @@ function PostEdit({
             rules={[
               {
                 validator: () => {
-                  console.log(photo);
-
-                  if (id || photo?.fileList.length) return Promise.resolve();
+                  if (state.editItemId || photo?.fileList.length)
+                    return Promise.resolve();
 
                   return Promise.reject('Pleae upload a image');
                 },
@@ -227,11 +198,7 @@ export default PostEdit;
 PostEdit.propTypes = {
   title: PropTypes.string,
   page: PropTypes.string,
-  id: PropTypes.string,
-  loading: PropTypes.object,
-  visible: PropTypes.bool,
-  setVisible: PropTypes.func,
-  setLoading: PropTypes.func,
-  setId: PropTypes.func,
+  dispatch: PropTypes.func,
   getItems: PropTypes.func,
+  state: PropTypes.object,
 };
