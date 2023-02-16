@@ -6,6 +6,7 @@ import {
   EditTwoTone,
   ExclamationCircleTwoTone,
 } from '@ant-design/icons';
+import IntlMessages from '@crema/utility/IntlMessages';
 
 const MainTable = ({cols, datas, onEdit, onDelete}) => {
   const {confirm} = Modal;
@@ -28,7 +29,7 @@ const MainTable = ({cols, datas, onEdit, onDelete}) => {
     ...cols,
     {
       key: cols.length + 1,
-      title: 'ACTIONS',
+      title: <IntlMessages id="common.actions" />,
       width: 82,
       fixed: 'right',
       ellipsis: true,

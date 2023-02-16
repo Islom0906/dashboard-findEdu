@@ -12,6 +12,7 @@ import {
   setLoading,
   setVisible,
 } from './ReducerActions';
+import IntlMessages from '@crema/utility/IntlMessages';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -84,12 +85,12 @@ const Page2 = () => {
   }, [page]);
 
   const columns = [
-    {key: 1, dataIndex: 'name_Uz', title: 'Name uz'},
-    {key: 2, dataIndex: 'name_En', title: 'Name en'},
-    {key: 3, dataIndex: 'name_Ru', title: 'Name ru'},
+    {key: 1, dataIndex: 'name_Uz', title: <IntlMessages id="common.nameUzTitle" />},
+    {key: 2, dataIndex: 'name_En', title: <IntlMessages id="common.nameEnTitle" />},
+    {key: 3, dataIndex: 'name_Ru', title: <IntlMessages id="common.nameRuTitle" />},
     {
       key: 4,
-      title: 'Image',
+      title: <IntlMessages id="common.image" />,
       dataIndex: 'photo',
       width: 80,
       render: (text) => {
@@ -122,7 +123,7 @@ const Page2 = () => {
           <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
               {state.loading.table ? <SyncOutlined spin /> : ''}
-              Refresh
+              <IntlMessages id="common.refresh" />
             </Space>
           </Button>
         </Col>
@@ -134,7 +135,7 @@ const Page2 = () => {
               dispatch(setEditItemId(''));
               dispatch(setVisible(true));
             }}>
-            Add
+            <IntlMessages id="common.add" />
           </Button>
         </Col>
       </Row>
