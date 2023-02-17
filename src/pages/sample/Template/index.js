@@ -73,6 +73,7 @@ const Page2 = () => {
     });
   };
   const deleteItem = ({_id: id}) => {
+    dispatch(setLoading({...state.loading, table: true}));
     apiService
       .deleteData(`/${page}`, id)
       .then(() => {
@@ -80,6 +81,8 @@ const Page2 = () => {
         message.success('Deleted succesfully');
       })
       .catch((err) => {
+        dispatch(setLoading({...state.loading, table: false}));
+
         message.error(err.message, 3);
         dispatch(setLoading({...state.loading, modal: false}));
       });
