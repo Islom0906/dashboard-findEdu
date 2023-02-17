@@ -16,7 +16,7 @@ const SignupFirebase = () => {
   const {messages} = useIntl();
   // const {createUserWithEmailAndPassword, signInWithPopup} = useAuthMethod();
   const {createUserWithEmailAndPassword} = useAuthMethod();
-
+/// commit
   return (
     <div className='signup'>
       <div className='signup-content'>
