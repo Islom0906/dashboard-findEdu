@@ -18,6 +18,7 @@ import apiService from '../../../service/api';
 import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
+  EyeOutlined,
   FileImageOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
@@ -52,38 +53,45 @@ const cellRenderer = (text, isTelnumber) =>
       </Tooltip>
     )
   ) : (
-    <Typography.Text keyboard><IntlMessages id="common.noDat" /></Typography.Text>
+    <Typography.Text keyboard>
+      <IntlMessages id='common.noDat' />
+    </Typography.Text>
   );
 const columns = [
   {
     dataIndex: 'name_Uz',
-    title: <IntlMessages id="common.nameUzTitle" />,
+    title: <IntlMessages id='common.nameUzTitle' />,
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'name_Ru',
     title: 'Name Ru',
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'name_En',
     title: 'Name En',
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'address',
-    title: <IntlMessages id="common.address"/>,
+    title: <IntlMessages id='common.address' />,
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'phone',
-    title: <IntlMessages id="common.phone" />,
+    title: <IntlMessages id='common.phone' />,
     render: (data) => cellRenderer(data, true),
+    ellipsis: true,
     // width: 150,
   },
   {
     dataIndex: 'online_exist',
-    title: <IntlMessages id="common.onlineExist" />,
+    title: <IntlMessages id='common.onlineExist' />,
     render: (text) => {
       return text ? (
         <CheckCircleTwoTone style={{fontSize: '32px'}} />
@@ -93,7 +101,7 @@ const columns = [
     },
   },
   {
-    title: <IntlMessages id="common.image" />,
+    title: <IntlMessages id='common.image' />,
     dataIndex: 'photo',
     width: 80,
     render: (imgUrl) => {
@@ -101,6 +109,9 @@ const columns = [
         <Image
           src={`http://18.216.178.179/api/v1/img/${imgUrl}`}
           style={{height: 40, width: 40, objectFit: 'cover'}}
+          preview={{
+            mask: <EyeOutlined />,
+          }}
         />
       ) : (
         <Avatar size={'large'} shape='square' icon={<FileImageOutlined />} />
@@ -146,7 +157,7 @@ const Page1 = () => {
   const deleteItem = async ({key: itemId}) => {
     try {
       await apiService.deleteData('/edu', itemId);
-      message.success(`${<IntlMessages id="common.deletedSuccesfully" />}`);
+      message.success(`${(<IntlMessages id='common.deletedSuccesfully' />)}`);
       getItems();
     } catch (error) {
       message.error(error.message);
@@ -157,15 +168,15 @@ const Page1 = () => {
     getItems();
   }, []);
 
-
-
   const handleCancal = () => {
     setIsModalVisible(false);
   };
 
   return (
     <>
-      <h2><IntlMessages id='common.eduCenters' /></h2>
+      <h2>
+        <IntlMessages id='common.eduCenters' />
+      </h2>
       <Row gutter={12}>
         <Col span={17}>
           <Input
@@ -178,7 +189,7 @@ const Page1 = () => {
           <Button block onClick={getItems} disabled={loading}>
             <Space>
               {loading && <SyncOutlined spin />}
-              <IntlMessages id="common.refresh" />
+              <IntlMessages id='common.refresh' />
             </Space>
           </Button>
         </Col>
@@ -190,7 +201,7 @@ const Page1 = () => {
               setIsModalVisible(true);
               setModalTitle('Add Education');
             }}>
-            <IntlMessages id="common.add" />
+            <IntlMessages id='common.add' />
           </Button>
         </Col>
       </Row>

@@ -18,11 +18,11 @@ import PropTypes from 'prop-types';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import apiService from 'service/api';
 
-function htmlToString(htmlString) {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString;
-  return div.textContent || div.innerText || '';
-}
+// function htmlToString(htmlString) {
+//   const div = document.createElement('div');
+//   div.innerHTML = htmlString;
+//   return div.textContent || div.innerText || '';
+// }
 
 const EduModal = ({
   visible,
@@ -210,9 +210,9 @@ const EduModal = ({
 
         postValues({
           ...values,
-          descriptionUz: htmlToString(descriptionUz),
-          descriptionRu: htmlToString(descriptionRu),
-          descriptionEn: htmlToString(descriptionEn),
+          descriptionUz: descriptionUz,
+          descriptionRu: descriptionRu,
+          descriptionEn: descriptionEn,
           fileList,
         });
         resetAllFileds();
