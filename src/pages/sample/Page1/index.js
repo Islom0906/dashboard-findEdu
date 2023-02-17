@@ -18,20 +18,25 @@ import apiService from '../../../service/api';
 import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
+  EyeOutlined,
   FileImageOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
 import IntlMessages from '@crema/utility/IntlMessages';
+import EduModal from './EduModal';
 
-const formatFetchedItems = (items) =>
-  items.map((item) => ({
+const formatFetchedItems = (items) => {
+  return items.map((item) => ({
     key: item._id,
     address: item.mainAddress,
     name_Uz: item.name_Uz,
+    name_Ru: item.name_Ru,
+    name_En: item.name_En,
     phone: item.phone,
     photo: item.photo,
     online_exist: item.isOnlineExists,
   }));
+};
 const cellRenderer = (text, isTelnumber) =>
   text && text?.length && text?.[0] ? (
     isTelnumber ? (
@@ -42,32 +47,51 @@ const cellRenderer = (text, isTelnumber) =>
       ))
     ) : (
       <Tooltip title={text}>
-        <Typography.Text ellipsis>{text}</Typography.Text>
+        <Typography.Text style={{maxWidth: 150}} ellipsis>
+          {text}
+        </Typography.Text>
       </Tooltip>
     )
   ) : (
-    <Typography.Text keyboard><IntlMessages id="common.noDat" /></Typography.Text>
+    <Typography.Text keyboard>
+      <IntlMessages id='common.noDat' />
+    </Typography.Text>
   );
 const columns = [
   {
     dataIndex: 'name_Uz',
-    title: <IntlMessages id="common.nameUzTitle" />,
+    title: <IntlMessages id='common.nameUzTitle' />,
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
+  },
+  {
+    dataIndex: 'name_Ru',
+    title: 'Name Ru',
+    render: (data) => cellRenderer(data, false),
+    ellipsis: true,
+  },
+  {
+    dataIndex: 'name_En',
+    title: 'Name En',
+    render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'address',
-    title: <IntlMessages id="common.address"/>,
+    title: <IntlMessages id='common.address' />,
     render: (data) => cellRenderer(data, false),
+    ellipsis: true,
   },
   {
     dataIndex: 'phone',
-    title: <IntlMessages id="common.phone" />,
+    title: <IntlMessages id='common.phone' />,
     render: (data) => cellRenderer(data, true),
+    ellipsis: true,
     // width: 150,
   },
   {
     dataIndex: 'online_exist',
-    title: <IntlMessages id="common.onlineExist" />,
+    title: <IntlMessages id='common.onlineExist' />,
     render: (text) => {
       return text ? (
         <CheckCircleTwoTone style={{fontSize: '32px'}} />
@@ -77,7 +101,7 @@ const columns = [
     },
   },
   {
-    title: <IntlMessages id="common.image" />,
+    title: <IntlMessages id='common.image' />,
     dataIndex: 'photo',
     width: 80,
     render: (imgUrl) => {
@@ -85,6 +109,9 @@ const columns = [
         <Image
           src={`http://18.216.178.179/api/v1/img/${imgUrl}`}
           style={{height: 40, width: 40, objectFit: 'cover'}}
+          preview={{
+            mask: <EyeOutlined />,
+          }}
         />
       ) : (
         <Avatar size={'large'} shape='square' icon={<FileImageOutlined />} />
@@ -93,21 +120,28 @@ const columns = [
   },
 ];
 
-const editBtn = (e) => {
-  console.log('Edit', e);
-};
-
 const search = (query, list) =>
   list.filter((item) => item.name_Uz.toLowerCase().includes(query));
+
+/* Component ============================= */
 const Page1 = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [editItemId, setEditItemId] = useState('');
 
   const filteredText = useMemo(
     () => search(searchQuery, items),
     [searchQuery, items],
   );
+
+  const editHandler = (e) => {
+    setModalTitle('Edit education');
+    setIsModalVisible(true);
+    setEditItemId(e.key);
+  };
 
   const getItems = () => {
     setLoading(true);
@@ -116,7 +150,6 @@ const Page1 = () => {
       .then((res) => {
         setLoading(false);
         setItems(formatFetchedItems(res.data));
-        console.log(res);
       })
       .catch((err) => console.error('MyError', err));
   };
@@ -124,7 +157,7 @@ const Page1 = () => {
   const deleteItem = async ({key: itemId}) => {
     try {
       await apiService.deleteData('/edu', itemId);
-      message.success(`${<IntlMessages id="common.deletedSuccesfully" />}`);
+      message.success(`${(<IntlMessages id='common.deletedSuccesfully' />)}`);
       getItems();
     } catch (error) {
       message.error(error.message);
@@ -135,12 +168,15 @@ const Page1 = () => {
     getItems();
   }, []);
 
-  console.log(items);
-  console.log('loading', loading);
+  const handleCancal = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <>
-      <h2><IntlMessages id='common.eduCenters' /></h2>
+      <h2>
+        <IntlMessages id='common.eduCenters' />
+      </h2>
       <Row gutter={12}>
         <Col span={17}>
           <Input
@@ -153,21 +189,35 @@ const Page1 = () => {
           <Button block onClick={getItems} disabled={loading}>
             <Space>
               {loading && <SyncOutlined spin />}
-              <IntlMessages id="common.refresh" />
+              <IntlMessages id='common.refresh' />
             </Space>
           </Button>
         </Col>
         <Col span={4}>
-          <Button block type='primary'>
-            <IntlMessages id="common.add" />
+          <Button
+            block
+            type='primary'
+            onClick={() => {
+              setIsModalVisible(true);
+              setModalTitle('Add Education');
+            }}>
+            <IntlMessages id='common.add' />
           </Button>
         </Col>
       </Row>
+      <EduModal
+        visible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={modalTitle}
+        onCancel={handleCancal}
+        getItems={getItems}
+        editItemId={editItemId}
+      />
       <Spin spinning={loading}>
         <MainTable
           datas={filteredText}
           cols={columns}
-          onEdit={editBtn}
+          onEdit={editHandler}
           onDelete={deleteItem}
         />
       </Spin>

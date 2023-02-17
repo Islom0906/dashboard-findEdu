@@ -1,5 +1,15 @@
-import {SyncOutlined} from '@ant-design/icons';
-import {Button, Col, Input, message, Row, Space, Spin} from 'antd';
+import {EyeOutlined, FileImageOutlined, SyncOutlined} from '@ant-design/icons';
+import {
+  Avatar,
+  Button,
+  Col,
+  Image,
+  Input,
+  message,
+  Row,
+  Space,
+  Spin,
+} from 'antd';
 import MainTable from 'components/Table';
 import React, {useEffect, useMemo, useReducer} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
@@ -63,6 +73,7 @@ const Page2 = () => {
     });
   };
   const deleteItem = ({_id: id}) => {
+    dispatch(setLoading({...state.loading, table: true}));
     apiService
       .deleteData(`/${page}`, id)
       .then(() => {
@@ -70,6 +81,8 @@ const Page2 = () => {
         message.success('Deleted succesfully');
       })
       .catch((err) => {
+        dispatch(setLoading({...state.loading, table: false}));
+
         message.error(err.message, 3);
         dispatch(setLoading({...state.loading, modal: false}));
       });
@@ -85,22 +98,38 @@ const Page2 = () => {
   }, [page]);
 
   const columns = [
-    {key: 1, dataIndex: 'name_Uz', title: <IntlMessages id="common.nameUzTitle" />},
-    {key: 2, dataIndex: 'name_En', title: <IntlMessages id="common.nameEnTitle" />},
-    {key: 3, dataIndex: 'name_Ru', title: <IntlMessages id="common.nameRuTitle" />},
+    {
+      key: 1,
+      dataIndex: 'name_Uz',
+      title: <IntlMessages id='common.nameUzTitle' />,
+    },
+    {
+      key: 2,
+      dataIndex: 'name_En',
+      title: <IntlMessages id='common.nameEnTitle' />,
+    },
+    {
+      key: 3,
+      dataIndex: 'name_Ru',
+      title: <IntlMessages id='common.nameRuTitle' />,
+    },
     {
       key: 4,
-      title: <IntlMessages id="common.image" />,
+      title: <IntlMessages id='common.image' />,
       dataIndex: 'photo',
       width: 80,
-      render: (text) => {
-        return text ? (
-          <img
-            src={`http://18.216.178.179/api/v1/img/${text}`}
+      render: (imgUrl) => {
+        return imgUrl && imgUrl !== 'undefined' ? (
+          <Image
+            src={`http://18.216.178.179/api/v1/img/${imgUrl}`}
             style={{height: 40, width: 40, objectFit: 'cover'}}
+            preview={{
+              maskClassName: 'customize-mask',
+              mask: <EyeOutlined />,
+            }}
           />
         ) : (
-          ''
+          <Avatar size={'large'} shape='square' icon={<FileImageOutlined />} />
         );
       },
     },
@@ -111,7 +140,7 @@ const Page2 = () => {
       <h2>{linkState.title} list</h2>
 
       <Row gutter={12}>
-        <Col span={17}>
+        <Col span={16}>
           <Input
             size='large'
             placeholder='Search...'
@@ -119,11 +148,11 @@ const Page2 = () => {
               dispatch(setInput(e.target.value.toLowerCase()))
             }></Input>
         </Col>
-        <Col span={3}>
+        <Col span={4}>
           <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
               {state.loading.table ? <SyncOutlined spin /> : ''}
-              <IntlMessages id="common.refresh" />
+              <IntlMessages id='common.refresh' />
             </Space>
           </Button>
         </Col>
@@ -135,7 +164,7 @@ const Page2 = () => {
               dispatch(setEditItemId(''));
               dispatch(setVisible(true));
             }}>
-            <IntlMessages id="common.add" />
+            <IntlMessages id='common.add' />
           </Button>
         </Col>
       </Row>
