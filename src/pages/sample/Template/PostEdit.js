@@ -14,6 +14,7 @@ function PostEdit({title, page, state, getItems, dispatch}) {
   const [src, setSrc] = useState();
   const [form] = Form.useForm();
   //USEEFFECTS
+  console.log(editItem);
 
   useEffect(async () => {
     if (!photo || !photo.fileList.length) return setSrc();
@@ -113,41 +114,50 @@ function PostEdit({title, page, state, getItems, dispatch}) {
         dispatch(setVisible(false));
       }}
       onOk={form.submit}
-      okText={<IntlMessages id="common.submit" />}
+      okText={<IntlMessages id='common.submit' />}
       visible={state.visible}
       style={{top: 50}}
       title={title}
-      width={700}>
+      width={600}>
       <Spin spinning={state.loading.modal}>
         <Form
           form={form}
           onFinish={handleSubmit}
-          labelCol={{span: 5}}
+          labelCol={{span: 6}}
           // wrapperCol={{span: 16}}
         >
           <Form.Item
             name='name_En'
-            label={<IntlMessages id="common.nameEn" />}
+            label={<IntlMessages id='common.nameEn' />}
             rules={[
-              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
+              {
+                required: true,
+                message: <IntlMessages id='common.enterNameRu' />,
+              },
             ]}
             hasFeedback>
             <Input />
           </Form.Item>
           <Form.Item
             name='name_Uz'
-            label={<IntlMessages id="common.nameUz" />}
+            label={<IntlMessages id='common.nameUz' />}
             rules={[
-              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
+              {
+                required: true,
+                message: <IntlMessages id='common.enterNameRu' />,
+              },
             ]}
             hasFeedback>
             <Input />
           </Form.Item>
           <Form.Item
             name='name_Ru'
-            label={<IntlMessages id="common.nameRu" />}
+            label={<IntlMessages id='common.nameRu' />}
             rules={[
-              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
+              {
+                required: true,
+                message: <IntlMessages id='common.enterNameRu' />,
+              },
             ]}
             hasFeedback>
             <Input />
@@ -160,7 +170,9 @@ function PostEdit({title, page, state, getItems, dispatch}) {
                   if (state.editItemId || photo?.fileList.length)
                     return Promise.resolve();
 
-                  return Promise.reject(`${<IntlMessages id="common.uploadImage" />}`);
+                  return Promise.reject(
+                    <IntlMessages id='common.uploadImage' />,
+                  );
                 },
               },
             ]}>
@@ -183,7 +195,9 @@ function PostEdit({title, page, state, getItems, dispatch}) {
                     }}
                   />
                 ) : (
-                  <Button icon={<UploadOutlined />}><IntlMessages id="common.clickToUpload" /></Button>
+                  <Button icon={<UploadOutlined />}>
+                    <IntlMessages id='common.clickToUpload' />
+                  </Button>
                 )}
               </Upload.Dragger>
             </ImgCrop>
