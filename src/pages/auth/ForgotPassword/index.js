@@ -1,14 +1,14 @@
 import React from 'react';
-import ForgetPasswordFirebase from './ForgetPasswordFirebase';
 import './index.style.less';
 import AppPageMetadata from '../../../@crema/core/AppPageMetadata';
 import AuthWrapper from '../AuthWrapper';
+import ForgetPasswordJwtAuth from './ForgetPasswordJwtAuth';
 
 const ForgetPassword = () => {
   return (
     <AuthWrapper type='bottom'>
       <AppPageMetadata title='Forgot Password' />
-      <ForgetPasswordFirebase />
+      <ForgetPasswordJwtAuth />
     </AuthWrapper>
   );
 };

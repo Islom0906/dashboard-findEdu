@@ -29,7 +29,7 @@ const MainTable = ({cols, datas, onEdit, onDelete}) => {
     ...cols,
     {
       key: cols.length + 1,
-      title: <IntlMessages id="common.actions" />,
+      title: <IntlMessages id='common.actions' />,
       width: 82,
       fixed: 'right',
       ellipsis: true,
