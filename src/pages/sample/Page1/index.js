@@ -21,16 +21,20 @@ import {
   FileImageOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
+import EduModal from './EduModal';
 
-const formatFetchedItems = (items) =>
-  items.map((item) => ({
+const formatFetchedItems = (items) => {
+  return items.map((item) => ({
     key: item._id,
     address: item.mainAddress,
     name_Uz: item.name_Uz,
+    name_Ru: item.name_Ru,
+    name_En: item.name_En,
     phone: item.phone,
     photo: item.photo,
     online_exist: item.isOnlineExists,
   }));
+};
 const cellRenderer = (text, isTelnumber) =>
   text && text?.length && text?.[0] ? (
     isTelnumber ? (
@@ -41,7 +45,9 @@ const cellRenderer = (text, isTelnumber) =>
       ))
     ) : (
       <Tooltip title={text}>
-        <Typography.Text ellipsis>{text}</Typography.Text>
+        <Typography.Text style={{maxWidth: 150}} ellipsis>
+          {text}
+        </Typography.Text>
       </Tooltip>
     )
   ) : (
@@ -51,6 +57,16 @@ const columns = [
   {
     dataIndex: 'name_Uz',
     title: 'Name uz',
+    render: (data) => cellRenderer(data, false),
+  },
+  {
+    dataIndex: 'name_Ru',
+    title: 'Name Ru',
+    render: (data) => cellRenderer(data, false),
+  },
+  {
+    dataIndex: 'name_En',
+    title: 'Name En',
     render: (data) => cellRenderer(data, false),
   },
   {
@@ -92,21 +108,28 @@ const columns = [
   },
 ];
 
-const editBtn = (e) => {
-  console.log('Edit', e);
-};
-
 const search = (query, list) =>
   list.filter((item) => item.name_Uz.toLowerCase().includes(query));
+
+/* Component ============================= */
 const Page1 = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [editItemId, setEditItemId] = useState('');
 
   const filteredText = useMemo(
     () => search(searchQuery, items),
     [searchQuery, items],
   );
+
+  const editHandler = (e) => {
+    setModalTitle('Edit education');
+    setIsModalVisible(true);
+    setEditItemId(e.key);
+  };
 
   const getItems = () => {
     setLoading(true);
@@ -115,7 +138,6 @@ const Page1 = () => {
       .then((res) => {
         setLoading(false);
         setItems(formatFetchedItems(res.data));
-        console.log(res);
       })
       .catch((err) => console.error('MyError', err));
   };
@@ -134,8 +156,11 @@ const Page1 = () => {
     getItems();
   }, []);
 
-  console.log(items);
-  console.log('loading', loading);
+
+
+  const handleCancal = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <>
@@ -157,16 +182,30 @@ const Page1 = () => {
           </Button>
         </Col>
         <Col span={4}>
-          <Button block type='primary'>
+          <Button
+            block
+            type='primary'
+            onClick={() => {
+              setIsModalVisible(true);
+              setModalTitle('Add Education');
+            }}>
             Add
           </Button>
         </Col>
       </Row>
+      <EduModal
+        visible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={modalTitle}
+        onCancel={handleCancal}
+        getItems={getItems}
+        editItemId={editItemId}
+      />
       <Spin spinning={loading}>
         <MainTable
           datas={filteredText}
           cols={columns}
-          onEdit={editBtn}
+          onEdit={editHandler}
           onDelete={deleteItem}
         />
       </Spin>
