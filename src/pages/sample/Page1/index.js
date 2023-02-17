@@ -21,6 +21,7 @@ import {
   FileImageOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
+import IntlMessages from '@crema/utility/IntlMessages';
 import EduModal from './EduModal';
 
 const formatFetchedItems = (items) => {
@@ -51,12 +52,12 @@ const cellRenderer = (text, isTelnumber) =>
       </Tooltip>
     )
   ) : (
-    <Typography.Text keyboard>No data</Typography.Text>
+    <Typography.Text keyboard><IntlMessages id="common.noDat" /></Typography.Text>
   );
 const columns = [
   {
     dataIndex: 'name_Uz',
-    title: 'Name uz',
+    title: <IntlMessages id="common.nameUzTitle" />,
     render: (data) => cellRenderer(data, false),
   },
   {
@@ -71,18 +72,18 @@ const columns = [
   },
   {
     dataIndex: 'address',
-    title: 'Address',
+    title: <IntlMessages id="common.address"/>,
     render: (data) => cellRenderer(data, false),
   },
   {
     dataIndex: 'phone',
-    title: 'Phone',
+    title: <IntlMessages id="common.phone" />,
     render: (data) => cellRenderer(data, true),
     // width: 150,
   },
   {
     dataIndex: 'online_exist',
-    title: 'Online exist',
+    title: <IntlMessages id="common.onlineExist" />,
     render: (text) => {
       return text ? (
         <CheckCircleTwoTone style={{fontSize: '32px'}} />
@@ -92,7 +93,7 @@ const columns = [
     },
   },
   {
-    title: 'Image',
+    title: <IntlMessages id="common.image" />,
     dataIndex: 'photo',
     width: 80,
     render: (imgUrl) => {
@@ -145,7 +146,7 @@ const Page1 = () => {
   const deleteItem = async ({key: itemId}) => {
     try {
       await apiService.deleteData('/edu', itemId);
-      message.success('Deleted succesfully');
+      message.success(`${<IntlMessages id="common.deletedSuccesfully" />}`);
       getItems();
     } catch (error) {
       message.error(error.message);
@@ -164,7 +165,7 @@ const Page1 = () => {
 
   return (
     <>
-      <h2>Edu centers</h2>
+      <h2><IntlMessages id='common.eduCenters' /></h2>
       <Row gutter={12}>
         <Col span={17}>
           <Input
@@ -177,7 +178,7 @@ const Page1 = () => {
           <Button block onClick={getItems} disabled={loading}>
             <Space>
               {loading && <SyncOutlined spin />}
-              Refresh
+              <IntlMessages id="common.refresh" />
             </Space>
           </Button>
         </Col>
@@ -189,7 +190,7 @@ const Page1 = () => {
               setIsModalVisible(true);
               setModalTitle('Add Education');
             }}>
-            Add
+            <IntlMessages id="common.add" />
           </Button>
         </Col>
       </Row>

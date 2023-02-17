@@ -1,4 +1,5 @@
 import {UploadOutlined} from '@ant-design/icons';
+import IntlMessages from '@crema/utility/IntlMessages';
 import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
@@ -112,11 +113,11 @@ function PostEdit({title, page, state, getItems, dispatch}) {
         dispatch(setVisible(false));
       }}
       onOk={form.submit}
-      okText='Submit'
+      okText={<IntlMessages id="common.submit" />}
       visible={state.visible}
       style={{top: 50}}
       title={title}
-      width={500}>
+      width={700}>
       <Spin spinning={state.loading.modal}>
         <Form
           form={form}
@@ -126,27 +127,27 @@ function PostEdit({title, page, state, getItems, dispatch}) {
         >
           <Form.Item
             name='name_En'
-            label='Name (en)'
+            label={<IntlMessages id="common.nameEn" />}
             rules={[
-              {required: true, message: 'Please enter the name in English'},
+              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
             ]}
             hasFeedback>
             <Input />
           </Form.Item>
           <Form.Item
             name='name_Uz'
-            label='Name (uz)'
+            label={<IntlMessages id="common.nameUz" />}
             rules={[
-              {required: true, message: 'Please enter the name in Uzbek'},
+              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
             ]}
             hasFeedback>
             <Input />
           </Form.Item>
           <Form.Item
             name='name_Ru'
-            label='Name (ru)'
+            label={<IntlMessages id="common.nameRu" />}
             rules={[
-              {required: true, message: 'Please enter the name in Russian'},
+              {required: true, message: `${<IntlMessages id="common.enterNameRu" />}`},
             ]}
             hasFeedback>
             <Input />
@@ -159,7 +160,7 @@ function PostEdit({title, page, state, getItems, dispatch}) {
                   if (state.editItemId || photo?.fileList.length)
                     return Promise.resolve();
 
-                  return Promise.reject('Pleae upload a image');
+                  return Promise.reject(`${<IntlMessages id="common.uploadImage" />}`);
                 },
               },
             ]}>
@@ -182,7 +183,7 @@ function PostEdit({title, page, state, getItems, dispatch}) {
                     }}
                   />
                 ) : (
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  <Button icon={<UploadOutlined />}><IntlMessages id="common.clickToUpload" /></Button>
                 )}
               </Upload.Dragger>
             </ImgCrop>

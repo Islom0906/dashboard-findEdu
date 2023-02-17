@@ -16,6 +16,7 @@ import {
   LOGOUT,
 } from '../../../../shared/constants/ActionTypes';
 import axios from 'axios';
+import {message} from 'antd'
 
 const FirebaseContext = createContext();
 const FirebaseActionsContext = createContext();
@@ -137,7 +138,8 @@ const FirebaseAuthProvider = ({children}) => {
         } else alert('wrong');
       } catch (e) {
         console.log(e?.response?.data?.message);
-        alert(e?.response?.data?.message)
+        // alert(e?.response?.data?.message)
+        message.error(e?.response?.data?.message)
       }
     }
   };
