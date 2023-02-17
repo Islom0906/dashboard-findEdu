@@ -328,9 +328,10 @@ const EduModal = ({
   return (
     <>
       <Modal
+        width={'700px'}
         visible={visible}
         title={title}
-        okText='Create'
+        okText='Submit'
         onCancel={handleCancel}
         onOk={handleOk}>
         <Spin spinning={loading}>
@@ -346,12 +347,15 @@ const EduModal = ({
             </Form.Item>
             <Form.Item label='DescriptionUz'>
               <ReactQuill value={descriptionUz} onChange={setDescriptionUz} />
+              {/* <p>{JSON.stringify(descriptionUz)}</p> */}
             </Form.Item>
             <Form.Item label='DescriptionRu'>
               <ReactQuill value={descriptionRu} onChange={setDescriptionRu} />
+              {/* <p>{JSON.stringify(descriptionRu)}</p> */}
             </Form.Item>
             <Form.Item label='DescriptionEn'>
               <ReactQuill value={descriptionEn} onChange={setDescriptionEn} />
+              {/* <p>{JSON.stringify(descriptionEn)}</p> */}
             </Form.Item>
             <Form.Item
               label='Image'
