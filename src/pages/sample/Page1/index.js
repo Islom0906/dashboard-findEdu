@@ -66,13 +66,13 @@ const columns = [
   },
   {
     dataIndex: 'name_Ru',
-    title: 'Name Ru',
+    title: <IntlMessages id='common.nameRuTitle' />,
     render: (data) => cellRenderer(data, false),
     ellipsis: true,
   },
   {
     dataIndex: 'name_En',
-    title: 'Name En',
+    title: <IntlMessages id='common.nameEnTitle' />,
     render: (data) => cellRenderer(data, false),
     ellipsis: true,
   },
@@ -101,8 +101,8 @@ const columns = [
     },
   },
   {
-    title: <IntlMessages id='common.image' />,
     dataIndex: 'photo',
+    title: <IntlMessages id='common.image' />,
     width: 80,
     render: (imgUrl) => {
       return imgUrl && imgUrl !== 'undefined' ? (
