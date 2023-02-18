@@ -6,9 +6,11 @@ import ChangePassword from './ChangePassword';
 
 import {HiUser} from 'react-icons/hi';
 import {AiFillLock} from 'react-icons/ai';
+import {HiUserAdd} from 'react-icons/hi';
 
 // import accountData from '../../../@crema/services/db/extraPages/account';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
+import SignupFirebase from 'pages/auth/Signup/SignupFirebase';
 
 const UserProfile = () => {
   const TabPane = Tabs.TabPane;
@@ -41,6 +43,18 @@ const UserProfile = () => {
           }
           key='2'>
           <ChangePassword />
+        </TabPane>
+        <TabPane
+          tab={
+            <span className='user-profile-icon'>
+              <HiUserAdd className='icon' />
+              <span>
+                <IntlMessages id='userProfile.createUser' />
+              </span>
+            </span>
+          }
+          key='3'>
+            <SignupFirebase />
         </TabPane>
       </Tabs>
     </div>

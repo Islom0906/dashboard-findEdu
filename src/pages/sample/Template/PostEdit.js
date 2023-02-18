@@ -70,8 +70,12 @@ function PostEdit({title, page, state, getItems, dispatch}) {
       })
       .then(() => {
         message.success('Succesfuly posted', 2);
-        editItem._id && dispatch(setVisible(false));
-        setPhoto();
+        if (!editItem._id) {
+          form.resetFields();
+          setPhoto();
+          setSrc();
+        }
+        dispatch(setVisible(false));
         getItems();
       })
       .catch((err) => {
@@ -123,7 +127,7 @@ function PostEdit({title, page, state, getItems, dispatch}) {
         <Form
           form={form}
           onFinish={handleSubmit}
-          labelCol={{span: 6}}
+          labelCol={{span: 5}}
           // wrapperCol={{span: 16}}
         >
           <Form.Item

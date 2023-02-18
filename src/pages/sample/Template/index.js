@@ -73,6 +73,7 @@ const Page2 = () => {
     });
   };
   const deleteItem = ({_id: id}) => {
+    dispatch(setLoading({...state.loading, table: true}));
     apiService
       .deleteData(`/${page}`, id)
       .then(() => {
@@ -80,6 +81,8 @@ const Page2 = () => {
         message.success('Deleted succesfully');
       })
       .catch((err) => {
+        dispatch(setLoading({...state.loading, table: false}));
+
         message.error(err.message, 3);
         dispatch(setLoading({...state.loading, modal: false}));
       });
@@ -137,7 +140,7 @@ const Page2 = () => {
       <h2>{linkState.title} list</h2>
 
       <Row gutter={12}>
-        <Col span={17}>
+        <Col span={16}>
           <Input
             size='large'
             placeholder='Search...'
@@ -145,7 +148,7 @@ const Page2 = () => {
               dispatch(setInput(e.target.value.toLowerCase()))
             }></Input>
         </Col>
-        <Col span={3}>
+        <Col span={4}>
           <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
               {state.loading.table ? <SyncOutlined spin /> : ''}

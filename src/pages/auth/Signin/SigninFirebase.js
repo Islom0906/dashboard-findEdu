@@ -82,7 +82,7 @@ const SignInFirebase = () => {
             <Link to='/signup' className='underlineNone colorTextPrimary'>
               <IntlMessages id='common.signup' />
             </Link>
-          </div> */}
+          </div>  */}
         </Form>
       </div>
 

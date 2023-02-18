@@ -115,7 +115,6 @@ const FirebaseAuthProvider = ({children}) => {
           },
         );
         localStorage.setItem('token', response?.data?.token);
-        console.log(response.data);
         if (response?.data?.token) {
           dispatch({type: LOGIN});
           dispatch({type: FETCH_START});
@@ -137,37 +136,52 @@ const FirebaseAuthProvider = ({children}) => {
           }
         } else alert('wrong');
       } catch (e) {
-        console.log(e?.response?.data?.message);
-        // alert(e?.response?.data?.message)
         message.error(e?.response?.data?.message)
       }
     }
   };
-  const createUserWithEmailAndPassword = async ({name, email, password}) => {
+  const createUserWithEmailAndPassword = async ({name, email, password, passwordConfirm, role}) => {
     dispatch({type: FETCH_START});
-    try {
-      const {user} = await auth.createUserWithEmailAndPassword(email, password);
-      await auth.currentUser.sendEmailVerification({
-        url: window.location.href,
-        handleCodeInApp: true,
-      });
-      await auth.currentUser.updateProfile({
-        displayName: name,
-      });
-      setFirebaseData({
-        user: {...user, displayName: name},
-        isAuthenticated: true,
-        isLoading: false,
-      });
+    try{
+      const response = await axios.post(
+        'http://18.216.178.179/api/v1/user/signup',
+        {
+          name,
+          email,
+          password,
+          passwordConfirm,
+          role,
+        },
+      );
+      message.success(response.data.status)
+      // location.reload()
       dispatch({type: FETCH_SUCCESS});
-    } catch (error) {
-      setFirebaseData({
-        ...firebaseData,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-      dispatch({type: FETCH_ERROR, payload: error.message});
-    }
+    //    try {
+    //   const {user} = await auth.createUserWithEmailAndPassword(email, password);
+    //   await auth.currentUser.sendEmailVerification({
+    //     url: window.location.href,
+    //     handleCodeInApp: true,
+    //   });
+    //   await auth.currentUser.updateProfile({
+    //     displayName: name,
+    //   });
+    //   setFirebaseData({
+    //     user: {...user, displayName: name},
+    //     isAuthenticated: true,
+    //     isLoading: false,
+    //   });
+    //   dispatch({type: FETCH_SUCCESS});
+    // } catch (error) {
+    //   setFirebaseData({
+    //     ...firebaseData,
+    //     isAuthenticated: false,
+    //     isLoading: false,
+    //   });
+    //   dispatch({type: FETCH_ERROR, payload: error.message});
+    // }
+  } catch(error){
+    message.error(error.response?.data?.message)
+  }
   };
 
   const logout = async () => {
