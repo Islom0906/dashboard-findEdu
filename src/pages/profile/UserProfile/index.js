@@ -6,6 +6,7 @@ import ChangePassword from './ChangePassword';
 
 import {HiUser} from 'react-icons/hi';
 import {AiFillLock} from 'react-icons/ai';
+import {HiUserAdd} from 'react-icons/hi';
 
 // import accountData from '../../../@crema/services/db/extraPages/account';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -46,7 +47,7 @@ const UserProfile = () => {
         <TabPane
           tab={
             <span className='user-profile-icon'>
-              <AiFillLock className='icon' />
+              <HiUserAdd className='icon' />
               <span>
                 <IntlMessages id='userProfile.createUser' />
               </span>
