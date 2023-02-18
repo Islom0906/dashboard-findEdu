@@ -18,6 +18,8 @@ import PropTypes from 'prop-types';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import apiService from 'service/api';
 
+import './style.css'
+
 // function htmlToString(htmlString) {
 //   const div = document.createElement('div');
 //   div.innerHTML = htmlString;
@@ -373,7 +375,7 @@ const EduModal = ({
               valuePropName='fileList'>
               <ImgCrop rotate>
                 <Upload
-                  accept='.jpeg,.png,.gif'
+                  accept='.jpeg,.png'
                   beforeUpload={handleBeforeUpload}
                   listType='picture-card'
                   fileList={fileList}
