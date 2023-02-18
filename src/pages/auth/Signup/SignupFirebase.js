@@ -6,17 +6,18 @@ import React from 'react';
 //   TwitterOutlined,
 // } from '@ant-design/icons';
 // import {Button, Checkbox, Form, Input} from 'antd';
+import {Select} from 'antd';
 import {Button, Form, Input} from 'antd';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {useIntl} from 'react-intl';
 // import {FaFacebookF} from 'react-icons/fa';
 import {useAuthMethod} from '../../../@crema/utility/AuthHooks';
 
+
 const SignupFirebase = () => {
   const {messages} = useIntl();
   // const {createUserWithEmailAndPassword, signInWithPopup} = useAuthMethod();
   const {createUserWithEmailAndPassword} = useAuthMethod();
-/// commit
   return (
     <div className='signup'>
       <div className='signup-content'>
@@ -28,21 +29,36 @@ const SignupFirebase = () => {
           <Form.Item
             name='name'
             className='form-field'
-            rules={[{required: true, message: <IntlMessages id="validation.nameRequired" />}]}>
+            rules={[
+              {
+                required: true,
+                message: <IntlMessages id='validation.nameRequired' />,
+              },
+            ]}>
             <Input placeholder={messages['common.name']} />
           </Form.Item>
 
           <Form.Item
             name='email'
             className='form-field'
-            rules={[{required: true, message: <IntlMessages id="validation.emailRequired" />}]}>
+            rules={[
+              {
+                required: true,
+                message: <IntlMessages id='validation.emailRequired' />,
+              },
+            ]}>
             <Input placeholder={messages['common.email']} />
           </Form.Item>
 
           <Form.Item
             name='password'
             className='form-field'
-            rules={[{required: true, message: <IntlMessages id="validation.passwordRequired" />}]}>
+            rules={[
+              {
+                required: true,
+                message: <IntlMessages id='validation.passwordRequired' />,
+              },
+            ]}>
             <Input.Password placeholder={messages['common.password']} />
           </Form.Item>
 
@@ -52,12 +68,38 @@ const SignupFirebase = () => {
             rules={[
               {
                 required: true,
-                message: <IntlMessages id="validation.reTypePassword" />,
+                message: <IntlMessages id='validation.reTypePassword' />,
               },
             ]}>
             <Input.Password placeholder={messages['common.retypePassword']} />
           </Form.Item>
-{/* 
+
+          <Form.Item
+            name='role'
+            className='form-field'
+            rules={[
+              {
+                required: true,
+              },
+            ]}>
+            <Select
+            placeholder="Select role"
+              style={{
+                width: 120,
+              }}
+              options={[
+                {
+                  value: 'user',
+                  label: 'User',
+                },
+                {
+                  value: 'admin',
+                  label: 'Admin',
+                },
+              ]}
+            />
+          </Form.Item>
+          {/* 
           <Form.Item
             className='form-field signup-checkbox'
             name='iAgreeTo'
@@ -70,7 +112,9 @@ const SignupFirebase = () => {
             </span>
           </Form.Item> */}
 
-          <div className='form-btn-field'>
+          <div
+            className='form-btn-field'
+            style={{display: 'flex', justifyContent: 'flex-end'}}>
             <Button type='primary' htmlType='submit' className='signup-btn'>
               <IntlMessages id='userProfile.createUser' />
             </Button>

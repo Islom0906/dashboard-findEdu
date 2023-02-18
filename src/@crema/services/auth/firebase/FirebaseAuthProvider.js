@@ -140,7 +140,7 @@ const FirebaseAuthProvider = ({children}) => {
       }
     }
   };
-  const createUserWithEmailAndPassword = async ({name, email, password, passwordConfirm}) => {
+  const createUserWithEmailAndPassword = async ({name, email, password, passwordConfirm, role}) => {
     dispatch({type: FETCH_START});
     try{
       const response = await axios.post(
@@ -150,9 +150,12 @@ const FirebaseAuthProvider = ({children}) => {
           email,
           password,
           passwordConfirm,
+          role,
         },
       );
       message.success(response.data.status)
+      // location.reload()
+      dispatch({type: FETCH_SUCCESS});
     //    try {
     //   const {user} = await auth.createUserWithEmailAndPassword(email, password);
     //   await auth.currentUser.sendEmailVerification({
