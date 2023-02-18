@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import IntlMessages from '@crema/utility/IntlMessages';
 
-const MainTable = ({cols, datas, onEdit, onDelete}) => {
+const MainTable = ({cols, datas, onEdit, onDelete, ...otherProps}) => {
   const {confirm} = Modal;
 
   const showDeleteConfirm = (record) => {
@@ -29,7 +29,7 @@ const MainTable = ({cols, datas, onEdit, onDelete}) => {
     ...cols,
     {
       key: cols.length + 1,
-      title: <IntlMessages id="common.actions" />,
+      title: <IntlMessages id='common.actions' />,
       width: 82,
       fixed: 'right',
       ellipsis: true,
@@ -53,7 +53,12 @@ const MainTable = ({cols, datas, onEdit, onDelete}) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={datas} scroll={{x: true}} />
+      <Table
+        columns={columns}
+        dataSource={datas}
+        scroll={{x: true}}
+        {...otherProps}
+      />
     </>
   );
 };

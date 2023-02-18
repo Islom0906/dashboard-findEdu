@@ -12,6 +12,7 @@ import {
   Space,
 } from 'antd';
 import React, {useEffect, useMemo, useState} from 'react';
+import ReactHtmlParser from 'react-render-html';
 import MainTable from 'components/Table';
 
 import apiService from '../../../service/api';
@@ -35,6 +36,11 @@ const formatFetchedItems = (items) => {
     phone: item.phone,
     photo: item.photo,
     online_exist: item.isOnlineExists,
+    description: [
+      item.description_Uz,
+      item.description_Ru,
+      item.description_En,
+    ],
   }));
 };
 const cellRenderer = (text, isTelnumber) =>
@@ -219,6 +225,19 @@ const Page1 = () => {
           cols={columns}
           onEdit={editHandler}
           onDelete={deleteItem}
+          expandable={{
+            expandedRowRender: (record) => {
+              const languages = ['(Uz)', '(Ru)', '(En)'];
+              return record.description.map((item, index) => {
+                return (
+                  <div key={index}>
+                    {languages[index]}: {ReactHtmlParser(item)}
+                  </div>
+                );
+              });
+            },
+            rowExpandable: (record) => record.name !== 'Not Expandable',
+          }}
         />
       </Spin>
     </>
