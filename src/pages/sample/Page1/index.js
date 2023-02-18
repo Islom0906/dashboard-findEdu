@@ -53,7 +53,7 @@ const cellRenderer = (text, isTelnumber) =>
       ))
     ) : (
       <Tooltip title={text}>
-        <Typography.Text style={{maxWidth: 150}} ellipsis>
+        <Typography.Text style={{maxWidth: 130}} ellipsis>
           {text}
         </Typography.Text>
       </Tooltip>
@@ -127,7 +127,12 @@ const columns = [
 ];
 
 const search = (query, list) =>
-  list.filter((item) => item.name_Uz.toLowerCase().includes(query));
+  list.filter(
+    (item) =>
+      item.name_Uz.toLowerCase().includes(query) ||
+      item.name_Ru.toLowerCase().includes(query) ||
+      item.name_En.toLowerCase().includes(query),
+  );
 
 /* Component ============================= */
 const Page1 = () => {
@@ -163,7 +168,7 @@ const Page1 = () => {
   const deleteItem = async ({key: itemId}) => {
     try {
       await apiService.deleteData('/edu', itemId);
-      message.success(`${(<IntlMessages id='common.deletedSuccesfully' />)}`);
+      message.success('Deleted successfully');
       getItems();
     } catch (error) {
       message.error(error.message);
