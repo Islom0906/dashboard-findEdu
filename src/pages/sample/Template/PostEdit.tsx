@@ -1,33 +1,43 @@
 import {UploadOutlined} from '@ant-design/icons';
-import IntlMessages from '@crema/utility/IntlMessages';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
-import apiService from 'service/api';
-import {setLoading, setVisible} from './ReducerActions';
+import apiService from '../../../service/api';
+import {setLoading, setVisible} from './ReducerActions.ts';
+import {itemType, photoType, PostEditPropType} from './Types';
+import {UploadFile} from 'antd/lib/upload/interface';
 
-function PostEdit({title, page, state, getItems, dispatch}) {
+function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
   // STATES
-  const [editItem, setEditItem] = useState({});
-  const [photo, setPhoto] = useState();
-  const [src, setSrc] = useState();
+
+  const [editItem, setEditItem] = useState<itemType>({
+    _id: '',
+    name_En: '',
+    name_Ru: '',
+    name_Uz: '',
+    photo: '',
+  });
+  const [photo, setPhoto] = useState<photoType>();
+  const [src, setSrc] = useState<string>();
   const [form] = Form.useForm();
   //USEEFFECTS
-  console.log(editItem);
 
-  useEffect(async () => {
-    if (!photo || !photo.fileList.length) return setSrc();
+  useEffect(() => {
+    (async function () {
+      if (!photo || !photo.fileList.length) return setSrc('');
 
-    let src = photo.file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(photo.file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    setSrc(src);
+      let src = photo.file.url;
+      if (!src) {
+        src = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(photo.file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+      setSrc(src);
+    })();
   }, [photo]);
 
   useEffect(() => {
@@ -38,7 +48,7 @@ function PostEdit({title, page, state, getItems, dispatch}) {
   useEffect(() => {
     form.resetFields();
     if (!state.editItemId) {
-      setEditItem({});
+      setEditItem({_id: '', name_En: '', name_Ru: '', name_Uz: '', photo: ''});
       return setSrc('');
     }
     dispatch(setLoading({...state.loading, modal: true}));
@@ -51,13 +61,13 @@ function PostEdit({title, page, state, getItems, dispatch}) {
     });
   }, [state.editItemId]);
 
-  const postItem = (data) => {
-    const formData = new FormData();
+  const postItem = (data: itemType) => {
+    const formData: FormData = new FormData();
     data.name_Uz && formData.append('name_Uz', data.name_Uz);
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
     data.name_En && formData.append('name_En', data.name_En);
     photo?.fileList?.length &&
-      formData.append('photo', photo['file'].originFileObj);
+      formData.append('photo', photo.file.originFileObj);
     dispatch(setLoading({...state.loading, modal: true}));
 
     apiService[editItem._id ? 'editData' : 'postData'](
@@ -72,8 +82,8 @@ function PostEdit({title, page, state, getItems, dispatch}) {
         message.success('Succesfuly posted', 2);
         if (!editItem._id) {
           form.resetFields();
-          setPhoto();
-          setSrc();
+          setPhoto(undefined);
+          setSrc('');
         }
         dispatch(setVisible(false));
         getItems();
@@ -89,23 +99,25 @@ function PostEdit({title, page, state, getItems, dispatch}) {
   };
 
   //UPLOAD DRAGGER FUNCTIONS
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(photo.file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+  const onPreview = (file: any) => {
+    (async function () {
+      let src = file.url;
+      if (!src && photo) {
+        src = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(photo.file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+      const image = new Image();
+      image.src = src;
+      const imgWindow = window.open(src);
+      imgWindow?.document.write(image.outerHTML);
+    })();
   };
 
-  const onChange = (photo) => {
-    photo.fileList.forEach((el) => (el.status = 'done'));
+  const onChange = (photo: photoType) => {
+    photo.fileList.forEach((el: UploadFile) => (el.status = 'done'));
 
     setPhoto(photo);
   };

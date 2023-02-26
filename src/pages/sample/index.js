@@ -7,6 +7,6 @@ export const samplePagesConfigs = [
   },
   {
     path: '/sample/:page',
-    component: React.lazy(() => import('./Template')),
+    component: React.lazy(() => import('./Template/index.tsx')),
   },
 ];

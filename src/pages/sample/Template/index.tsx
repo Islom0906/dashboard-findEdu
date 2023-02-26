@@ -10,21 +10,22 @@ import {
   Space,
   Spin,
 } from 'antd';
-import MainTable from 'components/Table';
-import React, {useEffect, useMemo, useReducer} from 'react';
+import MainTable from '../../../components/Table';
+import {useEffect, useMemo, useReducer} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import PostEdit from './PostEdit';
-import apiService from 'service/api';
+import PostEdit from './PostEdit.tsx';
+import apiService from '../../../service/api';
 import {
   setEditItemId,
   setInput,
   setItems,
   setLoading,
   setVisible,
-} from './ReducerActions';
-import IntlMessages from '@crema/utility/IntlMessages';
+} from './ReducerActions.ts';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
+import {itemType, states} from './Types';
 
-function reducer(state, action) {
+function reducer(state: states, action: {type: string; payload: any}) {
   switch (action.type) {
     case 'SET_ITEMS':
       return {...state, items: action.payload};
@@ -49,13 +50,13 @@ const Page2 = () => {
     loading: {table: false, modal: false},
     items: [],
   });
-  const {state: linkState} = useLocation();
-  const {page} = useParams();
+  const {state: linkState}: {state: {title: string}} = useLocation();
+  const {page}: {page: string} = useParams();
 
   const filteredItems = useMemo(
     () =>
       state.items.filter(
-        (item) =>
+        (item: itemType) =>
           item.name_En?.toLowerCase().includes(state.input) ||
           item.name_Ru?.toLowerCase().includes(state.input) ||
           item.name_Uz?.toLowerCase().includes(state.input),
@@ -72,7 +73,7 @@ const Page2 = () => {
       dispatch(setItems(res.data));
     });
   };
-  const deleteItem = ({_id: id}) => {
+  const deleteItem = ({_id: id}: {_id: string}) => {
     dispatch(setLoading({...state.loading, table: true}));
     apiService
       .deleteData(`/${page}`, id)
@@ -88,7 +89,7 @@ const Page2 = () => {
       });
   };
 
-  const editBtn = (item) => {
+  const editBtn = (item: itemType) => {
     dispatch(setEditItemId(item._id));
     dispatch(setVisible(true));
   };
@@ -118,7 +119,7 @@ const Page2 = () => {
       title: <IntlMessages id='common.image' />,
       dataIndex: 'photo',
       width: 80,
-      render: (imgUrl) => {
+      render: (imgUrl: string) => {
         return imgUrl && imgUrl !== 'undefined' ? (
           <Image
             src={`http://18.216.178.179/api/v1/img/${imgUrl}`}
