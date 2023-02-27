@@ -13,7 +13,7 @@ import {
 import MainTable from '../../../components/Table';
 import {useEffect, useMemo, useReducer} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import PostEdit from './PostEdit.tsx';
+import PostEdit from './PostEdit';
 import apiService from '../../../service/api';
 import {
   setEditItemId,
@@ -21,7 +21,7 @@ import {
   setItems,
   setLoading,
   setVisible,
-} from './ReducerActions.ts';
+} from './ReducerActions';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {itemType, states} from './Types';
 

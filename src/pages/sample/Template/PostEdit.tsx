@@ -5,9 +5,19 @@ import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import apiService from '../../../service/api';
-import {setLoading, setVisible} from './ReducerActions.ts';
+import {setLoading, setVisible} from './ReducerActions';
 import {itemType, photoType, PostEditPropType} from './Types';
 import {UploadFile} from 'antd/lib/upload/interface';
+
+function loadImage(photo: any): any {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      resolve(reader.result);
+    });
+    photo.file && reader.readAsDataURL(photo);
+  });
+}
 
 function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
   // STATES
@@ -30,11 +40,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
 
       let src = photo.file.url;
       if (!src) {
-        src = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(photo.file.originFileObj);
-          reader.onload = () => resolve(reader.result);
-        });
+        src = await loadImage(photo.file.originFileObj);
       }
       setSrc(src);
     })();
@@ -67,6 +73,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
     data.name_Ru && formData.append('name_Ru', data.name_Ru);
     data.name_En && formData.append('name_En', data.name_En);
     photo?.fileList?.length &&
+      photo.file.originFileObj &&
       formData.append('photo', photo.file.originFileObj);
     dispatch(setLoading({...state.loading, modal: true}));
 
@@ -103,11 +110,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
     (async function () {
       let src = file.url;
       if (!src && photo) {
-        src = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(photo.file.originFileObj);
-          reader.onload = () => resolve(reader.result);
-        });
+        src = await loadImage(photo.file.originFileObj);
       }
       const image = new Image();
       image.src = src;
