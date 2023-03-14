@@ -15,7 +15,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import ReactHtmlParser from 'react-render-html';
 import MainTable from 'components/Table';
 
-import apiService from '../../../service/api';
+import apiService from 'service/api';
 import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,

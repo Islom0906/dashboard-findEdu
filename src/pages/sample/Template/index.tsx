@@ -23,9 +23,9 @@ import {
   setVisible,
 } from './ReducerActions';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import {itemType, states} from './Types';
+import {appActionType, appStateType, itemType} from './Types';
 
-function reducer(state: states, action: {type: string; payload: any}) {
+function reducer(state: appStateType, action: appActionType): appStateType {
   switch (action.type) {
     case 'SET_ITEMS':
       return {...state, items: action.payload};

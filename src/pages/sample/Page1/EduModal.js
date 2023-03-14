@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import apiService from 'service/api';
 
-import './style.css'
+import './style.css';
 
 // function htmlToString(htmlString) {
 //   const div = document.createElement('div');

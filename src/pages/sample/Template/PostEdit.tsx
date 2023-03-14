@@ -4,31 +4,27 @@ import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
-import apiService from '../../../service/api';
 import {setLoading, setVisible} from './ReducerActions';
 import {itemType, photoType, PostEditPropType} from './Types';
 import {UploadFile} from 'antd/lib/upload/interface';
+import apiService from 'service/api';
 
 function loadImage(photo: any): any {
   return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () => {
+    photo && reader.readAsDataURL(photo);
+    reader.onload = () => {
+      console.log(reader.result);
+
       resolve(reader.result);
-    });
-    photo.file && reader.readAsDataURL(photo);
+    };
   });
 }
 
 function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
   // STATES
 
-  const [editItem, setEditItem] = useState<itemType>({
-    _id: '',
-    name_En: '',
-    name_Ru: '',
-    name_Uz: '',
-    photo: '',
-  });
+  const [editItem, setEditItem] = useState<itemType | null>(null);
   const [photo, setPhoto] = useState<photoType>();
   const [src, setSrc] = useState<string>();
   const [form] = Form.useForm();
@@ -54,7 +50,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
   useEffect(() => {
     form.resetFields();
     if (!state.editItemId) {
-      setEditItem({_id: '', name_En: '', name_Ru: '', name_Uz: '', photo: ''});
+      setEditItem(null);
       return setSrc('');
     }
     dispatch(setLoading({...state.loading, modal: true}));
@@ -76,18 +72,19 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
       photo.file.originFileObj &&
       formData.append('photo', photo.file.originFileObj);
     dispatch(setLoading({...state.loading, modal: true}));
+    console.log(photo?.file.originFileObj);
 
-    apiService[editItem._id ? 'editData' : 'postData'](
+    apiService[editItem?._id ? 'editData' : 'postData'](
       `/${page}`,
       formData,
-      editItem._id,
+      editItem?._id,
     )
       .finally(() => {
         dispatch(setLoading({...state.loading, modal: false}));
       })
       .then(() => {
         message.success('Succesfuly posted', 2);
-        if (!editItem._id) {
+        if (!editItem?._id) {
           form.resetFields();
           setPhoto(undefined);
           setSrc('');

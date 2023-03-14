@@ -42,7 +42,7 @@ const AppLayout = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <div className='app-container'>
       {isAuthenticated ? (
         <AppLayout />
       ) : (
@@ -52,7 +52,7 @@ const AppLayout = () => {
           </AppScrollbar>
         </Layout>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
