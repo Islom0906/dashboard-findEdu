@@ -1,11 +1,18 @@
 import axios from './axios';
 
-export type ApiServiceType = {};
+export type ApiServiceType = {
+  userLogin: (url: string, user: any) => Promise<any>;
+  getData: (url: string) => Promise<any>;
+  getDataByID: (url: string, id: string) => Promise<any>;
+  postData: (url: string, formData: FormData) => Promise<void>;
+  editData: (url: string, formData: FormData, id: string) => Promise<void>;
+  deleteData: (url: string, id: string) => Promise<void>;
+};
 
 const apiService: ApiServiceType = {
   // user log qilishi uchun url va user malumotlari jonatiladi
   async userLogin(url: string, user: any) {
-    const {data}: any = axios.post(url, user);
+    const {data}: any = await axios.post(url, user);
     return data;
   },
   // malutmotlarni get qilish uchun url beriladi

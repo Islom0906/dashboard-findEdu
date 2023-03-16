@@ -77,7 +77,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
     apiService[editItem?._id ? 'editData' : 'postData'](
       `/${page}`,
       formData,
-      editItem?._id,
+      editItem?._id || '',
     )
       .finally(() => {
         dispatch(setLoading({...state.loading, modal: false}));
