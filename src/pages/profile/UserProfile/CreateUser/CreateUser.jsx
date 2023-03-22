@@ -16,25 +16,28 @@ const CreateUser = () => {
   const dispatch = useDispatch();
   const {messages} = useIntl();
   const {createUserWithEmailAndPassword} = useAuthMethod();
+  const [form] = Form.useForm();
+  const [form2] = Form.useForm();
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const handleOk = async () => {
     setConfirmLoading(true);
-    try{
+    try {
       const response = await axios.post(
         'http://18.221.130.228/auth/otpValidation',
         {
           email: otpEmailRef.current?.state?.value,
           otp: otpRef.current?.state?.value,
         },
-      )
-      message.success(response.data?.message)
+      );
+      message.success(response.data?.message);
       dispatch({type: IS_OPEN_FALSE});
       setConfirmLoading(false);
-    }
-    catch(error){
-      message.error(error.response?.data?.message)
+      form.resetFields();
+      form2.resetFields();
+    } catch (error) {
+      message.error(error.response?.data?.message);
       setConfirmLoading(false);
     }
   };
@@ -50,7 +53,8 @@ const CreateUser = () => {
           className='signup-form'
           name='basic'
           initialValues={{remember: true}}
-          onFinish={createUserWithEmailAndPassword}>
+          onFinish={createUserWithEmailAndPassword}
+          form={form}>
           <Form.Item
             name='name'
             className='form-field'
@@ -124,18 +128,24 @@ const CreateUser = () => {
       </div>
 
       <Modal
-        title='Title'
+        title={messages['common.otpTitle']}
         visible={useSelector((state) => state.modal.isOpen)}
         confirmLoading={confirmLoading}
         onOk={handleOk}
         onCancel={handleCancel}>
-        <Input
-          value={emailRef?.current?.state?.value}
-          placeholder={messages['common.email']}
-          ref={otpEmailRef}
-        />
-
-        <Input placeholder={messages['common.otp']} ref={otpRef}/>
+        <Form form={form2}>
+          <Form.Item>
+            <Input
+              value={emailRef?.current?.state?.value}
+              placeholder={messages['common.email']}
+              ref={otpEmailRef}
+            />
+          </Form.Item>
+          <Form.Item
+          name='otp'>
+            <Input placeholder={messages['common.otp']} ref={otpRef} />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

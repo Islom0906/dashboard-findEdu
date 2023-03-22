@@ -247,6 +247,8 @@
   "faq.pricing": "Pricing",
   "faq.licenseTypes": "License Types",
   "faq.support": "Support",
+  "common.otp" : "OTP",
+  "common.otpTitle" : "OTP Validatsiya",
   "common.send": "Send",
   "common.receive": "Receive",
   "common.june": "June",
