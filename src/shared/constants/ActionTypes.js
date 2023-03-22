@@ -20,6 +20,10 @@ export const SIGNOUT_AUTH_SUCCESS = 'signout_auth_success';
 export const LOGIN = 'login';
 export const LOGOUT = 'logout';
 
+//CREATE_NEW_USER
+export const IS_OPEN_TRUE = 'is_open_true'
+export const IS_OPEN_FALSE = 'is_opsn_false'
+
 //ANALYTICS-DASHBOARD
 export const GET_ANALYTICS_DATA = 'get_analytics_data';
 
