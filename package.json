@@ -79,6 +79,7 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "reqwest": "^2.0.5",
+    "sass": "^1.59.3",
     "simplebar-react": "^2.3.6",
     "slick-carousel": "^1.8.1",
     "use-url-search-params": "^2.3.13",
@@ -113,6 +114,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
+    "@types/react-router-dom": "^5.3.3",
     "babel-eslint": "^10.1.0",
     "commitlint-config-jira": "^1.5.1",
     "commitlint-plugin-jira-rules": "^1.5.1",

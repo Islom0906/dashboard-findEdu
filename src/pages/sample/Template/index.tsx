@@ -23,7 +23,7 @@ import {
   setVisible,
 } from './ReducerActions';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import {appActionType, appStateType, itemType} from './Types';
+import {appActionType, appStateType, imageType, itemType} from './Types';
 
 function reducer(state: appStateType, action: appActionType): appStateType {
   switch (action.type) {
@@ -57,9 +57,9 @@ const Page2 = () => {
     () =>
       state.items.filter(
         (item: itemType) =>
-          item.name_En?.toLowerCase().includes(state.input) ||
-          item.name_Ru?.toLowerCase().includes(state.input) ||
-          item.name_Uz?.toLowerCase().includes(state.input),
+          item.name_en?.toLowerCase().includes(state.input) ||
+          item.name_ru?.toLowerCase().includes(state.input) ||
+          item.name_uz?.toLowerCase().includes(state.input),
       ),
     [state.input, state.items],
   );
@@ -67,12 +67,14 @@ const Page2 = () => {
   const getItems = () => {
     dispatch(setItems([]));
     dispatch(setLoading({...state.loading, table: true}));
-
+    dispatch(setEditItemId(''));
+    
     apiService.getData(`/${page}`).then((res) => {
       dispatch(setLoading({...state.loading, table: false}));
       dispatch(setItems(res.data));
     });
   };
+
   const deleteItem = ({_id: id}: {_id: string}) => {
     dispatch(setLoading({...state.loading, table: true}));
     apiService
@@ -101,28 +103,28 @@ const Page2 = () => {
   const columns = [
     {
       key: 1,
-      dataIndex: 'name_Uz',
+      dataIndex: 'name_uz',
       title: <IntlMessages id='common.nameUzTitle' />,
     },
     {
       key: 2,
-      dataIndex: 'name_En',
+      dataIndex: 'name_en',
       title: <IntlMessages id='common.nameEnTitle' />,
     },
     {
       key: 3,
-      dataIndex: 'name_Ru',
+      dataIndex: 'name_ru',
       title: <IntlMessages id='common.nameRuTitle' />,
     },
     {
       key: 4,
       title: <IntlMessages id='common.image' />,
-      dataIndex: 'photo',
+      dataIndex: 'image',
       width: 80,
-      render: (imgUrl: string) => {
-        return imgUrl && imgUrl !== 'undefined' ? (
+      render: (imgUrl: imageType) => {
+        return imgUrl && imgUrl !== null ? (
           <Image
-            src={`http://18.216.178.179/api/v1/img/${imgUrl}`}
+            src={`http://18.221.130.228/file/${imgUrl?.path}`}
             style={{height: 40, width: 40, objectFit: 'cover'}}
             preview={{
               maskClassName: 'customize-mask',
