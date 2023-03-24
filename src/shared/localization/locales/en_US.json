@@ -220,6 +220,8 @@
   "faq.pricing": "Pricing",
   "faq.licenseTypes": "License Types",
   "faq.support": "Support",
+  "common.otp" : "OTP",
+    "common.otpTitle" : "OTP Validation",
   "common.send": "Send",
   "common.receive": "Receive",
   "common.june": "June",

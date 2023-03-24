@@ -10,7 +10,7 @@ import {HiUserAdd} from 'react-icons/hi';
 
 // import accountData from '../../../@crema/services/db/extraPages/account';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import SignupFirebase from 'pages/auth/Signup/SignupFirebase';
+import CreateUser from './CreateUser/CreateUser';
 
 const UserProfile = () => {
   const TabPane = Tabs.TabPane;
@@ -54,7 +54,7 @@ const UserProfile = () => {
             </span>
           }
           key='3'>
-            <SignupFirebase />
+          <CreateUser />
         </TabPane>
       </Tabs>
     </div>
