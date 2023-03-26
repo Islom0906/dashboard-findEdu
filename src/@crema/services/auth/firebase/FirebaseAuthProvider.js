@@ -109,7 +109,7 @@ const FirebaseAuthProvider = ({children}) => {
     } else {
       try {
         const response = await axios.post(
-          'http://18.221.130.228/auth/login',
+          'http://3.138.61.64/auth/login',
           {
             email,
             password,
@@ -150,7 +150,7 @@ const FirebaseAuthProvider = ({children}) => {
     dispatch({type: FETCH_START});
     try{
       const response = await axios.post(
-        'http://18.221.130.228/auth/register',
+        'http://3.138.61.64/auth/register',
         {
           name,
           email,

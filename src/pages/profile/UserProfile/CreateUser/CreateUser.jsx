@@ -25,7 +25,7 @@ const CreateUser = () => {
     setConfirmLoading(true);
     try {
       const response = await axios.post(
-        'http://18.221.130.228/auth/otpValidation',
+        'http://3.138.61.64/auth/otpValidation', 
         {
           email: otpEmailRef.current?.state?.value,
           otp: otpRef.current?.state?.value,
