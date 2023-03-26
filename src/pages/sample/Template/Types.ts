@@ -17,13 +17,18 @@ export type appActionType = {
 export type appLoadingType = {table: boolean; modal: boolean};
 
 export type itemType = {
-  name_Uz: string;
-  name_Ru: string;
-  name_En: string;
+  name_uz: string;
+  name_ru: string;
+  name_en: string;
   photo: string;
   _id: string;
   id?: string;
 };
+
+export type imageType = {
+  _id: string,
+  path: string
+}
 
 export type PostEditPropType = {
   title: string;

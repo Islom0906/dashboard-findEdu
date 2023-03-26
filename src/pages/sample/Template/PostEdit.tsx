@@ -8,6 +8,9 @@ import {setLoading, setVisible} from './ReducerActions';
 import {itemType, photoType, PostEditPropType} from './Types';
 import {UploadFile} from 'antd/lib/upload/interface';
 import apiService from 'service/api';
+import scss from '../main.module.scss'
+import axios from 'axios';
+
 
 function loadImage(photo: any): any {
   return new Promise((resolve) => {
@@ -21,12 +24,13 @@ function loadImage(photo: any): any {
   });
 }
 
-function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
+function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
   // STATES
 
   const [editItem, setEditItem] = useState<itemType | null>(null);
   const [photo, setPhoto] = useState<photoType>();
   const [src, setSrc] = useState<string>();
+  const [image, setImage] = useState<string>('')
   const [form] = Form.useForm();
   //USEEFFECTS
 
@@ -55,30 +59,46 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
     }
     dispatch(setLoading({...state.loading, modal: true}));
 
-    apiService.getDataByID(`/${page}`, state.editItemId).then((res) => {
+    apiService.getDataByID(`${page}`, state.editItemId).then((res) => {
       dispatch(setLoading({...state.loading, modal: false}));
-
-      setEditItem(res.data);
-      setSrc(`http://18.216.178.179/api/v1/img/${res.data.photo}`);
+      setEditItem(res);
+      setSrc(`http://18.221.130.228/file/${res?.image?.path}`);
+      setImage(res.image)
     });
   }, [state.editItemId]);
 
   const postItem = (data: itemType) => {
-    const formData: FormData = new FormData();
-    data.name_Uz && formData.append('name_Uz', data.name_Uz);
-    data.name_Ru && formData.append('name_Ru', data.name_Ru);
-    data.name_En && formData.append('name_En', data.name_En);
-    photo?.fileList?.length &&
-      photo.file.originFileObj &&
-      formData.append('photo', photo.file.originFileObj);
     dispatch(setLoading({...state.loading, modal: true}));
-    console.log(photo?.file.originFileObj);
 
-    apiService[editItem?._id ? 'editData' : 'postData'](
-      `/${page}`,
-      formData,
-      editItem?._id || '',
-    )
+    if(editItem?._id){
+      
+      axios.patch(`http://18.221.130.228/${page}/${editItem?._id}`, {
+        name_uz: data.name_uz,
+        name_ru: data.name_ru,
+        name_en: data.name_en,
+        image: image
+      }).finally(() => {
+        dispatch(setLoading({...state.loading, modal: false}));
+      })
+      .then(() => {
+        message.success('Succesfuly posted', 2);
+        form.resetFields();
+        setPhoto(undefined);
+        setSrc('');
+        dispatch(setVisible(false));
+        getItems();
+        setImage('')
+      })
+      .catch((err) => {
+        message.error(err.message, 3);
+      });
+    }else {
+      axios.post(`http://18.221.130.228/${page}`, {
+      name_uz: data.name_uz,
+      name_ru: data.name_ru,
+      name_en: data.name_en,
+      image: image
+    })
       .finally(() => {
         dispatch(setLoading({...state.loading, modal: false}));
       })
@@ -91,10 +111,12 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
         }
         dispatch(setVisible(false));
         getItems();
+        setImage('')
       })
       .catch((err) => {
         message.error(err.message, 3);
       });
+    }
   };
 
   // Handlers
@@ -109,6 +131,7 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
       if (!src && photo) {
         src = await loadImage(photo.file.originFileObj);
       }
+
       const image = new Image();
       image.src = src;
       const imgWindow = window.open(src);
@@ -118,108 +141,109 @@ function PostEdit({title, page, state, getItems, dispatch}: PostEditPropType) {
 
   const onChange = (photo: photoType) => {
     photo.fileList.forEach((el: UploadFile) => (el.status = 'done'));
-
     setPhoto(photo);
+
+    const formData: FormData = new FormData()
+    photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
+    console.log(photo?.file.originFileObj);
+
+    axios.post('http://18.221.130.228/file', formData).then(res => {
+      setImage(res.data)
+      console.log(res.data)
+    })
   };
 
   const onRemove = () => {};
 
   return (
     <Modal
-      onCancel={() => {
-        dispatch(setVisible(false));
-      }}
-      onOk={form.submit}
-      okText={<IntlMessages id='common.submit' />}
-      visible={state.visible}
-      style={{top: 50}}
-      title={title}
-      width={600}>
-      <Spin spinning={state.loading.modal}>
-        <Form
-          form={form}
-          onFinish={handleSubmit}
-          labelCol={{span: 5}}
-          // wrapperCol={{span: 16}}
-        >
-          <Form.Item
-            name='name_En'
-            label={<IntlMessages id='common.nameEn' />}
-            rules={[
-              {
-                required: true,
-                message: <IntlMessages id='common.enterNameRu' />,
-              },
-            ]}
-            hasFeedback>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='name_Uz'
-            label={<IntlMessages id='common.nameUz' />}
-            rules={[
-              {
-                required: true,
-                message: <IntlMessages id='common.enterNameRu' />,
-              },
-            ]}
-            hasFeedback>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='name_Ru'
-            label={<IntlMessages id='common.nameRu' />}
-            rules={[
-              {
-                required: true,
-                message: <IntlMessages id='common.enterNameRu' />,
-              },
-            ]}
-            hasFeedback>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='photo'
-            rules={[
-              {
-                validator: () => {
-                  if (state.editItemId || photo?.fileList.length)
-                    return Promise.resolve();
+        title='Enter languae name'
+        width={800}
+        centered={true}
+        footer={null}
+        visible={state.visible}
+        onCancel={() => {
+          dispatch(setVisible(false));
+        }}
+        onOk={form.submit}>
+        <Spin spinning={state.loading.modal}>
+          <Form
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') form.submit();
+            }}
+            onFinish={handleSubmit}
+            form={form}
+            // onFinishFailed={result}
+            layout='vertical'
+            className={scss.form}>
+            <Form.Item
+              name='name_uz'
+              label='Name in Uzbek'
+              rules={[
+                {required: true, message: <IntlMessages id='common.enterNameUz' />,},
+              ]}
+              hasFeedback>
+              <Input placeholder='Enter the name in Uzbek' />
+            </Form.Item>
 
-                  return Promise.reject(
-                    <IntlMessages id='common.uploadImage' />,
-                  );
-                },
-              },
-            ]}>
+            <Form.Item
+              name='name_en'
+              label='Name in English'
+              rules={[
+                {required: true, message: <IntlMessages id='common.enterNameEn' />,},
+              ]}
+              hasFeedback>
+              <Input placeholder='Enter the name in English' />
+            </Form.Item>
+
+            <Form.Item
+              name='name_ru'
+              label='Name in Russian'
+              rules={[
+                {required: true, message: <IntlMessages id='common.enterNameRu' />,},
+              ]}
+              hasFeedback>
+              <Input placeholder='Enter the name in Russian' />
+            </Form.Item>
+
+            <Form.Item name='photo' label='Image'>
             <ImgCrop rotate>
-              <Upload.Dragger
-                listType='picture'
-                maxCount={1}
-                accept='image/png, image/jpeg, image/jfif, image/svg'
-                height={200}
-                // beforeUpload={() => false}
-                onRemove={onRemove}
-                onPreview={onPreview}
-                onChange={onChange}>
-                {src ? (
-                  <img
-                    src={src}
-                    alt=''
-                    style={{
-                      height: '150px',
-                    }}
-                  />
-                ) : (
-                  <Button icon={<UploadOutlined />}>
-                    <IntlMessages id='common.clickToUpload' />
-                  </Button>
-                )}
-              </Upload.Dragger>
-            </ImgCrop>
-          </Form.Item>
-        </Form>
-      </Spin>
+                <Upload.Dragger
+                  listType='picture'
+                  maxCount={1}
+                  accept='image/png, image/jpeg'
+                  onPreview={onPreview}
+                  onChange={onChange}
+                  onRemove={onRemove}>
+                    {
+                      src ? (
+                        <img src={src} alt='' style={{ height: '150px' }}/>
+                      ) : 
+                      <>
+                        Drag file here OR <br />
+                        <Button icon={<UploadOutlined />} className={scss.upload}>
+                          Click to Upload
+                        </Button>
+                      </>
+                    }
+                </Upload.Dragger>
+              </ImgCrop>
+            </Form.Item>
+
+            <Form.Item className={scss.buttons}>
+              <Button
+                danger
+                htmlType='button'
+                onClick={() => {
+                  dispatch(setVisible(false));
+                }}
+                className={scss.button}>
+                Cencel
+              </Button>
+              <Button type='primary' className={scss.button} htmlType='submit'>Submit</Button>
+            </Form.Item>
+          </Form>
+        </Spin>
     </Modal>
   );
 }
