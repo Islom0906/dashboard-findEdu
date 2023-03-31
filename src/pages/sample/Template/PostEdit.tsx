@@ -62,7 +62,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     apiService.getDataByID(`${page}`, state.editItemId).then((res) => {
       dispatch(setLoading({...state.loading, modal: false}));
       setEditItem(res);
-      setSrc(`http://18.221.130.228/file/${res?.image?.path}`);
+      setSrc(`http://3.138.61.64/file/${res?.image?.path}`);
       setImage(res.image)
     });
   }, [state.editItemId]);
@@ -72,7 +72,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
 
     if(editItem?._id){
       
-      axios.patch(`http://18.221.130.228/${page}/${editItem?._id}`, {
+      axios.patch(`http://3.138.61.64/${page}/${editItem?._id}`, {
         name_uz: data.name_uz,
         name_ru: data.name_ru,
         name_en: data.name_en,
@@ -93,7 +93,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
         message.error(err.message, 3);
       });
     }else {
-      axios.post(`http://18.221.130.228/${page}`, {
+      axios.post(`http://3.138.61.64/${page}`, {
       name_uz: data.name_uz,
       name_ru: data.name_ru,
       name_en: data.name_en,
@@ -147,7 +147,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
     console.log(photo?.file.originFileObj);
 
-    axios.post('http://18.221.130.228/file', formData).then(res => {
+    axios.post('http://3.138.61.64/file', formData).then(res => {
       setImage(res.data)
       console.log(res.data)
     })

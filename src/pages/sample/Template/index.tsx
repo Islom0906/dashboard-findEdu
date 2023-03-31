@@ -55,11 +55,11 @@ const Page2 = () => {
 
   const filteredItems = useMemo(
     () =>
-      state.items.filter(
+      state?.items?.filter(
         (item: itemType) =>
-          item.name_en?.toLowerCase().includes(state.input) ||
-          item.name_ru?.toLowerCase().includes(state.input) ||
-          item.name_uz?.toLowerCase().includes(state.input),
+          item.name_en?.toLowerCase()?.includes(state.input) ||
+          item.name_ru?.toLowerCase()?.includes(state.input) ||
+          item.name_uz?.toLowerCase()?.includes(state.input),
       ),
     [state.input, state.items],
   );
@@ -124,7 +124,7 @@ const Page2 = () => {
       render: (imgUrl: imageType) => {
         return imgUrl && imgUrl !== null ? (
           <Image
-            src={`http://18.221.130.228/file/${imgUrl?.path}`}
+            src={`http://3.138.61.64/file/${imgUrl?.path}`}
             style={{height: 40, width: 40, objectFit: 'cover'}}
             preview={{
               maskClassName: 'customize-mask',
