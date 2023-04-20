@@ -1,11 +1,18 @@
 import axios from './axios';
 
+export type formDataType = {
+  name_uz: string;
+  name_ru: string;
+  name_en: string;
+  image: string;
+}
+
 export type ApiServiceType = {
   userLogin: (url: string, user: any) => Promise<any>;
   getData: (url: string) => Promise<any>;
   getDataByID: (url: string, id: string) => Promise<any>;
-  postData: (url: string, formData: FormData) => Promise<void>;
-  editData: (url: string, formData: FormData, id: string) => Promise<void>;
+  postData: (url: string, formData: formDataType | FormData) => Promise<void>;
+  editData: (url: string, formData: formDataType, id: string) => Promise<void>;
   deleteData: (url: string, id: string) => Promise<void>;
 };
 
@@ -29,12 +36,12 @@ const apiService: ApiServiceType = {
   },
   // malutmotni post qilish uchun url va yaratilgan malumot beriladi
   // url / boshlansin yani /edu shunga oxshagan
-  async postData(url: string, formData: FormData) {
+  async postData(url: string, formData: formDataType | FormData) {
     await axios.post(url, formData);
   },
   // malutmotni edit qilish uchun url,id va yaratilgan malumot beriladi
   // url / boshlansin yani /edu shunga oxshagan
-  async editData(url: string, formData: FormData, id: string) {
+  async editData(url: string, formData: formDataType, id: string) {
     await axios.patch(`${url}/${id}`, formData);
   },
   // malutmotni delete qilish uchun url va id  beriladi

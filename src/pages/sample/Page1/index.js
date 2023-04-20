@@ -43,6 +43,7 @@ const formatFetchedItems = (items) => {
     ],
   }));
 };
+
 const cellRenderer = (text, isTelnumber) =>
   text && text?.length && text?.[0] ? (
     isTelnumber ? (
@@ -62,7 +63,8 @@ const cellRenderer = (text, isTelnumber) =>
     <Typography.Text keyboard>
       <IntlMessages id='common.noDat' />
     </Typography.Text>
-  );
+);
+
 const columns = [
   {
     dataIndex: 'name_Uz',

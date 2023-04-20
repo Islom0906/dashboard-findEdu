@@ -3,7 +3,7 @@ import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {setLoading, setVisible} from './ReducerActions';
 import {itemType, photoType, PostEditPropType} from './Types';
 import {UploadFile} from 'antd/lib/upload/interface';
@@ -69,15 +69,14 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
 
   const postItem = (data: itemType) => {
     dispatch(setLoading({...state.loading, modal: true}));
-
-    if(editItem?._id){
-      
-      axios.patch(`http://3.138.61.64/${page}/${editItem?._id}`, {
+    if(editItem?._id){      
+      apiService.editData(`${page}`, {
         name_uz: data.name_uz,
         name_ru: data.name_ru,
         name_en: data.name_en,
         image: image
-      }).finally(() => {
+      }, editItem?._id)
+      .finally(() => {
         dispatch(setLoading({...state.loading, modal: false}));
       })
       .then(() => {
@@ -93,12 +92,12 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
         message.error(err.message, 3);
       });
     }else {
-      axios.post(`http://3.138.61.64/${page}`, {
-      name_uz: data.name_uz,
-      name_ru: data.name_ru,
-      name_en: data.name_en,
-      image: image
-    })
+      apiService.postData(`${page}`, {
+        name_uz: data.name_uz,
+        name_ru: data.name_ru,
+        name_en: data.name_en,
+        image: image
+      })
       .finally(() => {
         dispatch(setLoading({...state.loading, modal: false}));
       })
@@ -147,9 +146,10 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
     console.log(photo?.file.originFileObj);
 
-    axios.post('http://3.138.61.64/file', formData).then(res => {
-      setImage(res.data)
-      console.log(res.data)
+    axios.post('http://3.138.61.64/file', formData)
+    .then(res => {
+      console.log(res?.data)
+      setImage(res?.data)
     })
   };
 
