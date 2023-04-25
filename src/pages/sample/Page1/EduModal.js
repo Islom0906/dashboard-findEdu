@@ -17,14 +17,7 @@ import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import apiService from 'service/api';
-
 import './style.css';
-
-// function htmlToString(htmlString) {
-//   const div = document.createElement('div');
-//   div.innerHTML = htmlString;
-//   return div.textContent || div.innerText || '';
-// }
 
 const EduModal = ({
   visible,
@@ -103,9 +96,9 @@ const EduModal = ({
 
   const fillInFields = (values) => {
     const defaultValues = {
-      name_Uz: values.name_Uz,
-      name_Ru: values.name_Ru,
-      name_En: values.name_En,
+      name_uz: values.name_uz,
+      name_ru: values.name_ru,
+      name_en: values.name_en,
       mainAddress: values.mainAddress,
       phone:
         values.phone?.length && values.phone[0]
@@ -168,15 +161,6 @@ const EduModal = ({
     setPreviewVisible(false);
   };
 
-  // const getBase64 = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
-
   const getBase64 = (file) => {
     if (!file) {
       return Promise.resolve(null);
@@ -202,14 +186,6 @@ const EduModal = ({
     form
       .validateFields()
       .then((values) => {
-        // onCreate({
-        //   ...values,
-        //   descriptionUz: htmlToString(descriptionUz),
-        //   descriptionRu: htmlToString(descriptionRu),
-        //   descriptionEn: htmlToString(descriptionEn),
-        //   fileList,
-        // });
-
         postValues({
           ...values,
           descriptionUz: descriptionUz,
@@ -218,7 +194,6 @@ const EduModal = ({
           fileList,
         });
         resetAllFileds();
-        // closeMainModal();
       })
       .catch((err) => {
         err.errorFields.map((errItem) => {
@@ -226,10 +201,6 @@ const EduModal = ({
         });
       });
   };
-
-  // const closeMainModal = () => {
-  //   setIsModalVisible(false);
-  // };
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -278,9 +249,9 @@ const EduModal = ({
       : '';
 
     const formData = new FormData();
-    formData.append('name_Uz', data.name_Uz);
-    formData.append('name_Ru', data.name_Ru);
-    formData.append('name_En', data.name_En);
+    formData.append('name_uz', data.name_uz);
+    formData.append('name_ru', data.name_ru);
+    formData.append('name_en', data.name_en);
     formData.append('description_Uz', data.descriptionUz);
     formData.append('description_Ru', data.descriptionRu);
     formData.append('description_En', data.descriptionEn);
@@ -338,13 +309,13 @@ const EduModal = ({
         onOk={handleOk}>
         <Spin spinning={loading}>
           <Form form={form} layout='vertical'>
-            <Form.Item label='NameUz' name='name_Uz' rules={[{required: true}]}>
+            <Form.Item label='NameUz' name='name_uz' rules={[{required: true}]}>
               <Input />
             </Form.Item>
-            <Form.Item label='NameRu' name='name_Ru' rules={[{required: true}]}>
+            <Form.Item label='NameRu' name='name_ru' rules={[{required: true}]}>
               <Input />
             </Form.Item>
-            <Form.Item label='NameEn' name='name_En' rules={[{required: true}]}>
+            <Form.Item label='NameEn' name='name_en' rules={[{required: true}]}>
               <Input />
             </Form.Item>
             <Form.Item label='DescriptionUz'>
@@ -435,7 +406,7 @@ const EduModal = ({
               <Select mode='multiple' placeholder='Select languages' allowClear>
                 {languages.map((data) => (
                   <Select.Option key={data._id} value={data._id}>
-                    {data.name_En}
+                    {data.name_en}
                   </Select.Option>
                 ))}
               </Select>
@@ -444,7 +415,7 @@ const EduModal = ({
               <Select mode='multiple' placeholder='Select subjects' allowClear>
                 {subjects.map((data) => (
                   <Select.Option key={data._id} value={data._id}>
-                    {data.name_En}
+                    {data.name_en}
                   </Select.Option>
                 ))}
               </Select>
@@ -453,7 +424,7 @@ const EduModal = ({
               <Select mode='multiple' placeholder='Select IT' allowClear>
                 {it.map((data) => (
                   <Select.Option key={data._id} value={data._id}>
-                    {data.name_En}
+                    {data.name_en}
                   </Select.Option>
                 ))}
               </Select>
@@ -462,7 +433,7 @@ const EduModal = ({
               <Select mode='multiple' placeholder='Select others' allowClear>
                 {other.map((data) => (
                   <Select.Option key={data._id} value={data._id}>
-                    {data.name_En}
+                    {data.name_en}
                   </Select.Option>
                 ))}
               </Select>

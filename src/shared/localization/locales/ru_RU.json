@@ -378,6 +378,7 @@
   "common.noDat": "Нет данных",
   "common.onlineExist": "Доступно онлайн",
   "common.image": "Изображение",
+  "common.mainAddress": "Aдрес",
   "common.actions": "Действия",
   "validation.emailFormat": "Введенное вами электронное письмо не является действительным форматом!",
   "validation.emailRequired": "Пожалуйста, введите адрес электронной почты!",

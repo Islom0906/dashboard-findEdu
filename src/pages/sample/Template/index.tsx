@@ -171,6 +171,7 @@ const Page2 = () => {
           </Button>
         </Col>
       </Row>
+      
       <Spin spinning={state.loading.table}>
         <MainTable
           datas={filteredItems}
@@ -179,6 +180,7 @@ const Page2 = () => {
           onDelete={deleteItem}
         />
       </Spin>
+
       <PostEdit
         title={linkState.title}
         page={page}

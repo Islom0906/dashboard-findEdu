@@ -378,6 +378,7 @@
   "common.noDat": "No Data",
   "common.onlineExist" : "Online exist",
   "common.image" : "Image",
+  "common.mainAddress" : "Address",
   "common.actions" : "ACTIONS",
   "validation.emailFormat": "The Email you entered is not a valid format!",
   "validation.emailRequired": "Please enter Email Address!",
