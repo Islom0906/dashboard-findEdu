@@ -140,7 +140,6 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
 
   const onChange = (photo: photoType) => {
     photo.fileList.forEach((el: UploadFile) => (el.status = 'done'));
-    setPhoto(photo);
 
     const formData: FormData = new FormData()
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
@@ -157,7 +156,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
 
   return (
     <Modal
-        title='Enter languae name'
+        title={`Enter ${page} infos`}
         width={800}
         centered={true}
         footer={null}

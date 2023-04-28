@@ -1,47 +1,37 @@
-import {
-  Avatar,
-  Image,
-  Spin,
-  Row,
-  Col,
-  Input,
-  Button,
-  Space,
-} from 'antd';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer} from 'react';
+import {Avatar,Image,Spin,Row,Col,message,Input,Button,Space,} from 'antd';
 import MainTable from '../../../components/Table';
 
 import apiService from 'service/api';
-import {
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-  EyeOutlined,
-  FileImageOutlined,
-  SyncOutlined,
-} from '@ant-design/icons';
+import {CheckCircleTwoTone,CloseCircleTwoTone,EyeOutlined,FileImageOutlined,SyncOutlined} from '@ant-design/icons';
 import IntlMessages from '@crema/utility/IntlMessages';
 import EduModal from './EduModal';
+import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './ReducerActions';
     
   const columns = [
     {
       key: 1,
       dataIndex: 'name_uz',
       title: <IntlMessages id='common.nameUzTitle' />,
+      ellipsis: true,
     },
     {
       key: 2,
       dataIndex: 'name_en',
       title: <IntlMessages id='common.nameEnTitle' />,
+      ellipsis: true,
     },
     {
       key: 3,
       dataIndex: 'name_ru',
       title: <IntlMessages id='common.nameRuTitle' />,
+      ellipsis: true,
     },
     {
       key: 4,
       dataIndex: 'onlineExists',
       title: <IntlMessages id='common.onlineExist' />,
+      ellipsis: true,
       render: (val) => {
         return val ? <CheckCircleTwoTone twoToneColor={"green"} style={{ fontSize: '20px' }} /> : <CloseCircleTwoTone twoToneColor={"red"} style={{ fontSize: '20px' }} />
       }
@@ -51,6 +41,7 @@ import EduModal from './EduModal';
       title: <IntlMessages id='common.image' />,
       dataIndex: 'image',
       width: 80,
+      ellipsis: true,
       render: (imgUrl) => {
         return imgUrl && imgUrl !== null ? (
           <Image
@@ -70,33 +61,71 @@ import EduModal from './EduModal';
       key: 6,
       dataIndex: 'mainAddress',
       title: <IntlMessages id='common.mainAddress' />,
+      ellipsis: true,
     },
   ];
 
-/* Component ============================= */
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'SET_ITEMS':
+        return {...state, items: action.payload};
+      case 'SET_VISIBLE':
+        return {...state, visible: action.payload};
+      case 'SET_EDIT_ITEM_ID':
+        return {...state, editItemId: action.payload};
+      case 'SET_LOADING':
+        return {...state, loading: action.payload};
+      case 'SET_TITLE':
+        return {...state, title: action.payload};
+      default:
+        return state;
+    }
+  }
+
 const Page1 = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
+  const [state, dispatch] = useReducer(reducer, {
+    visible: false,
+    title: '',
+    items: [],
+    editItemId: null,
+    loading: {table: false, modal: false},
+  });
 
   const getItems = () => {
-    setLoading(true);
+    dispatch(setLoading({...state.loading, table: true}))
     apiService
       .getData(`/edu`)
       .then((res) => {
-        setLoading(false);
-        setItems(res.data);
+        dispatch(setItems(res.data));
       })
-      .catch((err) => console.error('MyError', err));
+      .catch((err) => console.error('MyError', err))
+      .finally(() => dispatch(setLoading({...state.loading, table: false})))
   };
 
   useEffect(() => {
     getItems();
   }, []);
 
+  const onEdit = (data) => {
+    dispatch(setEditItemId(data?._id))
+    dispatch(setTitle('Edit Education Infos'))
+    dispatch(setVisible(true))
+  }
+
+  const deleteItem = ({_id: id}) => {
+    apiService
+      .deleteData(`/edu`, id)
+      .then(() => {
+        getItems();
+        message.success('Deleted succesfully');
+      })
+      .catch((err) => {
+        message.error(err.message, 3);
+      });
+  };
+
   const handleCancal = () => {
-    setIsModalVisible(false);
+    dispatch(setVisible(false))
   };
 
   return (
@@ -112,10 +141,11 @@ const Page1 = () => {
             placeholder='Search...'
           />
         </Col>
+
         <Col span={3}>
-          <Button block onClick={getItems} disabled={loading}>
+          <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
-              {loading && <SyncOutlined spin />}
+              {state.loading.table && <SyncOutlined spin />}
               <IntlMessages id='common.refresh' />
             </Space>
           </Button>
@@ -126,26 +156,28 @@ const Page1 = () => {
             block
             type='primary'
             onClick={() => {
-              setIsModalVisible(true);
-              setModalTitle('Add Education');
+              dispatch(setVisible(true))
+              dispatch(setTitle('Add Education Infos'))
             }}>
             <IntlMessages id='common.add' />
           </Button>
         </Col>
+        
       </Row>
 
       <EduModal
-        visible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        title={modalTitle}
+        state={state}
+        dispatch={dispatch}
         onCancel={handleCancal}
         getItems={getItems}
       />
       
-      <Spin spinning={loading}>
+      <Spin spinning={state.loading.table}>
         <MainTable
-          datas={items}
+          datas={state.items}
           cols={columns}
+          onDelete={deleteItem}
+          onEdit={onEdit}
         />
       </Spin>
     </>
