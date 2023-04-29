@@ -96,6 +96,9 @@ const Page1 = () => {
     input: ''
   });
 
+  console.log(state.items);
+  
+
   const getItems = () => {
     dispatch(setLoading({...state.loading, table: true}))
     apiService
@@ -103,7 +106,10 @@ const Page1 = () => {
       .then((res) => {
         dispatch(setItems(res.data));
       })
-      .catch((err) => console.error('MyError', err))
+      .catch((err) => {
+        console.error('MyError', err)
+        message.error('Error occured')
+      })
       .finally(() => dispatch(setLoading({...state.loading, table: false})))
   };
 

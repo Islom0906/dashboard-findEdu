@@ -10,8 +10,9 @@ import { setVisible } from './ReducerActions';
 import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import scss from '../main.module.scss'
+import { EduPropsTypes, FormDataType, ItemTypes, itemType, photoType } from '../Types';
 
-function loadImage(photo) {
+function loadImage(photo: any): any {
   return new Promise((resolve) => {
     const reader = new FileReader();
     photo && reader.readAsDataURL(photo);
@@ -23,7 +24,7 @@ function loadImage(photo) {
   });
 }
 
-const EduModal = ({state, dispatch, getItems}) => {
+const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
   const [form] = Form.useForm();
   const [descriptionUz, setDescriptionUz] = useState('');
   const [descriptionRu, setDescriptionRu] = useState('');
@@ -33,9 +34,9 @@ const EduModal = ({state, dispatch, getItems}) => {
   const [it, setIt] = useState([]);
   const [other, setOther] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [src, setSrc] = useState();
-  const [photo, setPhoto] = useState();
-  const [image, setImage] = useState('')
+  const [src, setSrc] = useState<string>();
+  const [photo, setPhoto] = useState<photoType | null>(null);
+  const [image, setImage] = useState('')  
 
   useEffect(() => {
     (async function () {
@@ -90,8 +91,7 @@ const EduModal = ({state, dispatch, getItems}) => {
     }
   }, [state.visible]);
 
-  const fillInFields = (data) => {
-    console.log(data);
+  const fillInFields = (data: ItemTypes) => {
     const defaultValues = {
       branches: data?.branches?.length && data?.branches[0] ? data.branches.map((item) => ({
         name: item.name,
@@ -127,10 +127,8 @@ const EduModal = ({state, dispatch, getItems}) => {
     form.setFieldsValue(defaultValues)
   }
 
-  const handleOk = (data) => {
+  const handleOk = (data: FormDataType) => {
     setLoading(true)
-    console.log(data, "ok data");
-    
 
     const postData = {
       name_uz: data.name_uz,
@@ -202,11 +200,11 @@ const EduModal = ({state, dispatch, getItems}) => {
     }
   };
 
-  const onPreview = (file) => {
+  const onPreview = (file: any) => {
     (async function () {
       let src = file.url;
       if (!src && photo) {
-        src = await loadImage(photo.file.originFileObj);
+        src = await loadImage(photo?.file.originFileObj);
       }
 
       const image = new Image();
@@ -216,7 +214,7 @@ const EduModal = ({state, dispatch, getItems}) => {
     })();
   };
 
-  const onChange = (photo) => {
+  const onChange = (photo: photoType) => {
     photo.fileList.forEach((el) => (el.status = 'done'));
     const formData = new FormData()
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
@@ -240,7 +238,7 @@ const EduModal = ({state, dispatch, getItems}) => {
   const resetForm = () => {
     setImage('')
     setSrc('')
-    setPhoto(undefined)
+    setPhoto(null)
     getItems()
     form.resetFields();
     setDescriptionUz('')
@@ -379,7 +377,7 @@ const EduModal = ({state, dispatch, getItems}) => {
               <Col span={12}>
                 <Form.Item name={'langs'} label='Languages'>
                   <Select mode='multiple' placeholder='Select languages' allowClear>
-                    {languages?.map((data) => (
+                    {languages?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -391,7 +389,7 @@ const EduModal = ({state, dispatch, getItems}) => {
               <Col span={12}>
                 <Form.Item name={'subjects'} label='Subjects'>
                   <Select mode='multiple' placeholder='Select subjects' allowClear>
-                    {subjects?.map((data) => (
+                    {subjects?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -403,7 +401,7 @@ const EduModal = ({state, dispatch, getItems}) => {
               <Col span={12}>
                 <Form.Item name={'it'} label='IT'>
                   <Select mode='multiple' placeholder='Select IT' allowClear>
-                    {it?.map((data) => (
+                    {it?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -415,7 +413,7 @@ const EduModal = ({state, dispatch, getItems}) => {
               <Col span={12}>
                 <Form.Item name={'other'} label='Others'>
                   <Select mode='multiple' placeholder='Select others' allowClear>
-                    {other?.map((data) => (
+                    {other?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>

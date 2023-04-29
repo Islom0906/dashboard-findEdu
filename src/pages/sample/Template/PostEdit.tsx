@@ -34,9 +34,6 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
   const [form] = Form.useForm();
   //USEEFFECTS
 
-  console.log(editItem);
-  
-
   useEffect(() => {
     (async function () {
       if (!photo || !photo.fileList.length) return setSrc('');

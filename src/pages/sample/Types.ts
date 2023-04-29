@@ -9,9 +9,18 @@ export type appStateType = {
   items: itemType[];
 };
 
-export interface Links {
-  link: string
-  name: string
+export interface StateTypes {
+  visible: boolean,
+  title: string,
+  items: ItemTypes[],
+  editItemId: string,
+  loading: {table: boolean, modal: boolean},
+  input: string
+}
+
+interface Links {
+  link: string;
+  name: string;
 }
 
 export interface Branches {
@@ -19,6 +28,31 @@ export interface Branches {
   name: string
   onMap: string
   phones: string[]
+}
+
+export interface FormDataType {
+  branches: {
+    mainAddress: string
+    name: string
+    onMap: string
+    phones: {phone: string}[]
+  }[]
+  insta: string
+  isOnlineExists: boolean
+  it: string[]
+  langs: string[]
+  mainAddress: string
+  name_en: string
+  name_ru: string
+  name_uz: string
+  onMap: string
+  other: string[]
+  phone: {phone: string}[]
+  photo: undefined
+  subjects: string[]
+  tg: string
+  web: string
+  youtube: string
 }
 
 export interface ItemTypes {
@@ -42,13 +76,10 @@ export interface ItemTypes {
   _id: string
 }
 
-export interface StateTypes {
-  visible: boolean,
-  title: string,
-  items: ItemTypes[],
-  editItemId: null | string,
-  loading: {table: boolean, modal: boolean},
-  input: string
+export interface EduPropsTypes {
+  state: StateTypes 
+  dispatch: React.Dispatch<appActionType>
+  getItems: () => void
 }
 
 export type appActionType = {
