@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Modal,Form,Input,message,Button,Space,Select,Upload,Checkbox,Spin,Row,Col} from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,6 +9,7 @@ import './style.css';
 import { setVisible } from './ReducerActions';
 import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
+import scss from '../main.module.scss'
 
 function loadImage(photo) {
   return new Promise((resolve) => {
@@ -127,8 +128,9 @@ const EduModal = ({state, dispatch, getItems}) => {
   }
 
   const handleOk = (data) => {
-    console.log(data, "handle ok");
     setLoading(true)
+    console.log(data, "ok data");
+    
 
     const postData = {
       name_uz: data.name_uz,
@@ -174,8 +176,6 @@ const EduModal = ({state, dispatch, getItems}) => {
       onlineExists: data.isOnlineExists
     }
 
-    console.log(postData, "Post data");
-
     if(state.title == "Edit Education Infos") {
       console.log(postData, "Edit data");
       apiService.editData(`/edu`, postData, state?.editItemId)
@@ -184,24 +184,17 @@ const EduModal = ({state, dispatch, getItems}) => {
         message.success('Succesfuly posted', 2);
         handleCancel()
         resetForm();
-        setPhoto(undefined)
-        setImage('')
-        setSrc('')
-        getItems()
       }).catch((err) => {
         console.log("Err")
         message.error(err.message, 2);
       }).finally(() => setLoading(false))
     }else {
-      apiService.postData('edu', postData).then(() => {
+      apiService.postData('edu', postData)
+      .then(() => {
         console.log("Success")
         message.success('Succesfuly posted', 2);
         handleCancel()
         resetForm();
-        setImage('')
-        setSrc('')
-        setPhoto(undefined)
-        getItems()
       }).catch((err) => {
         console.log("Err")
         message.error(err.message, 2);
@@ -225,10 +218,8 @@ const EduModal = ({state, dispatch, getItems}) => {
 
   const onChange = (photo) => {
     photo.fileList.forEach((el) => (el.status = 'done'));
-
     const formData = new FormData()
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
-    console.log(photo?.file.originFileObj);
 
     axios.post('http://3.138.61.64/file', formData)
     .then(res => {
@@ -247,6 +238,10 @@ const EduModal = ({state, dispatch, getItems}) => {
   };
 
   const resetForm = () => {
+    setImage('')
+    setSrc('')
+    setPhoto(undefined)
+    getItems()
     form.resetFields();
     setDescriptionUz('')
     setDescriptionRu('')
@@ -305,30 +300,6 @@ const EduModal = ({state, dispatch, getItems}) => {
                   <ReactQuill value={descriptionEn} onChange={setDescriptionEn} />
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row justify={'center'}>
-              <ImgCrop rotate>
-                <Upload.Dragger
-                  listType='picture'
-                  maxCount={1}
-                  accept='image/png, image/jpeg'
-                  onPreview={onPreview}
-                  onChange={onChange}
-                  onRemove={onRemove}>
-                    {
-                      src ? (
-                        <img src={src} alt='' style={{ height: '150px' }}/>
-                      ) : 
-                      <>
-                        Drag file here OR <br />
-                        <Button icon={<UploadOutlined />} >
-                          Click to Upload
-                        </Button>
-                      </>
-                    }
-                </Upload.Dragger>
-              </ImgCrop>
             </Row>
 
             <Row justify='center' gutter={15}>
@@ -531,6 +502,30 @@ const EduModal = ({state, dispatch, getItems}) => {
                     </>
                   )}
             </Form.List>
+
+            <Form.Item name='photo' label='Image'>
+                <ImgCrop rotate>
+                  <Upload.Dragger
+                    listType='picture'
+                    maxCount={1}
+                    accept='image/png, image/jpeg'
+                    onPreview={onPreview}
+                    onChange={onChange}
+                    onRemove={onRemove}>
+                      {
+                        src ? (
+                          <img src={src} alt='' style={{ height: '150px' }}/>
+                        ) : 
+                        <>
+                          Drag file here OR <br />
+                          <Button icon={<UploadOutlined />} className={scss.upload}>
+                            Click to Upload
+                          </Button>
+                        </>
+                      }
+                  </Upload.Dragger>
+                </ImgCrop>
+            </Form.Item>
 
             <Row
               gutter={12}

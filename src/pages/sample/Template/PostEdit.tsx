@@ -5,7 +5,7 @@ import ImgCrop from 'antd-img-crop';
 import PropTypes from 'prop-types';
 import {useEffect, useState} from 'react';
 import {setLoading, setVisible} from './ReducerActions';
-import {itemType, photoType, PostEditPropType} from './Types';
+import {itemType, photoType, PostEditPropType} from '../Types';
 import {UploadFile} from 'antd/lib/upload/interface';
 import apiService from 'service/api';
 import scss from '../main.module.scss'
@@ -33,6 +33,9 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
   const [image, setImage] = useState<string>('')
   const [form] = Form.useForm();
   //USEEFFECTS
+
+  console.log(editItem);
+  
 
   useEffect(() => {
     (async function () {

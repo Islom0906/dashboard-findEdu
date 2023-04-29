@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useMemo, useReducer} from 'react';
 import {Avatar,Image,Spin,Row,Col,message,Input,Button,Space,} from 'antd';
 import MainTable from '../../../components/Table';
 
@@ -6,7 +6,9 @@ import apiService from 'service/api';
 import {CheckCircleTwoTone,CloseCircleTwoTone,EyeOutlined,FileImageOutlined,SyncOutlined} from '@ant-design/icons';
 import IntlMessages from '@crema/utility/IntlMessages';
 import EduModal from './EduModal';
-import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './ReducerActions';
+import { setEditItemId, setLoading, setItems, setVisible, setTitle, setInput } from './ReducerActions';
+import { ItemTypes, StateTypes, appActionType, itemType } from '../Types';
+import { imageType } from '../Types';
     
   const columns = [
     {
@@ -32,7 +34,7 @@ import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './Red
       dataIndex: 'onlineExists',
       title: <IntlMessages id='common.onlineExist' />,
       ellipsis: true,
-      render: (val) => {
+      render: (val: boolean) => {
         return val ? <CheckCircleTwoTone twoToneColor={"green"} style={{ fontSize: '20px' }} /> : <CloseCircleTwoTone twoToneColor={"red"} style={{ fontSize: '20px' }} />
       }
     },
@@ -42,7 +44,7 @@ import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './Red
       dataIndex: 'image',
       width: 80,
       ellipsis: true,
-      render: (imgUrl) => {
+      render: (imgUrl: imageType) => {
         return imgUrl && imgUrl !== null ? (
           <Image
             src={`http://3.138.61.64/file/${imgUrl?.path}`}
@@ -65,7 +67,7 @@ import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './Red
     },
   ];
 
-  function reducer(state, action) {
+  function reducer(state: StateTypes, action: appActionType) {
     switch (action.type) {
       case 'SET_ITEMS':
         return {...state, items: action.payload};
@@ -77,6 +79,8 @@ import { setEditItemId, setLoading, setItems, setVisible, setTitle } from './Red
         return {...state, loading: action.payload};
       case 'SET_TITLE':
         return {...state, title: action.payload};
+      case 'SET_INPUT':
+        return {...state, input: action.payload};
       default:
         return state;
     }
@@ -89,6 +93,7 @@ const Page1 = () => {
     items: [],
     editItemId: null,
     loading: {table: false, modal: false},
+    input: ''
   });
 
   const getItems = () => {
@@ -102,17 +107,28 @@ const Page1 = () => {
       .finally(() => dispatch(setLoading({...state.loading, table: false})))
   };
 
+  const filteredItems = useMemo(
+    () =>
+      state?.items?.filter(
+        (item: itemType) =>
+          item.name_en?.toLowerCase()?.includes(state.input) ||
+          item.name_ru?.toLowerCase()?.includes(state.input) ||
+          item.name_uz?.toLowerCase()?.includes(state.input),
+      ),
+    [state.input, state.items],
+  );
+
   useEffect(() => {
     getItems();
   }, []);
 
-  const onEdit = (data) => {
+  const onEdit = (data: ItemTypes) => {
     dispatch(setEditItemId(data?._id))
     dispatch(setTitle('Edit Education Infos'))
     dispatch(setVisible(true))
   }
 
-  const deleteItem = ({_id: id}) => {
+  const deleteItem = ({_id: id}: {_id: string}) => {
     apiService
       .deleteData(`/edu`, id)
       .then(() => {
@@ -122,10 +138,6 @@ const Page1 = () => {
       .catch((err) => {
         message.error(err.message, 3);
       });
-  };
-
-  const handleCancal = () => {
-    dispatch(setVisible(false))
   };
 
   return (
@@ -138,6 +150,9 @@ const Page1 = () => {
         <Col span={17}>
           <Input
             size='large'
+            onChange={(e) =>
+              dispatch(setInput(e.target.value.toLowerCase()))
+            }
             placeholder='Search...'
           />
         </Col>
@@ -153,12 +168,14 @@ const Page1 = () => {
 
         <Col span={4}>
           <Button
+            disabled={state.loading.table}
             block
             type='primary'
             onClick={() => {
               dispatch(setVisible(true))
               dispatch(setTitle('Add Education Infos'))
             }}>
+            {state.loading.table && <SyncOutlined spin />}
             <IntlMessages id='common.add' />
           </Button>
         </Col>
@@ -168,13 +185,12 @@ const Page1 = () => {
       <EduModal
         state={state}
         dispatch={dispatch}
-        onCancel={handleCancal}
         getItems={getItems}
       />
       
       <Spin spinning={state.loading.table}>
         <MainTable
-          datas={state.items}
+          datas={filteredItems}
           cols={columns}
           onDelete={deleteItem}
           onEdit={onEdit}

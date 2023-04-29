@@ -23,7 +23,7 @@ import {
   setVisible,
 } from './ReducerActions';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import {appActionType, appStateType, imageType, itemType} from './Types';
+import {appActionType, appStateType, imageType, itemType} from '../Types';
 
 function reducer(state: appStateType, action: appActionType): appStateType {
   switch (action.type) {
@@ -162,12 +162,14 @@ const Page2 = () => {
         <Col span={4}>
           <Button
             block
+            disabled={state.loading.table}
             type='primary'
             onClick={() => {
               dispatch(setEditItemId(''));
               dispatch(setVisible(true));
             }}>
-            <IntlMessages id='common.add' />
+              {state.loading.table && <SyncOutlined spin />}
+              <IntlMessages id='common.add' />
           </Button>
         </Col>
       </Row>

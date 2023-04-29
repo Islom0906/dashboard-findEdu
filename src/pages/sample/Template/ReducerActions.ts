@@ -1,4 +1,4 @@
-import {itemType} from './Types';
+import {itemType} from '../Types';
 
 export const setVisible = (payload: boolean) => {
   return {type: 'SET_VISIBLE', payload};

@@ -17,3 +17,7 @@ export const setVisible = (payload) => {
 export const setTitle = (payload) => {
   return {type: 'SET_TITLE', payload};
 };
+
+export const setInput = (payload) => {
+  return {type: 'SET_INPUT', payload};
+};

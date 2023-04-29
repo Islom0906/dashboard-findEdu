@@ -3,7 +3,7 @@ import React from 'react';
 export const samplePagesConfigs = [
   {
     path: '/sample/page-1',
-    component: React.lazy(() => import('./Page1/index.js')),
+    component: React.lazy(() => import('./Page1/index.tsx')),
   },
   {
     path: '/sample/:page',
