@@ -11,7 +11,6 @@ import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import scss from '../main.module.scss'
 import { EduPropsTypes, FormDataType, ItemTypes, itemType, photoType } from '../Types';
-import IntlMessages from '@crema/utility/IntlMessages';
 
 function loadImage(photo: any): any {
   return new Promise((resolve) => {
@@ -30,10 +29,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
   const [descriptionUz, setDescriptionUz] = useState('');
   const [descriptionRu, setDescriptionRu] = useState('');
   const [descriptionEn, setDescriptionEn] = useState('');
-  const [languages, setLanguages] = useState([]);
-  const [subjects, setSubjects] = useState([]);
-  const [it, setIt] = useState([]);
-  const [other, setOther] = useState([]);
+  const [datas, setDatas] = useState({ languages: [], subjects: [], programs: [], others: [] })
   const [loading, setLoading] = useState(false);
   const [src, setSrc] = useState<string>();
   const [photo, setPhoto] = useState<photoType | null>(null);
@@ -60,10 +56,16 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
         apiService.getData(`/others`),
       ])
         .then(([langsRes, subjectsRes, itRes, otherRes]) => {
-          setLanguages(langsRes.data);
-          setSubjects(subjectsRes.data);
-          setIt(itRes.data);
-          setOther(otherRes.data);
+          setDatas({
+            languages: langsRes?.data, 
+            subjects: subjectsRes?.data,
+            programs: itRes?.data,
+            others: otherRes?.data
+          })
+          // setLanguages(langsRes.data);
+          // setSubjects(subjectsRes.data);
+          // setIt(itRes.data);
+          // setOther(otherRes.data);
         })
         .catch((err) => {
           console.log(err);
@@ -378,7 +380,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               <Col span={12}>
                 <Form.Item name={'langs'} label='Languages' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select languages' allowClear>
-                    {languages?.map((data: itemType) => (
+                    {datas?.languages?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -390,7 +392,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               <Col span={12}>
                 <Form.Item name={'subjects'} label='Subjects' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select subjects' allowClear>
-                    {subjects?.map((data: itemType) => (
+                    {datas?.subjects?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -402,7 +404,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               <Col span={12}>
                 <Form.Item name={'it'} label='Programs' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select IT' allowClear>
-                    {it?.map((data: itemType) => (
+                    {datas?.programs?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -414,7 +416,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               <Col span={12}>
                 <Form.Item name={'other'} label='Others' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select others' allowClear>
-                    {other?.map((data: itemType) => (
+                    {datas?.others?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
                         {data.name_en}
                       </Select.Option>
@@ -502,9 +504,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                   )}
             </Form.List>
 
-            <Form.Item name='photo' label='Image' rules={[{
-              required: true, message: <IntlMessages id='common.enterImage' />
-            }]}>
+            <Form.Item name='photo' label='Image'>
                 <ImgCrop rotate>
                   <Upload.Dragger
                     listType='picture'

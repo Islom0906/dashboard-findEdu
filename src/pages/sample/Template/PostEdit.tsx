@@ -205,9 +205,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
               <Input placeholder='Enter the name in Russian' />
             </Form.Item>
 
-            <Form.Item name='photo' label='Image' rules={[{
-              required: true, message: <IntlMessages id='common.enterImage' />
-            }]}>
+            <Form.Item name='photo' label='Image'>
             <ImgCrop rotate>
                 <Upload.Dragger
                   listType='picture'
