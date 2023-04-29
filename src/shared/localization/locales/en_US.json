@@ -374,6 +374,7 @@
   "common.enterNameRu" : "Please enter the name in Russian",
   "common.enterNameUz" : "Please enter the name in Uzbek",
   "common.enterNameEn" : "Please enter the name in English",
+  "common.enterImage" : "Please upload image",
   "common.deletedSuccesfully": "Deleted succesfully",
   "common.noDat": "No Data",
   "common.onlineExist" : "Online exist",

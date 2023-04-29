@@ -11,6 +11,7 @@ import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import scss from '../main.module.scss'
 import { EduPropsTypes, FormDataType, ItemTypes, itemType, photoType } from '../Types';
+import IntlMessages from '@crema/utility/IntlMessages';
 
 function loadImage(photo: any): any {
   return new Promise((resolve) => {
@@ -262,19 +263,19 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
           <Form form={form} layout='vertical' onFinish={handleOk}>
             <Row justify={'space-between'} gutter={15}>
               <Col span={8}>
-                <Form.Item label='Name Uz' name='name_uz' rules={[{required: true}]}>
+                <Form.Item label='Name Uz' name='name_uz' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item label='Name Ru' name='name_ru' rules={[{required: true}]}>
+                <Form.Item label='Name Ru' name='name_ru' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item label='Name En' name='name_en' rules={[{required: true}]}>
+                <Form.Item label='Name En' name='name_en' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
@@ -282,19 +283,19 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row justify={'space-between'} gutter={15}>
               <Col span={8}>
-                <Form.Item label='Description Uz'>
+                <Form.Item label='Description Uz' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionUz} onChange={setDescriptionUz} />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item label='Descriptio Ru'>
+                <Form.Item label='Descriptio Ru' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionRu} onChange={setDescriptionRu} />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item label='Description En'>
+                <Form.Item label='Description En' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionEn} onChange={setDescriptionEn} />
                 </Form.Item>
               </Col>
@@ -302,13 +303,13 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row justify='center' gutter={15}>
               <Col span={12}>
-                <Form.Item label='Address' name='mainAddress'>
+                <Form.Item label='Address' name='mainAddress' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label='On Map' name='onMap'>
+                <Form.Item label='On Map' name='onMap' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
@@ -325,7 +326,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                             marginBottom: 8,
                           }}
                           align='baseline'>
-                          <Form.Item {...restField} name={[name, 'phone']}>
+                          <Form.Item {...restField} name={[name, 'phone']} rules={[{required: true}]} hasFeedback>
                             <Input placeholder='Phone' />
                           </Form.Item>
 
@@ -349,25 +350,25 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row gutter={15}>
               <Col span={12}>
-                <Form.Item label='Link Telegram' name='tg'>
+                <Form.Item label='Link Telegram' name='tg' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label='Link Instagram' name='insta'>
+                <Form.Item label='Link Instagram' name='insta' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
               
               <Col span={12}>
-                <Form.Item label='Link Web' name='web'>
+                <Form.Item label='Link Web' name='web' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label='Link Youtube' name='youtube'>
+                <Form.Item label='Link Youtube' name='youtube' rules={[{required: true}]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col> 
@@ -375,7 +376,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row gutter={15}>
               <Col span={12}>
-                <Form.Item name={'langs'} label='Languages'>
+                <Form.Item name={'langs'} label='Languages' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select languages' allowClear>
                     {languages?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
@@ -387,7 +388,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               </Col>
 
               <Col span={12}>
-                <Form.Item name={'subjects'} label='Subjects'>
+                <Form.Item name={'subjects'} label='Subjects' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select subjects' allowClear>
                     {subjects?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
@@ -399,7 +400,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               </Col>
 
               <Col span={12}>
-                <Form.Item name={'it'} label='IT'>
+                <Form.Item name={'it'} label='Programs' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select IT' allowClear>
                     {it?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
@@ -411,7 +412,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               </Col>
 
               <Col span={12}>
-                <Form.Item name={'other'} label='Others'>
+                <Form.Item name={'other'} label='Others' rules={[{required: true}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select others' allowClear>
                     {other?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
@@ -423,7 +424,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
               </Col>
             </Row>
 
-            <Form.Item name='isOnlineExists' valuePropName='checked'>
+            <Form.Item name='isOnlineExists' valuePropName='checked' rules={[{required: true}]}>
               <Checkbox defaultChecked>Is online exist</Checkbox>
             </Form.Item>
 
@@ -435,19 +436,19 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                         return (
                           <Row key={field.key} gutter={15}>
                             <Col span={5}>
-                              <Form.Item name={[field.name, "name"]}>
+                              <Form.Item name={[field.name, "name"]} rules={[{required: true}]} hasFeedback>
                                 <Input />
                               </Form.Item> 
                             </Col> 
 
                             <Col span={5}>
-                              <Form.Item name={[field.name, "mainAddress"]}>
+                              <Form.Item name={[field.name, "mainAddress"]} rules={[{required: true}]} hasFeedback>
                                 <Input />
                               </Form.Item> 
                             </Col>
 
                             <Col span={5}>
-                              <Form.Item name={[field.name, "onMap"]}>
+                              <Form.Item name={[field.name, "onMap"]} rules={[{required: true}]} hasFeedback>
                                 <Input />
                               </Form.Item> 
                             </Col>
@@ -464,7 +465,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                                           marginBottom: 8,
                                         }}
                                         align='baseline'>
-                                        <Form.Item {...restField} name={[name, 'phone']}>
+                                        <Form.Item {...restField} name={[name, 'phone']} rules={[{required: true}]} hasFeedback>
                                           <Input placeholder='Phone' />
                                         </Form.Item>
 
@@ -501,7 +502,9 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                   )}
             </Form.List>
 
-            <Form.Item name='photo' label='Image'>
+            <Form.Item name='photo' label='Image' rules={[{
+              required: true, message: <IntlMessages id='common.enterImage' />
+            }]}>
                 <ImgCrop rotate>
                   <Upload.Dragger
                     listType='picture'
