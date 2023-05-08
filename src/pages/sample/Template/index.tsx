@@ -72,7 +72,7 @@ const Page2 = () => {
     apiService.getData(`/${page}`).then((res) => {
       dispatch(setLoading({...state.loading, table: false}));
       dispatch(setItems(res.data));
-    });
+    }).catch((err) => message.error(err.message))
   };
 
   const deleteItem = ({_id: id}: {_id: string}) => {

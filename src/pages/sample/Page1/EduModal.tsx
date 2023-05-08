@@ -31,7 +31,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
   const [descriptionEn, setDescriptionEn] = useState('');
   const [datas, setDatas] = useState({ languages: [], subjects: [], programs: [], others: [] })
   const [loading, setLoading] = useState(false);
-  const [src, setSrc] = useState<string>();
+  const [src, setSrc] = useState<string | null>();
   const [photo, setPhoto] = useState<photoType | null>(null);
   const [image, setImage] = useState('')  
 
@@ -62,10 +62,6 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
             programs: itRes?.data,
             others: otherRes?.data
           })
-          // setLanguages(langsRes.data);
-          // setSubjects(subjectsRes.data);
-          // setIt(itRes.data);
-          // setOther(otherRes.data);
         })
         .catch((err) => {
           console.log(err);
@@ -225,6 +221,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
     axios.post('http://3.138.61.64/file', formData)
     .then(res => {
       console.log(res?.data)
+      setSrc(`http://3.138.61.64/file/${res?.data?.path}`)
       setImage(res?.data)
     })
   };
@@ -284,19 +281,19 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
             </Row>
 
             <Row justify={'space-between'} gutter={15}>
-              <Col span={8}>
+              <Col span={24}>
                 <Form.Item label='Description Uz' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionUz} onChange={setDescriptionUz} />
                 </Form.Item>
               </Col>
 
-              <Col span={8}>
+              <Col span={24}>
                 <Form.Item label='Descriptio Ru' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionRu} onChange={setDescriptionRu} />
                 </Form.Item>
               </Col>
 
-              <Col span={8}>
+              <Col span={24}>
                 <Form.Item label='Description En' rules={[{required: true}]} hasFeedback>
                   <ReactQuill value={descriptionEn} onChange={setDescriptionEn} />
                 </Form.Item>
@@ -320,6 +317,22 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                 <Form.List name='phone'>
                   {(fields, {add, remove}) => (
                     <>
+                      {fields.length === 0 && (
+                        <Space
+                          key={0}
+                          style={{
+                            display: 'flex',
+                            marginBottom: 8,
+                          }}
+                          align='baseline'>
+                          <Form.Item
+                            name={[0, 'phone']}
+                            rules={[{required: true}]}
+                            hasFeedback>
+                            <Input placeholder='Phone' />
+                          </Form.Item>
+                        </Space>
+                      )}
                       {fields.map(({key, name, ...restField}) => (
                         <Space
                           key={key}
@@ -352,25 +365,57 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row gutter={15}>
               <Col span={12}>
-                <Form.Item label='Link Telegram' name='tg' rules={[{required: true}]} hasFeedback>
+                <Form.Item label='Link Telegram' name='tg' rules={[
+                    {
+                      required: true
+                    }, 
+                    {
+                      type: 'url',
+                      message: 'Please enter a valid URL',
+                    }
+                  ]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label='Link Instagram' name='insta' rules={[{required: true}]} hasFeedback>
+                <Form.Item label='Link Instagram' name='insta' rules={[
+                    {
+                      required: true
+                    }, 
+                    {
+                      type: 'url',
+                      message: 'Please enter a valid URL',
+                    }
+                  ]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
               
               <Col span={12}>
-                <Form.Item label='Link Web' name='web' rules={[{required: true}]} hasFeedback>
+                <Form.Item label='Link Web' name='web' rules={[
+                    {
+                      required: true
+                    }, 
+                    {
+                      type: 'url',
+                      message: 'Please enter a valid URL',
+                    }
+                  ]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label='Link Youtube' name='youtube' rules={[{required: true}]} hasFeedback>
+                <Form.Item label='Link Youtube' name='youtube' rules={[
+                    {
+                      required: true
+                    }, 
+                    {
+                      type: 'url',
+                      message: 'Please enter a valid URL',
+                    }
+                  ]} hasFeedback>
                   <Input />
                 </Form.Item>
               </Col> 
@@ -378,7 +423,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
 
             <Row gutter={15}>
               <Col span={12}>
-                <Form.Item name={'langs'} label='Languages' rules={[{required: true}]} hasFeedback>
+                <Form.Item name={'langs'} label='Languages' rules={[{required: false}]} hasFeedback>
                   <Select mode='multiple' placeholder='Select languages' allowClear>
                     {datas?.languages?.map((data: itemType) => (
                       <Select.Option key={data._id} value={data._id}>
@@ -433,6 +478,82 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
             <Form.List name='branches'>
                   {(fields, {add, remove}) => (
                     <>
+                    {fields.length === 0 && (
+                      <Row key={0} gutter={15}>
+                        <Col span={5}>
+                          <Form.Item name={[0, "name"]} label='Branch Name' rules={[{required: true}]} hasFeedback>
+                            <Input />
+                          </Form.Item> 
+                        </Col> 
+
+                        <Col span={5}>
+                          <Form.Item name={[0, "mainAddress"]} label='Main Address' rules={[{required: true}]} hasFeedback>
+                            <Input />
+                          </Form.Item> 
+                        </Col>
+
+                        <Col span={5}>
+                          <Form.Item name={[0, "onMap"]} label='On Map' rules={[{required: true}]} hasFeedback>
+                            <Input />
+                          </Form.Item> 
+                        </Col>
+
+                            <Col span={5}>
+                              <Form.List name={[0, "phones"]}>
+                                {(fields, {add, remove}) => (
+                                  <>
+                                    {
+                                      fields.length === 0 && (
+                                        <Space
+                                        key={0}
+                                        style={{
+                                          display: 'flex',
+                                          marginBottom: 8,
+                                        }}
+                                        align='baseline'>
+                                        <Form.Item name={[0, 'phone']} rules={[{required: true}]} hasFeedback>
+                                          <Input placeholder='Phone' />
+                                        </Form.Item>
+                                      </Space>
+                                      )
+                                    }
+                                    {fields.map(({key, name, ...restField}) => (
+                                      <Space
+                                        key={key}
+                                        style={{
+                                          display: 'flex',
+                                          marginBottom: 8,
+                                        }}
+                                        align='baseline'>
+                                        <Form.Item {...restField} name={[name, 'phone']} rules={[{required: true}]} hasFeedback>
+                                          <Input placeholder='Phone' />
+                                        </Form.Item>
+
+                                        <MinusCircleOutlined onClick={() => remove(name)} />
+                                      </Space>
+                                    ))}
+                                    <Form.Item>
+                                      <Button
+                                        type='default'
+                                        onClick={() => add()}
+                                        block
+                                        icon={<PlusOutlined />}>
+                                        Add phone number
+                                      </Button>
+                                    </Form.Item>
+                                  </>
+                                )}
+                              </Form.List>
+                            </Col>
+
+                        <Col span={4}>
+                          <Form.Item>
+                            <Button block icon={<MinusCircleOutlined />} onClick={() => remove(0)} danger />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    )}
+                    
                     {
                       fields.map((field) => {
                         return (
@@ -459,6 +580,21 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                               <Form.List name={[field.name, "phones"]}>
                                 {(fields, {add, remove}) => (
                                   <>
+                                    {
+                                      fields.length === 0 && (
+                                        <Space
+                                        key={0}
+                                        style={{
+                                          display: 'flex',
+                                          marginBottom: 8,
+                                        }}
+                                        align='baseline'>
+                                        <Form.Item label="Phone" name={[0, 'phone']} rules={[{required: true}]} hasFeedback>
+                                          <Input placeholder='Phone' />
+                                        </Form.Item>
+                                      </Space>
+                                      )
+                                    }
                                     {fields.map(({key, name, ...restField}) => (
                                       <Space
                                         key={key}
@@ -504,29 +640,40 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
                   )}
             </Form.List>
 
-            <Form.Item name='photo' label='Image'>
-                <ImgCrop rotate>
-                  <Upload.Dragger
-                    listType='picture'
-                    maxCount={1}
-                    accept='image/png, image/jpeg'
-                    onPreview={onPreview}
-                    onChange={onChange}
-                    onRemove={onRemove}>
-                      {
-                        src ? (
-                          <img src={src} alt='' style={{ height: '150px' }}/>
-                        ) : 
-                        <>
-                          Drag file here OR <br />
-                          <Button icon={<UploadOutlined />} className={scss.upload}>
-                            Click to Upload
-                          </Button>
-                        </>
-                      }
-                  </Upload.Dragger>
-                </ImgCrop>
-            </Form.Item>
+            {
+              src ? (
+                <div className={scss.uploadImage}>
+                  <img src={src} alt='uploaded image'/>
+                  {/* <Button type='primary' danger>Remove <MinusCircleOutlined /></Button> */}
+                  <Button icon={<MinusCircleOutlined />} danger onClick={() => setSrc(null)}>Remove</Button>
+                </div>
+              ) : 
+              <Form.Item name='photo' label='Image' rules={[
+                { required: true, message: 'Please upload an image.' },
+              ]}>
+                  <ImgCrop rotate>
+                    <Upload.Dragger
+                      listType='picture'
+                      maxCount={1}
+                      accept='image/png, image/jpeg'
+                      onPreview={onPreview}
+                      onChange={onChange}
+                      onRemove={onRemove}>
+                        {
+                          src ? (
+                            <img src={src} alt='' style={{ height: '150px' }}/>
+                          ) : 
+                          <>
+                            Drag file here OR <br />
+                            <Button icon={<UploadOutlined />} className={scss.upload}>
+                              Click to Upload
+                            </Button>
+                          </>
+                        }
+                    </Upload.Dragger>
+                  </ImgCrop>
+              </Form.Item>
+            }
 
             <Row
               gutter={12}

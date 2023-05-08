@@ -1,4 +1,4 @@
-import {UploadOutlined} from '@ant-design/icons';
+import {MinusCircleOutlined, UploadOutlined} from '@ant-design/icons';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Button, Form, Input, message, Modal, Spin, Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
@@ -29,7 +29,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
 
   const [editItem, setEditItem] = useState<itemType | null>(null);
   const [photo, setPhoto] = useState<photoType>();
-  const [src, setSrc] = useState<string>();
+  const [src, setSrc] = useState<string | null>();
   const [image, setImage] = useState<string>('')
   const [form] = Form.useForm();
   //USEEFFECTS
@@ -55,7 +55,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     form.resetFields();
     if (!state.editItemId) {
       setEditItem(null);
-      return setSrc('');
+      return setSrc(null);
     }
     dispatch(setLoading({...state.loading, modal: true}));
 
@@ -83,7 +83,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
         message.success('Succesfuly posted', 2);
         form.resetFields();
         setPhoto(undefined);
-        setSrc('');
+        setSrc(null);
         dispatch(setVisible(false));
         getItems();
         setImage('')
@@ -106,7 +106,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
         if (!editItem?._id) {
           form.resetFields();
           setPhoto(undefined);
-          setSrc('');
+          setSrc(null);
         }
         dispatch(setVisible(false));
         getItems();
@@ -148,9 +148,13 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     axios.post('http://3.138.61.64/file', formData)
     .then(res => {
       console.log(res?.data)
+      setSrc(`http://3.138.61.64/file/${res?.data?.path}`)
       setImage(res?.data)
     })
   };
+
+  console.log(src);
+  
 
   const onRemove = () => {};
 
@@ -205,29 +209,37 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
               <Input placeholder='Enter the name in Russian' />
             </Form.Item>
 
-            <Form.Item name='photo' label='Image'>
-            <ImgCrop rotate>
-                <Upload.Dragger
-                  listType='picture'
-                  maxCount={1}
-                  accept='image/png, image/jpeg'
-                  onPreview={onPreview}
-                  onChange={onChange}
-                  onRemove={onRemove}>
-                    {
-                      src ? (
-                        <img src={src} alt='' style={{ height: '150px' }}/>
-                      ) : 
-                      <>
-                        Drag file here OR <br />
-                        <Button icon={<UploadOutlined />} className={scss.upload}>
-                          Click to Upload
-                        </Button>
-                      </>
-                    }
-                </Upload.Dragger>
-              </ImgCrop>
-            </Form.Item>
+            {
+              src ? (
+                <div className={scss.uploadImage}>
+                  <img src={src} alt='uploaded image'/>
+                  <Button icon={<MinusCircleOutlined />} danger onClick={() => setSrc(null)}>Remove</Button>
+                </div>
+              ) : 
+              <Form.Item name='photo' label='Image'>
+                <ImgCrop rotate>
+                  <Upload.Dragger
+                    listType='picture'
+                    maxCount={1}
+                    accept='image/png, image/jpeg'
+                    onPreview={onPreview}
+                    onChange={onChange}
+                    onRemove={onRemove}>
+                      {
+                        src ? (
+                          <img src={src} alt='' style={{ height: '150px' }}/>
+                        ) : 
+                        <>
+                          Drag file here OR <br />
+                          <Button icon={<UploadOutlined />} className={scss.upload}>
+                            Click to Upload
+                          </Button>
+                        </>
+                      }
+                  </Upload.Dragger>
+                </ImgCrop>
+              </Form.Item>
+            }
 
             <Form.Item className={scss.buttons}>
               <Button

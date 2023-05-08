@@ -96,9 +96,6 @@ const Page1 = () => {
     input: ''
   });
 
-  console.log(state.items);
-  
-
   const getItems = () => {
     dispatch(setLoading({...state.loading, table: true}))
     apiService
