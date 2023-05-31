@@ -171,9 +171,9 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
         onOk={form.submit}>
         <Spin spinning={state.loading.modal}>
           <Form
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') form.submit();
-            }}
+            // onKeyPress={(e) => {
+            //   if (e.key === 'Enter') form.submit();
+            // }}
             onFinish={handleSubmit}
             form={form}
             // onFinishFailed={result}
@@ -216,7 +216,9 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
                   <Button icon={<MinusCircleOutlined />} danger onClick={() => setSrc(null)}>Remove</Button>
                 </div>
               ) : 
-              <Form.Item name='photo' label='Image'>
+              <Form.Item name='photo' label='Image' rules={[
+                { required: true, message: 'Please upload an image.' },
+              ]}>
                 <ImgCrop rotate>
                   <Upload.Dragger
                     listType='picture'

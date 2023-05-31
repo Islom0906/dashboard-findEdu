@@ -150,7 +150,7 @@ const Page1 = () => {
       </h2>
 
       <Row gutter={12}>
-        <Col span={17}>
+        <Col span={16}>
           <Input
             size='large'
             onChange={(e) =>
@@ -160,7 +160,7 @@ const Page1 = () => {
           />
         </Col>
 
-        <Col span={3}>
+        <Col span={4}>
           <Button block onClick={getItems} disabled={state.loading.table}>
             <Space>
               {state.loading.table && <SyncOutlined spin />}
