@@ -9,4 +9,8 @@ export const samplePagesConfigs = [
     path: '/sample/:page',
     component: React.lazy(() => import('./Template/index.tsx')),
   },
+  {
+    path: '/sample/reviews',
+    component: React.lazy(() => import('./Reviews/index.tsx')),
+  },
 ];

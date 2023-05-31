@@ -1,5 +1,5 @@
 import React from 'react';
-import {MdOutlineManageAccounts,MdSubject} from 'react-icons/md';
+import {MdOutlineManageAccounts,MdSubject,MdOutlineReviews} from 'react-icons/md';
 import {FaGlobeAmericas, FaGraduationCap} from 'react-icons/fa'
 import {SiBookstack} from 'react-icons/si';
 import {HiOutlineCode} from 'react-icons/hi';
@@ -50,6 +50,14 @@ const routesConfig = [
         type: 'item',
         icon: <MdSubject />,
         path: '/sample/others',
+      },
+      {
+        id: 'reviews',
+        title: 'Reviews',
+        messageId: 'sidebar.sample.reviews',
+        type: 'item',
+        icon: <MdOutlineReviews />,
+        path: '/sample/reviews',
       },
     ],
   },
