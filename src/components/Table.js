@@ -8,7 +8,9 @@ import {
 } from '@ant-design/icons';
 import IntlMessages from '@crema/utility/IntlMessages';
 
-const MainTable = ({cols, datas, onEdit, onDelete, ...otherProps}) => {
+const MainTable = ({cols, datas, ...otherProps}) => {
+  // onDelete va onEdit function props qo'shsa boladi
+
   const {confirm} = Modal;
 
   const showDeleteConfirm = (record) => {
@@ -19,7 +21,7 @@ const MainTable = ({cols, datas, onEdit, onDelete, ...otherProps}) => {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        onDelete(record);
+        otherProps.onDelete(record);
       },
       onCancel() {},
     });
@@ -39,7 +41,7 @@ const MainTable = ({cols, datas, onEdit, onDelete, ...otherProps}) => {
             <Space>
               <Button
                 icon={<EditTwoTone />}
-                onClick={() => onEdit(record)}></Button>
+                onClick={() => otherProps.onEdit(record)}></Button>
               <Button
                 danger
                 icon={<DeleteOutlined />}
@@ -50,6 +52,10 @@ const MainTable = ({cols, datas, onEdit, onDelete, ...otherProps}) => {
       },
     },
   ];
+
+  if(otherProps.default) {
+    columns.pop()
+  }
 
   return (
     <>
