@@ -47,7 +47,7 @@ import { imageType } from '../Types';
       render: (imgUrl: imageType) => {
         return imgUrl && imgUrl !== null ? (
           <Image
-            src={`http://3.138.61.64/file/${imgUrl?.path}`}
+            src={`http://16.16.76.41/file/${imgUrl?.path}`}
             style={{height: 40, width: 40, objectFit: 'cover'}}
             preview={{
               maskClassName: 'customize-mask',

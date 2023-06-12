@@ -76,7 +76,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
             .getDataByID('/edu', state?.editItemId)
             .then((res) => {
               fillInFields(res);
-              setSrc(`http://3.138.61.64/file/${res?.image?.path}`);
+              setSrc(`http://16.16.76.41/file/${res?.image?.path}`);
               setImage(res?.image)
             })
             .catch((err) => {
@@ -100,7 +100,7 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
           phone: num
         })) : null
       })) : null,
-      image: `http://3.138.61.64/file/${data?.image?.path}`,
+      image: `http://16.16.76.41/file/${data?.image?.path}`,
       insta: data?.links[3]?.link,
       isOnlineExists: data?.onlineExists,
       it: data?.programs.map((item) => item._id),
@@ -218,10 +218,10 @@ const EduModal = ({state, dispatch, getItems}: EduPropsTypes) => {
     const formData = new FormData()
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
 
-    axios.post('http://3.138.61.64/file', formData)
+    axios.post('http://16.16.76.41/file', formData)
     .then(res => {
       console.log(res?.data)
-      setSrc(`http://3.138.61.64/file/${res?.data?.path}`)
+      setSrc(`http://16.16.76.41/file/${res?.data?.path}`)
       setImage(res?.data)
     })
   };

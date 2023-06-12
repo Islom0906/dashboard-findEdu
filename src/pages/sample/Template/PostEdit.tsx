@@ -62,7 +62,7 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     apiService.getDataByID(`${page}`, state.editItemId).then((res) => {
       dispatch(setLoading({...state.loading, modal: false}));
       setEditItem(res);
-      setSrc(`http://3.138.61.64/file/${res?.image?.path}`);
+      setSrc(`http://16.16.76.41/file/${res?.image?.path}`);
       setImage(res.image)
     });
   }, [state.editItemId]);
@@ -145,15 +145,15 @@ function PostEdit({page, state, getItems, dispatch}: PostEditPropType) {
     photo?.fileList?.length && photo.file.originFileObj && formData.append('photo', photo.file.originFileObj);
     console.log(photo?.file.originFileObj);
 
-    axios.post('http://3.138.61.64/file', formData)
+    axios.post('http://16.16.76.41/file', formData)
     .then(res => {
       console.log(res?.data)
-      setSrc(`http://3.138.61.64/file/${res?.data?.path}`)
+      setSrc(`http://16.16.76.41/file/${res?.data?.path}`)
       setImage(res?.data)
     })
   };
 
-  console.log(src);
+  console.log(src, "src");
   
 
   const onRemove = () => {};

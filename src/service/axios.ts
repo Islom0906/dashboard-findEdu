@@ -1,6 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios';
 
-axios.defaults.baseURL = 'http://3.138.61.64/';
+axios.defaults.baseURL = 'http://16.16.76.41/';
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   const jwt: string | null = localStorage.getItem('token');
